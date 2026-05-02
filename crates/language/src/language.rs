@@ -151,7 +151,7 @@ static WASM_ENGINE: LazyLock<wasmtime::Engine> = LazyLock::new(|| {
 pub static PLAIN_TEXT: LazyLock<Arc<Language>> = LazyLock::new(|| {
     Arc::new(Language::new(
         LanguageConfig {
-            name: "Plain Text".into(),
+            name: "纯文本".into(),
             soft_wrap: Some(SoftWrap::EditorWidth),
             matcher: LanguageMatcher {
                 path_suffixes: vec!["txt".to_owned()],
@@ -1708,7 +1708,7 @@ mod tests {
             languages.language_names(),
             &[
                 LanguageName::new_static("JSON"),
-                LanguageName::new_static("Plain Text"),
+                LanguageName::new_static("纯文本"),
                 LanguageName::new_static("Rust"),
             ]
         );
@@ -1721,7 +1721,7 @@ mod tests {
             languages.language_names(),
             &[
                 LanguageName::new_static("JSON"),
-                LanguageName::new_static("Plain Text"),
+                LanguageName::new_static("纯文本"),
                 LanguageName::new_static("Rust"),
             ]
         );
@@ -1734,7 +1734,7 @@ mod tests {
             languages.language_names(),
             &[
                 LanguageName::new_static("JSON"),
-                LanguageName::new_static("Plain Text"),
+                LanguageName::new_static("纯文本"),
                 LanguageName::new_static("Rust"),
             ]
         );

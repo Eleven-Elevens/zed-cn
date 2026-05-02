@@ -832,30 +832,30 @@ impl Render for ConfigurationView {
         };
 
         if self.load_credentials_task.is_some() {
-            div().child(Label::new("Loading credentials...")).into_any()
+            div().child(Label::new("正在加载凭据...")).into_any()
         } else if self.should_render_api_key_editor(cx) {
             v_flex()
                 .size_full()
                 .on_action(cx.listener(Self::save_api_key))
-                .child(Label::new("To use Zed's agent with Mistral, you need to add an API key. Follow these steps:"))
+                .child(Label::new("要在 Zed 的 Agent 中使用 Mistral，你需要添加 API 密钥。请按以下步骤操作："))
                 .child(
                     List::new()
                         .child(
                             ListBulletItem::new("")
-                                .child(Label::new("Create one by visiting"))
-                                .child(ButtonLink::new("Mistral's console", "https://console.mistral.ai/api-keys"))
+                                .child(Label::new("访问以下地址创建"))
+                                .child(ButtonLink::new("Mistral 控制台", "https://console.mistral.ai/api-keys"))
                         )
                         .child(
-                            ListBulletItem::new("Ensure your Mistral account has credits")
+                            ListBulletItem::new("确保您的 Mistral 帐户有积分")
                         )
                         .child(
-                            ListBulletItem::new("Paste your API key below and hit enter to start using the assistant")
+                            ListBulletItem::new("将您的 API 密钥粘贴到下面，然后按 Enter 键开始使用助手")
                         ),
                 )
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(
-                        format!("You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Zed."),
+                        format!("你也可以设置 {API_KEY_ENV_VAR_NAME} 环境变量，然后重启 Zed。"),
                     )
                     .size(LabelSize::Small).color(Color::Muted),
                 )

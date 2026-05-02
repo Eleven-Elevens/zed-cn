@@ -1142,19 +1142,19 @@ impl Render for ProjectDiff {
                         .child(
                             h_flex()
                                 .justify_around()
-                                .child(Label::new("No uncommitted changes")),
+                                .child(Label::new("无未提交更改")),
                         )
                         .map(|el| match remote_button {
                             Some(button) => el.child(h_flex().justify_around().child(button)),
                             None => el.child(
                                 h_flex()
                                     .justify_around()
-                                    .child(Label::new("Remote up to date")),
+                                    .child(Label::new("远程已是最新")),
                             ),
                         })
                         .child(
                             h_flex().justify_around().mt_1().child(
-                                Button::new("project-diff-close-button", "Close")
+                                Button::new("project-diff-close-button", "关闭")
                                     // .style(ButtonStyle::Transparent)
                                     .key_binding(KeyBinding::for_action_in(
                                         &CloseActiveItem::default(),
@@ -1424,9 +1424,9 @@ impl Render for ProjectDiffToolbar {
                 h_group_sm()
                     .when(button_states.selection, |el| {
                         el.child(
-                            Button::new("stage", "Toggle Staged")
+                            Button::new("stage", "切换暂存状态")
                                 .tooltip(Tooltip::for_action_title_in(
-                                    "Toggle Staged",
+                                    "切换暂存状态",
                                     &ToggleStaged,
                                     &focus_handle,
                                 ))
@@ -1438,9 +1438,9 @@ impl Render for ProjectDiffToolbar {
                     })
                     .when(!button_states.selection, |el| {
                         el.child(
-                            Button::new("stage", "Stage")
+                            Button::new("stage", "暂存")
                                 .tooltip(Tooltip::for_action_title_in(
-                                    "Stage and go to next hunk",
+                                    "暂存并转到下一个差异块",
                                     &StageAndNext,
                                     &focus_handle,
                                 ))
@@ -1454,9 +1454,9 @@ impl Render for ProjectDiffToolbar {
                                 })),
                         )
                         .child(
-                            Button::new("unstage", "Unstage")
+                            Button::new("unstage", "取消暂存")
                                 .tooltip(Tooltip::for_action_title_in(
-                                    "Unstage and go to next hunk",
+                                    "取消暂存并转到下一个差异块",
                                     &UnstageAndNext,
                                     &focus_handle,
                                 ))
@@ -1479,7 +1479,7 @@ impl Render for ProjectDiffToolbar {
                         IconButton::new("up", IconName::ArrowUp)
                             .shape(ui::IconButtonShape::Square)
                             .tooltip(Tooltip::for_action_title_in(
-                                "Go to previous hunk",
+                                "转到上一个差异块",
                                 &GoToPreviousHunk,
                                 &focus_handle,
                             ))
@@ -1492,7 +1492,7 @@ impl Render for ProjectDiffToolbar {
                         IconButton::new("down", IconName::ArrowDown)
                             .shape(ui::IconButtonShape::Square)
                             .tooltip(Tooltip::for_action_title_in(
-                                "Go to next hunk",
+                                "转到下一个差异块",
                                 &GoToHunk,
                                 &focus_handle,
                             ))
@@ -1509,9 +1509,9 @@ impl Render for ProjectDiffToolbar {
                         button_states.unstage_all && !button_states.stage_all,
                         |el| {
                             el.child(
-                                Button::new("unstage-all", "Unstage All")
+                                Button::new("unstage-all", "取消暂存全部")
                                     .tooltip(Tooltip::for_action_title_in(
-                                        "Unstage all changes",
+                                        "取消暂存所有更改",
                                         &UnstageAll,
                                         &focus_handle,
                                     ))
@@ -1528,10 +1528,10 @@ impl Render for ProjectDiffToolbar {
                                 // todo make it so that changing to say "Unstaged"
                                 // doesn't change the position.
                                 div().child(
-                                    Button::new("stage-all", "Stage All")
+                                    Button::new("stage-all", "暂存全部")
                                         .disabled(!button_states.stage_all)
                                         .tooltip(Tooltip::for_action_title_in(
-                                            "Stage all changes",
+                                            "暂存所有更改",
                                             &StageAll,
                                             &focus_handle,
                                         ))
@@ -1543,9 +1543,9 @@ impl Render for ProjectDiffToolbar {
                         },
                     )
                     .child(
-                        Button::new("commit", "Commit")
+                        Button::new("commit", "提交")
                             .tooltip(Tooltip::for_action_title_in(
-                                "Commit",
+                                "提交",
                                 &Commit,
                                 &focus_handle,
                             ))
@@ -1668,7 +1668,7 @@ impl Render for BranchDiffToolbar {
             .when(show_review_button, |this| {
                 let focus_handle = focus_handle.clone();
                 this.child(Divider::vertical()).child(
-                    Button::new("review-diff", "Review Diff")
+                    Button::new("review-diff", "审查差异")
                         .start_icon(
                             Icon::new(IconName::ZedAssistant)
                                 .size(IconSize::Small)
@@ -1677,9 +1677,9 @@ impl Render for BranchDiffToolbar {
                         .key_binding(KeyBinding::for_action_in(&ReviewDiff, &focus_handle, cx))
                         .tooltip(move |_, cx| {
                             Tooltip::with_meta_in(
-                                "Review Diff",
+                                "审查差异",
                                 Some(&ReviewDiff),
-                                "Send this diff for your last agent to review.",
+                                "将此差异发送给上一个 Agent 审查。",
                                 &focus_handle,
                                 cx,
                             )

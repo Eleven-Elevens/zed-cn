@@ -829,7 +829,7 @@ impl PickerDelegate for WorktreePickerDelegate {
                             let open_in_new_window_button =
                                 IconButton::new(("open-new-window", ix), IconName::ArrowUpRight)
                                     .icon_size(IconSize::Small)
-                                    .tooltip(Tooltip::text("Open in New Window"))
+                                    .tooltip(Tooltip::text("在新窗口打开"))
                                     .on_click(cx.listener(move |picker, _, window, cx| {
                                         let Some(entry) = picker.delegate.matches.get(ix) else {
                                             return;
@@ -851,7 +851,7 @@ impl PickerDelegate for WorktreePickerDelegate {
                                     .icon_size(IconSize::Small)
                                     .tooltip(move |_, cx| {
                                         Tooltip::for_action_in(
-                                            "Delete Worktree",
+                                            "删除工作树",
                                             &DeleteWorktree,
                                             &focus_handle_delete,
                                             cx,
@@ -880,7 +880,7 @@ impl PickerDelegate for WorktreePickerDelegate {
                 let branch_label = from_branch
                     .as_deref()
                     .unwrap_or(self.current_branch_name.as_deref().unwrap_or("HEAD"));
-                let label = format!("Create \"{name}\" based on {branch_label}");
+                let label = format!("基于 {branch_label} 创建“{name}”");
                 let element_id = match from_branch {
                     Some(branch) => format!("create-named-from-{branch}"),
                     None => "create-named-from-current".to_string(),
@@ -938,7 +938,7 @@ impl PickerDelegate for WorktreePickerDelegate {
             Some(
                 footer
                     .child(
-                        Button::new("create-worktree", "Create")
+                        Button::new("create-worktree", "创建")
                             .key_binding(
                                 KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
                                     .map(|kb| kb.size(rems_from_px(12.))),
@@ -955,7 +955,7 @@ impl PickerDelegate for WorktreePickerDelegate {
                     .when(can_delete, |this| {
                         let focus_handle = focus_handle.clone();
                         this.child(
-                            Button::new("delete-worktree", "Delete")
+                            Button::new("delete-worktree", "删除")
                                 .key_binding(
                                     KeyBinding::for_action_in(&DeleteWorktree, &focus_handle, cx)
                                         .map(|kb| kb.size(rems_from_px(12.))),
@@ -968,7 +968,7 @@ impl PickerDelegate for WorktreePickerDelegate {
                     .when(!is_current, |this| {
                         let focus_handle = focus_handle.clone();
                         this.child(
-                            Button::new("open-in-new-window", "Open in New Window")
+                            Button::new("open-in-new-window", "在新窗口打开")
                                 .key_binding(
                                     KeyBinding::for_action_in(
                                         &menu::SecondaryConfirm,
@@ -983,7 +983,7 @@ impl PickerDelegate for WorktreePickerDelegate {
                         )
                     })
                     .child(
-                        Button::new("open-worktree", "Open")
+                        Button::new("open-worktree", "打开")
                             .key_binding(
                                 KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
                                     .map(|kb| kb.size(rems_from_px(12.))),

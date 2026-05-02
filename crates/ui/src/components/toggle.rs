@@ -801,7 +801,7 @@ impl Component for SwitchField {
                                     ToggleState::Unselected,
                                     |_, _, _| {},
                                 )
-                                .tooltip(Tooltip::text("This is content for this tooltip!"))
+                                .tooltip(Tooltip::text("这是此工具提示的内容！"))
                                 .into_any_element(),
                             ),
                             single_example(
@@ -813,7 +813,7 @@ impl Component for SwitchField {
                                     ToggleState::Selected,
                                     |_, _, _| {},
                                 )
-                                .tooltip(Tooltip::text("This is content for this tooltip!"))
+                                .tooltip(Tooltip::text("这是此工具提示的内容！"))
                                 .into_any_element(),
                             ),
                         ],

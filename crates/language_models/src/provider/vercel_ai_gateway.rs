@@ -667,19 +667,19 @@ impl Render for ConfigurationView {
         };
 
         if self.load_credentials_task.is_some() {
-            div().child(Label::new("Loading credentials...")).into_any()
+            div().child(Label::new("正在加载凭据...")).into_any()
         } else if self.should_render_editor(cx) {
             v_flex()
                 .size_full()
                 .on_action(cx.listener(Self::save_api_key))
                 .child(Label::new(
-                    "To use Zed's agent with Vercel AI Gateway, you need to add an API key. Follow these steps:",
+                    "要在 Zed 的 Agent 中使用 Vercel AI Gateway，你需要添加 API 密钥。请按以下步骤操作：",
                 ))
                 .child(
                     List::new()
                         .child(
                             ListBulletItem::new("")
-                                .child(Label::new("Create an API key in"))
+                                .child(Label::new("在此处创建 API 密钥"))
                                 .child(ButtonLink::new(
                                     "Vercel AI Gateway 控制台",
                                     "https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%2Fapi-keys&title=Go+to+AI+Gateway",

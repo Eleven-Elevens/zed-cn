@@ -131,7 +131,7 @@ impl CsvPreviewView {
                 .style(ButtonStyle::Subtle)
                 .size(ButtonSize::Compact)
                 .tooltip(Tooltip::text(
-                    "Toggle between: file line numbers or sequential row numbers",
+                    "切换文件行号或连续行号",
                 ))
                 .on_click(move |_event, _window, cx| {
                     view.update(cx, |this, cx| {

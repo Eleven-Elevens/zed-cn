@@ -804,37 +804,37 @@ impl Component for ButtonLike {
                 .children(vec![
                     example_group(vec![
                         single_example(
-                            "Default",
+                            "默认",
                             ButtonLike::new("default")
-                                .child(Label::new("Default"))
+                                .child(Label::new("默认"))
                                 .into_any_element(),
                         ),
                         single_example(
-                            "Filled",
+                            "填充",
                             ButtonLike::new("filled")
                                 .style(ButtonStyle::Filled)
-                                .child(Label::new("Filled"))
+                                .child(Label::new("填充"))
                                 .into_any_element(),
                         ),
                         single_example(
-                            "Subtle",
+                            "弱化",
                             ButtonLike::new("outline")
                                 .style(ButtonStyle::Subtle)
-                                .child(Label::new("Subtle"))
+                                .child(Label::new("弱化"))
                                 .into_any_element(),
                         ),
                         single_example(
                             "有色",
                             ButtonLike::new("tinted_accent_style")
                                 .style(ButtonStyle::Tinted(TintColor::Accent))
-                                .child(Label::new("Accent"))
+                                .child(Label::new("强调"))
                                 .into_any_element(),
                         ),
                         single_example(
-                            "Transparent",
+                            "透明",
                             ButtonLike::new("transparent")
                                 .style(ButtonStyle::Transparent)
-                                .child(Label::new("Transparent"))
+                                .child(Label::new("透明"))
                                 .into_any_element(),
                         ),
                     ]),
@@ -842,16 +842,16 @@ impl Component for ButtonLike {
                         "按钮组构造函数",
                         vec![
                             single_example(
-                                "Left Rounded",
+                                "左侧圆角",
                                 ButtonLike::new_rounded_left("left_rounded")
-                                    .child(Label::new("Left Rounded"))
+                                    .child(Label::new("左侧圆角"))
                                     .style(ButtonStyle::Filled)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Right Rounded",
+                                "右侧圆角",
                                 ButtonLike::new_rounded_right("right_rounded")
-                                    .child(Label::new("Right Rounded"))
+                                    .child(Label::new("右侧圆角"))
                                     .style(ButtonStyle::Filled)
                                     .into_any_element(),
                             ),
@@ -861,12 +861,12 @@ impl Component for ButtonLike {
                                     .gap_px()
                                     .child(
                                         ButtonLike::new_rounded_left("bg_left")
-                                            .child(Label::new("Left"))
+                                            .child(Label::new("左"))
                                             .style(ButtonStyle::Filled),
                                     )
                                     .child(
                                         ButtonLike::new_rounded_right("bg_right")
-                                            .child(Label::new("Right"))
+                                            .child(Label::new("右"))
                                             .style(ButtonStyle::Filled),
                                     )
                                     .into_any_element(),

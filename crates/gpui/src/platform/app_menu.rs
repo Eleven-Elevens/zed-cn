@@ -364,14 +364,14 @@ mod tests {
 
     #[test]
     fn test_menu() {
-        let menu = Menu::new("App")
+        let menu = Menu::new("应用")
             .items(vec![
-                crate::MenuItem::action("Action 1", gpui::NoAction),
+                crate::MenuItem::action("操作 1", gpui::NoAction),
                 crate::MenuItem::separator(),
             ])
             .disabled(true);
 
-        assert_eq!(menu.name.as_ref(), "App");
+        assert_eq!(menu.name.as_ref(), "应用");
         assert_eq!(menu.items.len(), 2);
         assert!(menu.disabled);
     }
@@ -380,13 +380,13 @@ mod tests {
     fn test_menu_item_builder() {
         use super::MenuItem;
 
-        let item = MenuItem::action("Test Action", gpui::NoAction);
+        let item = MenuItem::action("测试操作", gpui::NoAction);
         assert_eq!(
             match &item {
                 MenuItem::Action { name, .. } => name.as_ref(),
                 _ => unreachable!(),
             },
-            "Test Action"
+            "测试操作"
         );
         assert!(matches!(
             item,
@@ -398,18 +398,18 @@ mod tests {
         ));
 
         assert!(
-            MenuItem::action("Test Action", gpui::NoAction)
+            MenuItem::action("测试操作", gpui::NoAction)
                 .checked(true)
                 .is_checked()
         );
         assert!(
-            MenuItem::action("Test Action", gpui::NoAction)
+            MenuItem::action("测试操作", gpui::NoAction)
                 .disabled(true)
                 .is_disabled()
         );
 
         let submenu = MenuItem::submenu(super::Menu {
-            name: "Submenu".into(),
+            name: "子菜单".into(),
             items: vec![],
             disabled: true,
         });
@@ -418,7 +418,7 @@ mod tests {
                 MenuItem::Submenu(menu) => menu.name.as_ref(),
                 _ => unreachable!(),
             },
-            "Submenu"
+            "子菜单"
         );
         assert!(!submenu.is_checked());
         assert!(submenu.is_disabled());

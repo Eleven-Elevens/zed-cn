@@ -288,12 +288,12 @@ impl LanguageModel for DeepSeekLanguageModel {
 
         vec![
             LanguageModelEffortLevel {
-                name: "High".into(),
+                name: "高".into(),
                 value: "high".into(),
                 is_default: true,
             },
             LanguageModelEffortLevel {
-                name: "Max".into(),
+                name: "最大".into(),
                 value: "max".into(),
                 is_default: false,
             },
@@ -710,18 +710,18 @@ impl Render for ConfigurationView {
 
         if self.load_credentials_task.is_some() {
             div()
-                .child(Label::new("Loading credentials..."))
+                .child(Label::new("正在加载凭据..."))
                 .into_any_element()
         } else if self.should_render_editor(cx) {
             v_flex()
                 .size_full()
                 .on_action(cx.listener(Self::save_api_key))
-                .child(Label::new("To use DeepSeek in Zed, you need an API key:"))
+                .child(Label::new("要在 Zed 中使用 DeepSeek，你需要一个 API 密钥："))
                 .child(
                     List::new()
                         .child(
                             ListBulletItem::new("")
-                                .child(Label::new("Get your API key from the"))
+                                .child(Label::new("从以下位置获取 API 密钥"))
                                 .child(ButtonLink::new(
                                     "DeepSeek 控制台",
                                     "https://platform.deepseek.com/api_keys",

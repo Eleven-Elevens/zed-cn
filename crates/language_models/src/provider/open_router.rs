@@ -833,29 +833,29 @@ impl Render for ConfigurationView {
 
         if self.load_credentials_task.is_some() {
             div()
-                .child(Label::new("Loading credentials..."))
+                .child(Label::new("正在加载凭据..."))
                 .into_any_element()
         } else if self.should_render_editor(cx) {
             v_flex()
                 .size_full()
                 .on_action(cx.listener(Self::save_api_key))
-                .child(Label::new("To use Zed's agent with OpenRouter, you need to add an API key. Follow these steps:"))
+                .child(Label::new("要在 Zed 的 Agent 中使用 OpenRouter，你需要添加 API 密钥。请按以下步骤操作："))
                 .child(
                     List::new()
                         .child(
                             ListBulletItem::new("")
-                                .child(Label::new("Create an API key by visiting"))
-                                .child(ButtonLink::new("OpenRouter's console", "https://openrouter.ai/keys"))
+                                .child(Label::new("访问以下地址创建 API 密钥"))
+                                .child(ButtonLink::new("OpenRouter 控制台", "https://openrouter.ai/keys"))
                         )
-                        .child(ListBulletItem::new("Ensure your OpenRouter account has credits")
+                        .child(ListBulletItem::new("确保您的 OpenRouter 帐户有积分")
                         )
-                        .child(ListBulletItem::new("Paste your API key below and hit enter to start using the assistant")
+                        .child(ListBulletItem::new("将您的 API 密钥粘贴到下面，然后按 Enter 键开始使用助手")
                         ),
                 )
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(
-                        format!("You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Zed."),
+                        format!("你也可以设置 {API_KEY_ENV_VAR_NAME} 环境变量，然后重启 Zed。"),
                     )
                     .size(LabelSize::Small).color(Color::Muted),
                 )

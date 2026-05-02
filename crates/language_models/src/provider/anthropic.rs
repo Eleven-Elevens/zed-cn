@@ -331,22 +331,22 @@ impl LanguageModel for AnthropicModel {
         if self.model.supports_adaptive_thinking() {
             vec![
                 language_model::LanguageModelEffortLevel {
-                    name: "Low".into(),
+                    name: "低".into(),
                     value: "low".into(),
                     is_default: false,
                 },
                 language_model::LanguageModelEffortLevel {
-                    name: "Medium".into(),
+                    name: "中".into(),
                     value: "medium".into(),
                     is_default: false,
                 },
                 language_model::LanguageModelEffortLevel {
-                    name: "High".into(),
+                    name: "高".into(),
                     value: "high".into(),
                     is_default: true,
                 },
                 language_model::LanguageModelEffortLevel {
-                    name: "Max".into(),
+                    name: "最大".into(),
                     value: "max".into(),
                     is_default: false,
                 },
@@ -511,31 +511,31 @@ impl Render for ConfigurationView {
 
         if self.load_credentials_task.is_some() {
             div()
-                .child(Label::new("Loading credentials..."))
+                .child(Label::new("正在加载凭据..."))
                 .into_any_element()
         } else if self.should_render_editor(cx) {
             v_flex()
                 .size_full()
                 .on_action(cx.listener(Self::save_api_key))
-                .child(Label::new(format!("To use {}, you need to add an API key. Follow these steps:", match &self.target_agent {
-                    ConfigurationViewTargetAgent::ZedAgent => "Zed's agent with Anthropic".into(),
+                .child(Label::new(format!("要使用 {}，你需要添加 API 密钥。请按以下步骤操作：", match &self.target_agent {
+                    ConfigurationViewTargetAgent::ZedAgent => "使用 Anthropic 的 Zed Agent".into(),
                     ConfigurationViewTargetAgent::Other(agent) => agent.clone(),
                 })))
                 .child(
                     List::new()
                         .child(
                             ListBulletItem::new("")
-                                .child(Label::new("Create one by visiting"))
-                                .child(ButtonLink::new("Anthropic's settings", "https://console.anthropic.com/settings/keys"))
+                                .child(Label::new("访问以下地址创建"))
+                                .child(ButtonLink::new("Anthropic 设置", "https://console.anthropic.com/settings/keys"))
                         )
                         .child(
-                            ListBulletItem::new("Paste your API key below and hit enter to start using the agent")
+                            ListBulletItem::new("将您的 API 密钥粘贴到下面并按 Enter 键开始使用代理")
                         )
                 )
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(
-                        format!("You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Zed."),
+                        format!("你也可以设置 {API_KEY_ENV_VAR_NAME} 环境变量，然后重启 Zed。"),
                     )
                     .size(LabelSize::Small)
                     .color(Color::Muted)

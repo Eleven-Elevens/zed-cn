@@ -237,11 +237,11 @@ impl Component for Divider {
                                 .w_full()
                                 .gap_4()
                                 .px_4()
-                                .child(Label::new("Section One"))
+                                .child(Label::new("第一节"))
                                 .child(Divider::horizontal())
-                                .child(Label::new("Section Two"))
+                                .child(Label::new("第二节"))
                                 .child(Divider::horizontal_dashed())
-                                .child(Label::new("Section Three"))
+                                .child(Label::new("第三节"))
                                 .into_any_element(),
                         )],
                     ),

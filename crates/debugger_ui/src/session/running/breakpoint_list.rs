@@ -197,9 +197,9 @@ impl BreakpointList {
     ) {
         self.strip_mode = Some(prop);
         let placeholder = match prop {
-            ActiveBreakpointStripMode::Log => "Set Log Message",
-            ActiveBreakpointStripMode::Condition => "Set Condition",
-            ActiveBreakpointStripMode::HitCondition => "Set Hit Condition",
+            ActiveBreakpointStripMode::Log => "设置日志消息",
+            ActiveBreakpointStripMode::Condition => "设置条件",
+            ActiveBreakpointStripMode::HitCondition => "设置命中条件",
         };
         let mut is_exception_breakpoint = true;
         let active_value = self.selected_ix.and_then(|ix| {
@@ -1433,7 +1433,7 @@ impl RenderOnce for BreakpointOptionsStrip {
                         .on_click(self.on_click_callback(ActiveBreakpointStripMode::Log))
                         .tooltip(|_window, cx|  {
                             Tooltip::with_meta(
-                                "Set Log Message",
+                                "设置日志消息",
                                 None,
                                 "设置断点命中时要显示的日志消息，而不是暂停程序。",
                                 cx,
@@ -1469,7 +1469,7 @@ impl RenderOnce for BreakpointOptionsStrip {
                             .on_click(self.on_click_callback(ActiveBreakpointStripMode::Condition))
                             .tooltip(|_window, cx|  {
                                 Tooltip::with_meta(
-                                    "Set Condition",
+                                    "设置条件",
                                     None,
                                     "设置断点命中时要计算的条件。只有满足条件时程序才会暂停。",
                                     cx,
@@ -1504,7 +1504,7 @@ impl RenderOnce for BreakpointOptionsStrip {
                         .on_click(self.on_click_callback(ActiveBreakpointStripMode::HitCondition))
                         .tooltip(|_window, cx|  {
                             Tooltip::with_meta(
-                                "Set Hit Condition",
+                                "设置命中条件",
                                 None,
                                 "设置用于控制忽略多少次断点命中的表达式。",
                                 cx,

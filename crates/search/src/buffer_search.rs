@@ -134,7 +134,7 @@ impl Render for BufferSearchBar {
                             IconButton::new("diff-unified", IconName::DiffUnified)
                                 .icon_size(IconSize::Small)
                                 .toggle_state(diff_view_style == DiffViewStyle::Unified)
-                                .tooltip(Tooltip::text("Unified"))
+                                .tooltip(Tooltip::text("统一视图"))
                                 .on_click({
                                     let splittable_editor = splittable_editor.downgrade();
                                     move |_, window, cx| {
@@ -166,10 +166,10 @@ impl Render for BufferSearchBar {
                                 .icon_size(IconSize::Small)
                                 .tooltip(Tooltip::element(move |_, cx| {
                                     let message = if is_split_set && !is_split_active {
-                                        format!("Split when wider than {} columns", min_columns)
+                                        format!("宽度超过 {} 列时拆分", min_columns)
                                             .into()
                                     } else {
-                                        SharedString::from("Split")
+                                        SharedString::from("拆分视图")
                                     };
 
                                     v_flex()
@@ -186,7 +186,7 @@ impl Render for BufferSearchBar {
                                                     Some(TextSize::Small.rems(cx).into()),
                                                     false,
                                                 ))
-                                                .child("click to change min width"),
+                                                .child("点击更改最小宽度"),
                                         )
                                         .into_any()
                                 }))

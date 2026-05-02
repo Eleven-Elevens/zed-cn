@@ -210,7 +210,7 @@ pub(crate) fn render_mermaid_diagram(
                             .max_w_full()
                             .with_fallback(|| {
                                 div()
-                                    .child(Label::new("Failed to load mermaid diagram"))
+                                    .child(Label::new("加载 Mermaid 图表失败"))
                                     .into_any_element()
                             }),
                     ),
@@ -230,7 +230,7 @@ pub(crate) fn render_mermaid_diagram(
                             .max_w_full()
                             .with_fallback(|| {
                                 div()
-                                    .child(Label::new("Failed to load mermaid diagram"))
+                                    .child(Label::new("加载 Mermaid 图表失败"))
                                     .into_any_element()
                             }),
                     )
@@ -246,7 +246,7 @@ pub(crate) fn render_mermaid_diagram(
     } else {
         container
             .child(
-                Label::new("Rendering mermaid diagram...")
+                Label::new("正在渲染 Mermaid 图表...")
                     .color(Color::Muted)
                     .with_animation(
                         "mermaid-loading-pulse",

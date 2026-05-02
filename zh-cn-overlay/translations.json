@@ -10654,11 +10654,12 @@
   {
     "id": "auto.project_panel.view_file_history",
     "file": "crates/project_panel/src/project_panel.rs",
-    "from": "View File History",
-    "to": "查看文件历史",
+    "from": "View History",
+    "to": "查看历史",
     "expected_count": 1,
     "previous_to": [
-      "查看文件History"
+      "查看文件History",
+      "查看文件历史"
     ]
   },
   {
@@ -15197,7 +15198,15 @@
     "id": "manual.project_panel.context.delete",
     "file": "crates/project_panel/src/project_panel.rs",
     "from": "Delete",
-    "to": "删除"
+    "to": "删除",
+    "expected_count": 2
+  },
+  {
+    "id": "manual.git_ui.no_git_repositories",
+    "file": "crates/git_ui/src/git_panel.rs",
+    "from": "No Git Repositories",
+    "to": "没有 Git 仓库",
+    "expected_count": 1
   },
   {
     "id": "manual.agent_ui.undo_reject_toast.undo",
@@ -22754,7 +22763,7 @@
     "file": "crates/project_panel/src/project_panel.rs",
     "from": "Cancel",
     "to": "取消",
-    "expected_count": 2
+    "expected_count": 3
   },
   {
     "id": "manual.settings_ui.if_any_of_these_regexes_match_the_tool_action_will_be_denied",

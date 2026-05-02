@@ -1310,7 +1310,7 @@ impl Render for LspButton {
                         == EditPredictionProvider::Copilot;
                     telemetry::event!(
                         "Toolbar Menu Opened",
-                        name = "Language Servers",
+                        name = "语言服务器",
                         copilot_enabled,
                         is_via_ssh,
                     );
@@ -1329,7 +1329,7 @@ impl Render for LspButton {
                         .icon_size(IconSize::Small)
                         .indicator_border_color(Some(cx.theme().colors().status_bar_background)),
                     move |_window, cx| {
-                        Tooltip::with_meta("Language Servers", Some(&ToggleMenu), description, cx)
+                        Tooltip::with_meta("语言服务器", Some(&ToggleMenu), description, cx)
                     },
                 ),
         )

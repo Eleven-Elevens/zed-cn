@@ -383,7 +383,7 @@ impl PickerDelegate for RulePickerDelegate {
                                 .toggle_state(true)
                                 .icon_color(Color::Accent)
                                 .icon_size(IconSize::Small)
-                                .tooltip(Tooltip::text("Remove from Default Rules"))
+                                .tooltip(Tooltip::text("从默认规则移除"))
                                 .on_click(cx.listener(move |_, _, _, cx| {
                                     cx.emit(RulePickerEvent::ToggledDefault { prompt_id })
                                 }))
@@ -395,7 +395,7 @@ impl PickerDelegate for RulePickerDelegate {
                                         IconButton::new("delete-rule", IconName::Trash)
                                             .icon_color(Color::Muted)
                                             .icon_size(IconSize::Small)
-                                            .tooltip(Tooltip::text("Delete Rule"))
+                                            .tooltip(Tooltip::text("删除规则"))
                                             .on_click(cx.listener(move |_, _, _, cx| {
                                                 cx.emit(RulePickerEvent::Deleted { prompt_id })
                                             })),
@@ -413,12 +413,12 @@ impl PickerDelegate for RulePickerDelegate {
                                             .map(|this| {
                                                 if default {
                                                     this.tooltip(Tooltip::text(
-                                                        "Remove from Default Rules",
+                                                        "从默认规则移除",
                                                     ))
                                                 } else {
                                                     this.tooltip(move |_window, cx| {
                                                         Tooltip::with_meta(
-                                                            "Add to Default Rules",
+                                                            "添加到默认规则",
                                                             None,
                                                             "始终包含在每个线程中。",
                                                             cx,
@@ -1080,7 +1080,7 @@ impl RulesLibrary {
                             .child(
                                 IconButton::new("new-rule", IconName::Plus)
                                     .tooltip(move |_window, cx| {
-                                        Tooltip::for_action("New Rule", &NewRule, cx)
+                                        Tooltip::for_action("新规则", &NewRule, cx)
                                     })
                                     .on_click(|_, window, cx| {
                                         window.dispatch_action(Box::new(NewRule), cx);
@@ -1090,7 +1090,7 @@ impl RulesLibrary {
                 } else {
                     this.child(
                         h_flex().p_1().w_full().child(
-                            Button::new("new-rule", "New Rule")
+                            Button::new("new-rule", "新规则")
                                 .full_width()
                                 .style(ButtonStyle::Outlined)
                                 .start_icon(
@@ -1159,7 +1159,7 @@ impl RulesLibrary {
 
     fn render_duplicate_rule_button(&self) -> impl IntoElement {
         IconButton::new("duplicate-rule", IconName::BookCopy)
-            .tooltip(move |_window, cx| Tooltip::for_action("Duplicate Rule", &DuplicateRule, cx))
+            .tooltip(move |_window, cx| Tooltip::for_action("复制规则", &DuplicateRule, cx))
             .on_click(|_, window, cx| {
                 window.dispatch_action(Box::new(DuplicateRule), cx);
             })
@@ -1173,7 +1173,7 @@ impl RulesLibrary {
                 IconButton::new("restore-default", IconName::RotateCcw)
                     .tooltip(move |_window, cx| {
                         Tooltip::for_action(
-                            "Restore to Default Content",
+                            "恢复为默认内容",
                             &RestoreDefaultContent,
                             cx,
                         )
@@ -1193,11 +1193,11 @@ impl RulesLibrary {
                     .when(default, |this| this.icon_color(Color::Accent))
                     .map(|this| {
                         if default {
-                            this.tooltip(Tooltip::text("Remove from Default Rules"))
+                            this.tooltip(Tooltip::text("从默认规则移除"))
                         } else {
                             this.tooltip(move |_window, cx| {
                                 Tooltip::with_meta(
-                                    "Add to Default Rules",
+                                    "添加到默认规则",
                                     None,
                                     "始终包含在每个线程中。",
                                     cx,
@@ -1212,7 +1212,7 @@ impl RulesLibrary {
             .child(self.render_duplicate_rule_button())
             .child(
                 IconButton::new("delete-rule", IconName::Trash)
-                    .tooltip(move |_window, cx| Tooltip::for_action("Delete Rule", &DeleteRule, cx))
+                    .tooltip(move |_window, cx| Tooltip::for_action("删除规则", &DeleteRule, cx))
                     .on_click(|_, window, cx| {
                         window.dispatch_action(Box::new(DeleteRule), cx);
                     }),

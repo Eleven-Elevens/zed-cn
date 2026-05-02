@@ -325,7 +325,7 @@ impl Render for TitleBar {
                 )
                 .when(is_signing_in, |this| {
                     this.child(
-                        Label::new("Signing in…")
+                        Label::new("正在登录…")
                             .size(LabelSize::Small)
                             .color(Color::Muted)
                             .with_animation(
@@ -634,7 +634,7 @@ impl TitleBar {
             return None;
         }
 
-        let button = Button::new("restricted_mode_trigger", "Restricted Mode")
+        let button = Button::new("restricted_mode_trigger", "受限模式")
             .style(ButtonStyle::Tinted(TintColor::Warning))
             .label_size(LabelSize::Small)
             .color(Color::Warning)
@@ -645,7 +645,7 @@ impl TitleBar {
             )
             .tooltip(|_, cx| {
                 Tooltip::with_meta(
-                    "You're in Restricted Mode",
+                    "你处于受限模式",
                     Some(&ToggleWorktreeSecurity),
                     "将此项目标记为受信任并解锁所有功能",
                     cx,
@@ -676,7 +676,7 @@ impl TitleBar {
 
         if self.project.read(cx).is_disconnected(cx) {
             return Some(
-                Button::new("disconnected", "Disconnected")
+                Button::new("disconnected", "已断开")
                     .disabled(true)
                     .color(Color::Disabled)
                     .label_size(LabelSize::Small)
@@ -792,7 +792,7 @@ impl TitleBar {
                     .when(!is_project_selected, |s| s.color(Color::Muted)),
                 move |_window, cx| {
                     Tooltip::for_action(
-                        "Recent Projects",
+                        "最近项目",
                         &zed_actions::OpenRecent {
                             create_new_window: false,
                         },
@@ -849,7 +849,7 @@ impl TitleBar {
                     .when(!is_project_selected, |s| s.color(Color::Muted)),
                 move |_window, cx| {
                     Tooltip::for_action(
-                        "Recent Projects",
+                        "最近项目",
                         &zed_actions::OpenRecent {
                             create_new_window: false,
                         },
@@ -955,7 +955,7 @@ impl TitleBar {
                         ),
                     move |_window, cx| {
                         Tooltip::with_meta(
-                            "Worktree",
+                            "工作树",
                             Some(&zed_actions::git::Worktree),
                             format!("当前使用中：{}", worktree_label),
                             cx,
@@ -975,7 +975,7 @@ impl TitleBar {
                 };
 
                 let trigger = if is_detached_head {
-                    Button::new("project_branch_trigger", "Create Branch")
+                    Button::new("project_branch_trigger", "创建分支")
                         .selected_style(ButtonStyle::Tinted(TintColor::Accent))
                         .label_size(LabelSize::Small)
                         .start_icon(
@@ -1013,7 +1013,7 @@ impl TitleBar {
                             format!("当前检出：{}", branch_tooltip_label)
                         };
                         Tooltip::with_meta(
-                            "Branch & Stash",
+                            "分支与贮藏",
                             Some(&zed_actions::git::Branch),
                             meta,
                             cx,
@@ -1105,7 +1105,7 @@ impl TitleBar {
                 div()
                     .id("disconnected")
                     .child(Icon::new(IconName::Disconnected).size(IconSize::Small))
-                    .tooltip(Tooltip::text("Disconnected"))
+                    .tooltip(Tooltip::text("已断开"))
                     .into_any_element(),
             ),
             client::Status::UpgradeRequired => {
@@ -1142,7 +1142,7 @@ impl TitleBar {
     pub fn render_sign_in_button(&mut self, _: &mut Context<Self>) -> Button {
         let client = self.client.clone();
         let workspace = self.workspace.clone();
-        Button::new("sign_in", "Sign In")
+        Button::new("sign_in", "登录")
             .label_size(LabelSize::Small)
             .on_click(move |_, window, cx| {
                 let client = client.clone();
@@ -1265,7 +1265,7 @@ impl TitleBar {
                                     .w_full()
                                     .gap_1()
                                     .justify_between()
-                                    .child(Label::new("Restart to update Zed").color(Color::Accent))
+                                    .child(Label::new("重启以更新 Zed").color(Color::Accent))
                                     .child(
                                         Icon::new(IconName::Download)
                                             .size(IconSize::Small)

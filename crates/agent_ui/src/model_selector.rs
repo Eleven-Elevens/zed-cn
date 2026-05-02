@@ -441,7 +441,7 @@ fn info_list_to_picker_entries(
 
     let has_favorites = !favorite_models.is_empty();
     if has_favorites {
-        entries.push(ModelPickerEntry::Separator("Favorite".into()));
+        entries.push(ModelPickerEntry::Separator("收藏".into()));
         for model in favorite_models {
             entries.push(ModelPickerEntry::Model((*model).clone(), true));
         }
@@ -661,7 +661,7 @@ mod tests {
 
         assert!(matches!(
             entries.first(),
-            Some(ModelPickerEntry::Separator(s)) if s == "Favorite"
+            Some(ModelPickerEntry::Separator(s)) if s == "收藏"
         ));
 
         let model_ids = get_entry_model_ids(&entries);
@@ -737,7 +737,7 @@ mod tests {
         assert_eq!(
             labels,
             vec![
-                "Favorite",
+                "收藏",
                 "zed/claude",
                 "Recommended",
                 "zed/claude",
@@ -779,7 +779,7 @@ mod tests {
 
         assert!(matches!(
             entries.first(),
-            Some(ModelPickerEntry::Separator(s)) if s == "Favorite"
+            Some(ModelPickerEntry::Separator(s)) if s == "收藏"
         ));
 
         assert!(entries.iter().any(|e| matches!(
@@ -808,7 +808,7 @@ mod tests {
         let models = AgentModelList::Flat(vec![
             acp_thread::AgentModelInfo {
                 id: acp::ModelId::new("favorite-model".to_string()),
-                name: "Favorite".into(),
+                name: "收藏".into(),
                 description: None,
                 icon: None,
                 is_latest: false,
@@ -816,7 +816,7 @@ mod tests {
             },
             acp_thread::AgentModelInfo {
                 id: acp::ModelId::new("regular-model".to_string()),
-                name: "Regular".into(),
+                name: "常规".into(),
                 description: None,
                 icon: None,
                 is_latest: false,

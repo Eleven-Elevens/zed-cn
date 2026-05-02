@@ -86,7 +86,7 @@ pub fn install_cli_binary(window: &mut Window, cx: &mut Context<Workspace>) {
                 Toast::new(
                     NotificationId::unique::<InstalledZedCli>(),
                     format!(
-                        "Installed `zed` to {}. You can launch {} from your terminal.",
+                        "已将 `zed` 安装到 {}。你可以从终端启动 {}。",
                         path.to_string_lossy(),
                         ReleaseChannel::global(cx).display_name()
                     ),

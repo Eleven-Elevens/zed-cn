@@ -234,7 +234,7 @@ impl Render for EditPredictionButton {
                                 }),
                             move |_window, cx| {
                                 Tooltip::with_meta(
-                                    "Edit Prediction",
+                                    "编辑预测",
                                     Some(&ToggleMenu),
                                     tooltip_meta,
                                     cx,
@@ -313,7 +313,7 @@ impl Render for EditPredictionButton {
                                 };
 
                                 Tooltip::with_meta(
-                                    "Edit Prediction",
+                                    "编辑预测",
                                     Some(&ToggleMenu),
                                     tooltip_meta,
                                     cx,
@@ -380,7 +380,7 @@ impl Render for EditPredictionButton {
                             .indicator(Indicator::dot().color(Color::Muted))
                             .indicator_border_color(Some(cx.theme().colors().status_bar_background))
                             .tooltip(move |_window, cx| {
-                                Tooltip::with_meta("Edit Predictions", None, tooltip_meta, cx)
+                                Tooltip::with_meta("编辑预测", None, tooltip_meta, cx)
                             })
                             .on_click(cx.listener(move |_, _, window, cx| {
                                 telemetry::event!(
@@ -449,7 +449,7 @@ impl Render for EditPredictionButton {
                             };
 
                             Tooltip::with_meta(
-                                "Edit Prediction",
+                                "编辑预测",
                                 Some(&ToggleMenu),
                                 description,
                                 cx,
@@ -612,7 +612,7 @@ impl EditPredictionButton {
                             |item| {
                                 item.documentation_aside(DocumentationSide::Left, move |_cx| {
                                     Label::new(
-                                        "Edit predictions are disabled for this organization.",
+                                        "此组织已禁用编辑预测。",
                                     )
                                     .into_any_element()
                                 })
@@ -781,7 +781,7 @@ impl EditPredictionButton {
                     ContextMenuEntry::new("渴望的")
                         .toggleable(IconPosition::Start, eager_mode)
                         .documentation_aside(DocumentationSide::Left, move |_| {
-                            Label::new("Display predictions inline when there are no language server completions available.").into_any_element()
+                            Label::new("当没有语言服务器补全可用时，行内显示预测。").into_any_element()
                         })
                         .handler({
                             let fs = fs.clone();
@@ -799,7 +799,7 @@ impl EditPredictionButton {
                     ContextMenuEntry::new("弱化")
                         .toggleable(IconPosition::Start, subtle_mode)
                         .documentation_aside(DocumentationSide::Left, move |_| {
-                            Label::new("Display predictions inline only when holding a modifier key (alt by default).").into_any_element()
+                            Label::new("仅在按住修饰键（默认 Alt）时行内显示预测。").into_any_element()
                         })
                         .handler({
                             let fs = fs.clone();
@@ -1101,7 +1101,7 @@ impl EditPredictionButton {
                             .max_w_64()
                             .h(rems_from_px(148.))
                             .child(render_zeta_tab_animation(cx))
-                            .child(Label::new("Edit Prediction"))
+                            .child(Label::new("编辑预测"))
                             .child(
                                 Label::new(description)
                                     .color(Color::Muted)
@@ -1213,7 +1213,7 @@ impl EditPredictionButton {
                     menu = menu
                         .custom_entry(
                             |_window, _cx| {
-                                Label::new("Your GitHub account is less than 30 days old.")
+                                Label::new("你的 GitHub 账号创建时间不足 30 天。")
                                     .size(LabelSize::Small)
                                     .color(Color::Warning)
                                     .into_any_element()
@@ -1233,7 +1233,7 @@ impl EditPredictionButton {
                     menu = menu
                         .custom_entry(
                             |_window, _cx| {
-                                Label::new("You have an outstanding invoice")
+                                Label::new("你有一张未结清的账单")
                                     .size(LabelSize::Small)
                                     .color(Color::Warning)
                                     .into_any_element()
@@ -1627,7 +1627,7 @@ fn emit_edit_prediction_menu_opened(
         .unwrap_or(false);
     telemetry::event!(
         "Toolbar Menu Opened",
-        name = "Edit Predictions",
+        name = "编辑预测",
         provider,
         file_extension,
         edit_predictions_enabled_for_language,

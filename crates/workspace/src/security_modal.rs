@@ -57,7 +57,7 @@ impl ModalView for SecurityModal {
     fn on_before_dismiss(&mut self, _: &mut Window, _: &mut Context<Self>) -> DismissDecision {
         match self.trusted {
             Some(false) => telemetry::event!("Open in Restricted", source = "Worktree Trust Modal"),
-            Some(true) => telemetry::event!("Trust and Continue", source = "Worktree Trust Modal"),
+            Some(true) => telemetry::event!("信任并继续", source = "Worktree Trust Modal"),
             None => telemetry::event!("Dismissed", source = "Worktree Trust Modal"),
         }
         DismissDecision::Dismiss(true)
@@ -168,23 +168,23 @@ impl Render for SecurityModal {
                         v_flex()
                             .child(
                                 Label::new(
-                                    "Untrusted projects are opened in Restricted Mode to protect your system.",
+                                    "不受信任的项目会在受限模式下打开，以保护你的系统。",
                                 )
                                 .color(Color::Muted),
                             )
                             .child(
                                 Label::new(
-                                    "Review .zed/settings.json for any extensions or commands configured by this project.",
+                                    "检查 .zed/settings.json 中此项目配置的扩展或命令。",
                                 )
                                 .color(Color::Muted),
                             ),
                     )
                     .child(
                         v_flex()
-                            .child(Label::new("Restricted Mode prevents:").color(Color::Muted))
-                            .child(ListBulletItem::new("Project settings from being applied"))
-                            .child(ListBulletItem::new("Language servers from running"))
-                            .child(ListBulletItem::new("MCP Server integrations from installing")),
+                            .child(Label::new("受限模式会阻止：").color(Color::Muted))
+                            .child(ListBulletItem::new("应用项目设置"))
+                            .child(ListBulletItem::new("运行语言服务器"))
+                            .child(ListBulletItem::new("安装 MCP 服务器集成")),
                     )
                     .map(|this| match trust_label {
                         Some(trust_label) => this.child(
@@ -208,7 +208,7 @@ impl Render for SecurityModal {
                     .gap_1()
                     .justify_end()
                     .child(
-                        Button::new("rm", "Stay in Restricted Mode")
+                        Button::new("rm", "保持受限模式")
                             .key_binding(
                                 KeyBinding::for_action(
                                     &ToggleWorktreeSecurity,
@@ -223,7 +223,7 @@ impl Render for SecurityModal {
                             })),
                     )
                     .child(
-                        Button::new("tc", "Trust and Continue")
+                        Button::new("tc", "信任并继续")
                             .style(ButtonStyle::Filled)
                             .layer(ui::ElevationIndex::ModalSurface)
                             .key_binding(

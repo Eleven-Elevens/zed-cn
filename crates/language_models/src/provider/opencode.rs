@@ -830,13 +830,13 @@ impl Render for ConfigurationView {
             v_flex()
                 .on_action(cx.listener(Self::save_api_key))
                 .child(Label::new(
-                    "To use OpenCode models in Zed, you need an API key:",
+                    "要在 Zed 中使用 OpenCode 模型，你需要一个 API 密钥：",
                 ))
                 .child(
                     List::new()
                         .child(
                             ListBulletItem::new("")
-                                .child(Label::new("Sign in and get your key at"))
+                                .child(Label::new("登录并在以下位置获取密钥"))
                                 .child(ButtonLink::new(
                                     "OpenCode 控制台",
                                     "https://opencode.ai/auth",
@@ -868,7 +868,7 @@ impl Render for ConfigurationView {
         };
 
         if self.load_credentials_task.is_some() {
-            div().child(Label::new("Loading credentials...")).into_any()
+            div().child(Label::new("正在加载凭据...")).into_any()
         } else {
             let settings = OpenCodeLanguageModelProvider::settings(cx);
             let show_zen = settings.show_zen_models;
@@ -877,7 +877,7 @@ impl Render for ConfigurationView {
 
             let subscription_toggles = v_flex()
                 .gap_1()
-                .child(Label::new("Subscriptions:").color(Color::Muted))
+                .child(Label::new("订阅：").color(Color::Muted))
                 .child(
                     Switch::new("opencode-show-zen-models", show_zen.into())
                         .label("显示 Zen 模型")
@@ -920,7 +920,7 @@ impl Render for ConfigurationView {
 
             let no_subscriptions_warning = if !show_zen && !show_go && !show_free {
                 Some(Banner::new().severity(Severity::Warning).child(Label::new(
-                    "No subscriptions enabled. Enable at least one subscription to use OpenCode.",
+                    "未启用订阅。请至少启用一个订阅以使用 OpenCode。",
                 )))
             } else {
                 None

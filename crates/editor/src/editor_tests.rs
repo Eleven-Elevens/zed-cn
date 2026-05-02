@@ -6460,7 +6460,7 @@ async fn test_wrap_in_tag_does_nothing_in_unsupported_languages(cx: &mut TestApp
 
     let plaintext_language = Arc::new(Language::new(
         LanguageConfig {
-            name: "Plain Text".into(),
+            name: "纯文本".into(),
             ..LanguageConfig::default()
         },
         None,
@@ -7710,7 +7710,7 @@ async fn test_rewrap(cx: &mut TestAppContext) {
                 },
             ),
             (
-                "Plain Text".into(),
+                "纯文本".into(),
                 LanguageSettingsContent {
                     allow_rewrap: Some(language_settings::RewrapBehavior::Anywhere),
                     preferred_line_length: Some(40),
@@ -7788,7 +7788,7 @@ async fn test_rewrap(cx: &mut TestAppContext) {
 
     let plaintext_language = Arc::new(Language::new(
         LanguageConfig {
-            name: "Plain Text".into(),
+            name: "纯文本".into(),
             ..LanguageConfig::default()
         },
         None,

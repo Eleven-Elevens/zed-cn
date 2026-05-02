@@ -3126,7 +3126,7 @@ pub mod tests {
         let language = Arc::new(
             Language::new(
                 LanguageConfig {
-                    name: "Test".into(),
+                    name: "测试".into(),
                     matcher: LanguageMatcher {
                         path_suffixes: vec![".test".to_string()],
                         ..Default::default()
@@ -3574,7 +3574,7 @@ pub mod tests {
         let language = Arc::new(
             Language::new(
                 LanguageConfig {
-                    name: "Test".into(),
+                    name: "测试".into(),
                     matcher: LanguageMatcher {
                         path_suffixes: vec![".test".to_string()],
                         ..Default::default()
@@ -3661,7 +3661,7 @@ pub mod tests {
         let language = Arc::new(
             Language::new(
                 LanguageConfig {
-                    name: "Test".into(),
+                    name: "测试".into(),
                     matcher: LanguageMatcher {
                         path_suffixes: vec![".test".to_string()],
                         ..Default::default()

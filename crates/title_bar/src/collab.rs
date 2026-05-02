@@ -392,7 +392,7 @@ impl TitleBar {
                 .child(
                     IconButton::new("leave-call", IconName::Exit)
                         .style(ButtonStyle::Subtle)
-                        .tooltip(Tooltip::text("Leave Call"))
+                        .tooltip(Tooltip::text("离开通话"))
                         .icon_size(IconSize::Small)
                         .on_click(move |_, _window, cx| {
                             ActiveCall::global(cx)
@@ -464,7 +464,7 @@ impl TitleBar {
                 .label_size(LabelSize::Small)
                 .when(is_sharing_disabled, |parent| {
                     parent.disabled(true).tooltip(Tooltip::text(
-                        "This project may not be shared in a public channel.",
+                        "此项目不能在公共频道中共享。",
                     ))
                 })
                 .on_click(cx.listener(move |this, _, window, cx| {
@@ -492,16 +492,16 @@ impl TitleBar {
                     if is_muted {
                         if is_deafened {
                             Tooltip::with_meta(
-                                "Unmute Microphone",
+                                "取消静音麦克风",
                                 None,
                                 "将取消静音音频",
                                 cx,
                             )
                         } else {
-                            Tooltip::simple("Unmute Microphone", cx)
+                            Tooltip::simple("取消静音麦克风", cx)
                         }
                     } else {
-                        Tooltip::simple("Mute Microphone", cx)
+                        Tooltip::simple("静音麦克风", cx)
                     }
                 })
                 .style(ButtonStyle::Subtle)

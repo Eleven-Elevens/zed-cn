@@ -371,14 +371,14 @@ impl Render for LanguageServerPrompt {
                                             .tooltip(move |_window, cx| {
                                                 if suppress {
                                                     Tooltip::with_meta(
-                                                        "Suppress",
+                                                        "隐藏",
                                                         Some(&SuppressNotification),
                                                         "点击关闭",
                                                         cx,
                                                     )
                                                 } else {
                                                     Tooltip::with_meta(
-                                                        "Close",
+                                                        "关闭",
                                                         Some(&menu::Cancel),
                                                         "按住 Shift 点击可隐藏",
                                                         cx,
@@ -665,20 +665,20 @@ impl RenderOnce for NotificationFrame {
                                     .tooltip(move |_window, cx| {
                                         if suppress {
                                             Tooltip::with_meta(
-                                                "Suppress",
+                                                "隐藏",
                                                 Some(&SuppressNotification),
                                                 "点击关闭",
                                                 cx,
                                             )
                                         } else if show_suppress_button {
                                             Tooltip::with_meta(
-                                                "Close",
+                                                "关闭",
                                                 Some(&menu::Cancel),
                                                 "按住 Shift 点击可隐藏",
                                                 cx,
                                             )
                                         } else {
-                                            Tooltip::for_action("Close", &menu::Cancel, cx)
+                                            Tooltip::for_action("关闭", &menu::Cancel, cx)
                                         }
                                     })
                                     .on_click({

@@ -154,7 +154,7 @@ impl ThreadFeedbackState {
                 cx,
             );
             editor.set_placeholder_text(
-                "What went wrong? Share your feedback so we can improve.",
+                "哪里出了问题？分享反馈以便我们改进。",
                 window,
                 cx,
             );
@@ -1232,7 +1232,7 @@ impl ThreadView {
                 ThreadError::PaymentRequired => (
                     "payment_required",
                     None,
-                    "You reached your free usage limit. Upgrade to Zed Pro for more prompts."
+                    "你已达到免费用量限制。升级到 Zed Pro 可获得更多提示额度。"
                         .into(),
                 ),
                 ThreadError::Refusal => {
@@ -1259,7 +1259,7 @@ impl ThreadView {
                 ThreadError::PromptTooLarge => (
                     "prompt_too_large",
                     None,
-                    "Context too large for the model's context window.".into(),
+                    "上下文超出了模型的上下文窗口。".into(),
                 ),
                 ThreadError::NoApiKey { provider } => (
                     "no_api_key",
@@ -1287,15 +1287,15 @@ impl ThreadView {
                 ThreadError::RequestFailed => (
                     "request_failed",
                     None,
-                    "Request could not be completed after multiple attempts.".into(),
+                    "多次尝试后仍无法完成请求。".into(),
                 ),
                 ThreadError::MaxOutputTokens => (
                     "max_output_tokens",
                     None,
-                    "Model reached its maximum output length.".into(),
+                    "模型已达到最大输出长度。".into(),
                 ),
                 ThreadError::NoModelSelected => {
-                    ("no_model_selected", None, "No model selected.".into())
+                    ("no_model_selected", None, "未选择模型。".into())
                 }
                 ThreadError::ApiError { provider } => (
                     "api_error",
@@ -1988,7 +1988,7 @@ impl ThreadView {
                         workspace.show_toast(
                             Toast::new(
                                 NotificationId::unique::<ThreadSharedToast>(),
-                                "Thread shared!",
+                                "线程已共享！",
                             )
                             .on_click(
                                 "Copy URL",
@@ -2057,7 +2057,7 @@ impl ThreadView {
                         workspace.show_toast(
                             Toast::new(
                                 NotificationId::unique::<ThreadSyncedToast>(),
-                                "Thread synced with latest version",
+                                "线程已与最新版本同步",
                             )
                             .autohide(),
                             cx,
@@ -2133,18 +2133,18 @@ impl ThreadView {
 
         let retry_message = if state.max_attempts == 1 {
             if next_attempt_in_secs == 1 {
-                "Retrying. Next attempt in 1 second.".to_string()
+                "正在重试。1 秒后再次尝试。".to_string()
             } else {
-                format!("Retrying. Next attempt in {next_attempt_in_secs} seconds.")
+                format!("正在重试。{next_attempt_in_secs} 秒后再次尝试。")
             }
         } else if next_attempt_in_secs == 1 {
             format!(
-                "Retrying. Next attempt in 1 second (Attempt {} of {}).",
+                "正在重试。1 秒后再次尝试（第 {} 次，共 {} 次）。",
                 state.attempt, state.max_attempts,
             )
         } else {
             format!(
-                "Retrying. Next attempt in {next_attempt_in_secs} seconds (Attempt {} of {}).",
+                "正在重试。{next_attempt_in_secs} 秒后再次尝试（第 {} 次，共 {} 次）。",
                 state.attempt, state.max_attempts,
             )
         };
@@ -2383,7 +2383,7 @@ impl ThreadView {
                                     .tooltip({
                                         move |_, cx| {
                                             Tooltip::with_meta(
-                                                "Go to File",
+                                                "转到文件",
                                                 None,
                                                 full_path.clone(),
                                                 cx,
@@ -2433,7 +2433,7 @@ impl ThreadView {
                 cx.notify();
             }))
             .child(
-                Button::new("review", "Review")
+                Button::new("review", "审查")
                     .label_size(LabelSize::Small)
                     .on_click({
                         let buffer = buffer.clone();
@@ -2443,7 +2443,7 @@ impl ThreadView {
                     }),
             )
             .child(
-                Button::new(("reject-file", index), "Reject")
+                Button::new(("reject-file", index), "拒绝")
                     .label_size(LabelSize::Small)
                     .disabled(pending_edits)
                     .on_click({
@@ -2468,7 +2468,7 @@ impl ThreadView {
                     }),
             )
             .child(
-                Button::new(("keep-file", index), "Keep")
+                Button::new(("keep-file", index), "保留")
                     .label_size(LabelSize::Small)
                     .disabled(pending_edits)
                     .on_click({
@@ -2504,7 +2504,7 @@ impl ThreadView {
                 let info = tool_call.subagent_session_info.as_ref()?;
                 let summary_text = tool_call.label.read(cx).source().to_string();
                 let subagent_summary = if summary_text.is_empty() {
-                    SharedString::from("Subagent")
+                    SharedString::from("子 Agent")
                 } else {
                     SharedString::from(summary_text)
                 };
@@ -2552,7 +2552,7 @@ impl ThreadView {
                         .border_b_1()
                         .border_color(cx.theme().colors().border)
                         .child(
-                            Label::new("Subagents Awaiting Permission:")
+                            Label::new("子 Agent 等待权限：")
                                 .size(LabelSize::Small)
                                 .color(Color::Muted),
                         )
@@ -2596,7 +2596,7 @@ impl ThreadView {
                                 )
                                 .child(
                                     div().visible_on_hover(&group).child(
-                                        Label::new("Scroll to Subagent")
+                                        Label::new("滚动到子 Agent")
                                             .size(LabelSize::Small)
                                             .color(Color::Muted)
                                             .truncate(),
@@ -2623,9 +2623,9 @@ impl ThreadView {
     ) -> impl IntoElement {
         let queue_count = self.local_queued_messages.len();
         let title: SharedString = if queue_count == 1 {
-            "1 Queued Message".into()
+            "1 条排队消息".into()
         } else {
-            format!("{} Queued Messages", queue_count).into()
+            format!("{} 条排队消息", queue_count).into()
         };
 
         h_flex()
@@ -2648,7 +2648,7 @@ impl ThreadView {
                     })),
             )
             .child(
-                Button::new("clear_queue", "Clear All")
+                Button::new("clear_queue", "全部清除")
                     .label_size(LabelSize::Small)
                     .key_binding(
                         KeyBinding::for_action(&ClearMessageQueue, cx)
@@ -2687,7 +2687,7 @@ impl ThreadView {
                 .gap_1()
                 .truncate()
                 .child(
-                    Label::new("Current:")
+                    Label::new("当前：")
                         .size(LabelSize::Small)
                         .color(Color::Muted),
                 )
@@ -2715,7 +2715,7 @@ impl ThreadView {
                             )))
                             .child(
                                 div().pr_0p5().bg(self.activity_bar_bg(cx)).child(
-                                    Label::new(format!("{} left", stats.pending))
+                                    Label::new(format!("剩余 {}", stats.pending))
                                         .size(LabelSize::Small)
                                         .color(Color::Muted),
                                 ),
@@ -2724,9 +2724,9 @@ impl ThreadView {
                 })
         } else {
             let status_label = if stats.pending == 0 {
-                "All Done".to_string()
+                "全部完成".to_string()
             } else if stats.completed == 0 {
-                format!("{} Tasks", plan.entries.len())
+                format!("{} 个任务", plan.entries.len())
             } else {
                 format!("{}/{}", stats.completed, plan.entries.len())
             };
@@ -2736,7 +2736,7 @@ impl ThreadView {
                 .gap_1()
                 .justify_between()
                 .child(
-                    Label::new("Plan")
+                    Label::new("计划")
                         .size(LabelSize::Small)
                         .color(Color::Muted),
                 )
@@ -2762,7 +2762,7 @@ impl ThreadView {
                 IconButton::new("dismiss-plan", IconName::Close)
                     .icon_size(IconSize::XSmall)
                     .shape(ui::IconButtonShape::Square)
-                    .tooltip(Tooltip::text("Clear Plan"))
+                    .tooltip(Tooltip::text("清除计划"))
                     .on_click(cx.listener(|this, _, _, cx| {
                         this.thread.update(cx, |thread, cx| thread.clear_plan(cx));
                         cx.stop_propagation();
@@ -2876,7 +2876,7 @@ impl ThreadView {
                             .border_b_1()
                             .border_color(self.tool_card_border_color(cx))
                             .child(
-                                Label::new("Completed Plan")
+                                Label::new("已完成计划")
                                     .size(LabelSize::Small)
                                     .color(Color::Muted),
                             )
@@ -2928,7 +2928,7 @@ impl ThreadView {
         pending_edits: bool,
         cx: &Context<Self>,
     ) -> Div {
-        const EDIT_NOT_READY_TOOLTIP_LABEL: &str = "Wait until file edits are complete.";
+        const EDIT_NOT_READY_TOOLTIP_LABEL: &str = "请等待文件编辑完成。";
 
         let focus_handle = self.focus_handle(cx);
 
@@ -2949,7 +2949,7 @@ impl ThreadView {
                         if pending_edits {
                             this.child(
                                 Label::new(format!(
-                                    "Editing {} {}…",
+                                    "正在编辑 {} {}…",
                                     changed_buffers.len(),
                                     if changed_buffers.len() == 1 {
                                         "file"
@@ -2976,7 +2976,7 @@ impl ThreadView {
                             };
 
                             this.child(
-                                Label::new("Edits")
+                                Label::new("编辑")
                                     .size(LabelSize::Small)
                                     .color(Color::Muted),
                             )
@@ -3017,7 +3017,7 @@ impl ThreadView {
                                 let focus_handle = focus_handle.clone();
                                 move |_window, cx| {
                                     Tooltip::for_action_in(
-                                        "Review Changes",
+                                        "审查更改",
                                         &OpenAgentDiff,
                                         &focus_handle,
                                         cx,
@@ -3030,7 +3030,7 @@ impl ThreadView {
                     )
                     .child(Divider::vertical().color(DividerColor::Border))
                     .child(
-                        Button::new("reject-all-changes", "Reject All")
+                        Button::new("reject-all-changes", "全部拒绝")
                             .label_size(LabelSize::Small)
                             .disabled(pending_edits)
                             .when(pending_edits, |this| {
@@ -3045,7 +3045,7 @@ impl ThreadView {
                             })),
                     )
                     .child(
-                        Button::new("keep-all-changes", "Keep All")
+                        Button::new("keep-all-changes", "全部保留")
                             .label_size(LabelSize::Small)
                             .disabled(pending_edits)
                             .when(pending_edits, |this| {
@@ -3146,7 +3146,7 @@ impl ThreadView {
                                         IconButton::new("stop_subagent", IconName::Stop)
                                             .icon_size(IconSize::Small)
                                             .icon_color(Color::Error)
-                                            .tooltip(Tooltip::text("Stop Subagent"))
+                                            .tooltip(Tooltip::text("停止子 Agent"))
                                             .on_click(move |_, _, cx| {
                                                 thread.update(cx, |thread, cx| {
                                                     thread.cancel(cx).detach();
@@ -3157,7 +3157,7 @@ impl ThreadView {
                                 .child(
                                     IconButton::new("minimize_subagent", IconName::Dash)
                                         .icon_size(IconSize::Small)
-                                        .tooltip(Tooltip::text("Minimize Subagent"))
+                                        .tooltip(Tooltip::text("最小化子 Agent"))
                                         .on_click(move |_, window, cx| {
                                             let _ = server_view.update(cx, |server_view, cx| {
                                                 server_view.navigate_to_thread(
@@ -3187,9 +3187,9 @@ impl ThreadView {
 
         let editor_expanded = self.editor_expanded;
         let (expand_icon, expand_tooltip) = if editor_expanded {
-            (IconName::Minimize, "Minimize Message Editor")
+            (IconName::Minimize, "最小化消息编辑器")
         } else {
-            (IconName::Maximize, "Expand Message Editor")
+            (IconName::Maximize, "展开消息编辑器")
         };
 
         let max_content_width = AgentSettings::get_global(cx).max_content_width;
@@ -3316,9 +3316,9 @@ impl ThreadView {
                     .map(|(index, editor)| {
                         let is_next = index == 0;
                         let (icon_color, tooltip_text) = if is_next {
-                            (Color::Accent, "Next in Queue")
+                            (Color::Accent, "队列中的下一条")
                         } else {
-                            (Color::Muted, "In Queue")
+                            (Color::Muted, "队列中")
                         };
 
                         let editor_focused = editor.focus_handle(cx).is_focused(_window);
@@ -3355,9 +3355,9 @@ impl ThreadView {
                                             .icon_size(IconSize::Small)
                                             .tooltip(|_window, cx| {
                                                 Tooltip::with_meta(
-                                                    "Edit Queued Message",
+                                                    "编辑排队消息",
                                                     None,
-                                                    "Type anything to edit",
+                                                    "输入任意内容即可编辑",
                                                     cx,
                                                 )
                                             })
@@ -3368,7 +3368,7 @@ impl ThreadView {
                                             })),
                                     )
                                     .child(
-                                        Button::new(("send_now_focused", index), "Send Now")
+                                        Button::new(("send_now_focused", index), "立即发送")
                                             .label_size(LabelSize::Small)
                                             .style(ButtonStyle::Outlined)
                                             .key_binding(
@@ -3399,14 +3399,14 @@ impl ThreadView {
                                                 move |_window, cx| {
                                                     if is_next {
                                                         Tooltip::for_action_in(
-                                                            "Remove Message from Queue",
+                                                            "从队列移除消息",
                                                             &RemoveFirstQueuedMessage,
                                                             &focus_handle,
                                                             cx,
                                                         )
                                                     } else {
                                                         Tooltip::simple(
-                                                            "Remove Message from Queue",
+                                                            "从队列移除消息",
                                                             cx,
                                                         )
                                                     }
@@ -3425,13 +3425,13 @@ impl ThreadView {
                                                 move |_window, cx| {
                                                     if is_next {
                                                         Tooltip::for_action_in(
-                                                            "Edit",
+                                                            "编辑",
                                                             &EditFirstQueuedMessage,
                                                             &focus_handle,
                                                             cx,
                                                         )
                                                     } else {
-                                                        Tooltip::simple("Edit", cx)
+                                                        Tooltip::simple("编辑", cx)
                                                     }
                                                 }
                                             })
@@ -3442,7 +3442,7 @@ impl ThreadView {
                                             })),
                                     )
                                     .child(
-                                        Button::new(("send_now", index), "Send Now")
+                                        Button::new(("send_now", index), "立即发送")
                                             .label_size(LabelSize::Small)
                                             .when(is_next, |this| this.style(ButtonStyle::Outlined))
                                             .when(is_next && message_editor.is_empty(cx), |this| {
@@ -3692,10 +3692,10 @@ impl ThreadView {
         let thread = self.as_native_thread(cx)?.read(cx);
 
         let (tooltip_label, color, icon) = if matches!(thread.speed(), Some(Speed::Fast)) {
-            ("Disable Fast Mode", Color::Muted, IconName::FastForward)
+            ("关闭快速模式", Color::Muted, IconName::FastForward)
         } else {
             (
-                "Enable Fast Mode",
+                "启用快速模式",
                 Color::Custom(cx.theme().colors().icon_disabled.opacity(0.8)),
                 IconName::FastForwardOff,
             )
@@ -3730,13 +3730,13 @@ impl ThreadView {
 
         let (tooltip_label, icon, color) = if thinking {
             (
-                "Disable Thinking Mode",
+                "关闭思考模式",
                 IconName::ThinkingMode,
                 Color::Muted,
             )
         } else {
             (
-                "Enable Thinking Mode",
+                "启用思考模式",
                 IconName::ThinkingModeOff,
                 Color::Custom(cx.theme().colors().icon_disabled.opacity(0.8)),
             )
@@ -3823,7 +3823,7 @@ impl ThreadView {
         let label = selected
             .clone()
             .or(default_effort_level)
-            .map_or("Select Effort".into(), |effort| effort.name);
+            .map_or("选择推理强度".into(), |effort| effort.name);
 
         let (label_color, icon) = if self.thinking_effort_menu_handle.is_deployed() {
             (Color::Accent, IconName::ChevronUp)
@@ -3840,7 +3840,7 @@ impl ThreadView {
                     h_flex()
                         .gap_2()
                         .justify_between()
-                        .child(Label::new("Change Thinking Effort"))
+                        .child(Label::new("更改思考强度"))
                         .child(KeyBinding::for_action_in(
                             &ToggleThinkingEffortMenu,
                             &focus_handle,
@@ -3856,7 +3856,7 @@ impl ThreadView {
                             .justify_between()
                             .border_t_1()
                             .border_color(cx.theme().colors().border_variant)
-                            .child(Label::new("Cycle Thinking Effort"))
+                            .child(Label::new("切换思考强度"))
                             .child(KeyBinding::for_action_in(
                                 &CycleThinkingEffort,
                                 &focus_handle,
@@ -3879,7 +3879,7 @@ impl ThreadView {
             )
             .menu(move |window, cx| {
                 Some(ContextMenu::build(window, cx, |mut menu, _window, _cx| {
-                    menu = menu.header("Change Thinking Effort");
+                    menu = menu.header("更改思考强度");
 
                     for effort_level in supported_effort_levels.clone() {
                         let is_selected = selected
@@ -3961,7 +3961,7 @@ impl ThreadView {
             div()
                 .id("loading-message-content")
                 .px_1()
-                .tooltip(Tooltip::text("Loading Added Context…"))
+                .tooltip(Tooltip::text("正在加载添加的上下文…"))
                 .child(loading_contents_spinner(IconSize::default()))
                 .into_any_element()
         } else if is_generating && is_editor_empty {
@@ -3969,7 +3969,7 @@ impl ThreadView {
                 .icon_color(Color::Error)
                 .style(ButtonStyle::Tinted(TintColor::Error))
                 .tooltip(move |_window, cx| {
-                    Tooltip::for_action("Stop Generation", &editor::actions::Cancel, cx)
+                    Tooltip::for_action("停止生成", &editor::actions::Cancel, cx)
                 })
                 .on_click(cx.listener(|this, _event, _, cx| this.cancel_generation(cx)))
                 .into_any_element()
@@ -3990,7 +3990,7 @@ impl ThreadView {
                 })
                 .tooltip(move |_window, cx| {
                     if is_editor_empty && !is_generating {
-                        Tooltip::for_action("Type to Send", &Chat, cx)
+                        Tooltip::for_action("输入后发送", &Chat, cx)
                     } else if is_generating {
                         let focus_handle = focus_handle.clone();
 
@@ -4001,7 +4001,7 @@ impl ThreadView {
                                     h_flex()
                                         .gap_2()
                                         .justify_between()
-                                        .child(Label::new("Queue and Send"))
+                                        .child(Label::new("排队并发送"))
                                         .child(KeyBinding::for_action_in(&Chat, &focus_handle, cx)),
                                 )
                                 .child(
@@ -4011,7 +4011,7 @@ impl ThreadView {
                                         .justify_between()
                                         .border_t_1()
                                         .border_color(cx.theme().colors().border_variant)
-                                        .child(Label::new("Send Immediately"))
+                                        .child(Label::new("立即发送"))
                                         .child(KeyBinding::for_action_in(
                                             &SendImmediately,
                                             &focus_handle,
@@ -4021,7 +4021,7 @@ impl ThreadView {
                                 .into_any_element()
                         })(_window, cx)
                     } else {
-                        Tooltip::for_action("Send Message", &Chat, cx)
+                        Tooltip::for_action("发送消息", &Chat, cx)
                     }
                 })
                 .on_click(cx.listener(|this, _, window, cx| {
@@ -4043,7 +4043,7 @@ impl ThreadView {
                 {
                     move |_window, cx| {
                         Tooltip::for_action_in(
-                            "Add Context",
+                            "添加上下文",
                             &OpenAddContextMenu,
                             &focus_handle,
                             cx,
@@ -4097,9 +4097,9 @@ impl ThreadView {
 
         ContextMenu::build(window, cx, move |menu, _window, _cx| {
             menu.key_context("AddContextMenu")
-                .header("Context")
+                .header("上下文")
                 .item(
-                    ContextMenuEntry::new("Files & Directories")
+                    ContextMenuEntry::new("文件和目录")
                         .icon(IconName::File)
                         .icon_color(Color::Muted)
                         .icon_size(IconSize::XSmall)
@@ -4114,7 +4114,7 @@ impl ThreadView {
                         }),
                 )
                 .item(
-                    ContextMenuEntry::new("Symbols")
+                    ContextMenuEntry::new("符号")
                         .icon(IconName::Code)
                         .icon_color(Color::Muted)
                         .icon_size(IconSize::XSmall)
@@ -4129,7 +4129,7 @@ impl ThreadView {
                         }),
                 )
                 .item(
-                    ContextMenuEntry::new("Threads")
+                    ContextMenuEntry::new("线程")
                         .icon(IconName::Thread)
                         .icon_color(Color::Muted)
                         .icon_size(IconSize::XSmall)
@@ -4144,7 +4144,7 @@ impl ThreadView {
                         }),
                 )
                 .item(
-                    ContextMenuEntry::new("Rules")
+                    ContextMenuEntry::new("规则")
                         .icon(IconName::Reader)
                         .icon_color(Color::Muted)
                         .icon_size(IconSize::XSmall)
@@ -4159,7 +4159,7 @@ impl ThreadView {
                         }),
                 )
                 .item(
-                    ContextMenuEntry::new("Image")
+                    ContextMenuEntry::new("图像")
                         .icon(IconName::Image)
                         .icon_color(Color::Muted)
                         .icon_size(IconSize::XSmall)
@@ -4175,7 +4175,7 @@ impl ThreadView {
                         }),
                 )
                 .item(
-                    ContextMenuEntry::new("Selection")
+                    ContextMenuEntry::new("选择")
                         .icon(IconName::CursorIBeam)
                         .icon_color(Color::Muted)
                         .icon_size(IconSize::XSmall)
@@ -4190,7 +4190,7 @@ impl ThreadView {
                         }),
                 )
                 .item(
-                    ContextMenuEntry::new("Branch Diff")
+                    ContextMenuEntry::new("分支差异")
                         .icon(IconName::GitBranch)
                         .icon_color(Color::Muted)
                         .icon_size(IconSize::XSmall)
@@ -4235,7 +4235,7 @@ impl ThreadView {
                     Tooltip::with_meta(
                         tooltip_label.clone(),
                         Some(&Follow),
-                        "Track the agent's location as it reads and edits files.",
+                        "跟踪 Agent 读取和编辑文件时的位置。",
                         cx,
                     )
                 }
@@ -4286,7 +4286,7 @@ impl Render for TokenUsageTooltip {
             container
                 .min_w_40()
                 .child(
-                    Label::new("Context")
+                    Label::new("上下文")
                         .color(Color::Muted)
                         .size(LabelSize::Small),
                 )
@@ -4308,7 +4308,7 @@ impl Render for TokenUsageTooltip {
                             .child(
                                 h_flex()
                                     .gap_0p5()
-                                    .child(Label::new("Input:").color(Color::Muted).mr_0p5())
+                                    .child(Label::new("输入：").color(Color::Muted).mr_0p5())
                                     .child(Label::new(input_tokens))
                                     .child(Label::new("/").color(separator_color))
                                     .child(Label::new(input_max).color(Color::Muted)),
@@ -4316,7 +4316,7 @@ impl Render for TokenUsageTooltip {
                             .child(
                                 h_flex()
                                     .gap_0p5()
-                                    .child(Label::new("Output:").color(Color::Muted).mr_0p5())
+                                    .child(Label::new("输出：").color(Color::Muted).mr_0p5())
                                     .child(Label::new(output_tokens))
                                     .child(Label::new("/").color(separator_color))
                                     .child(Label::new(output_max).color(Color::Muted)),
@@ -4332,7 +4332,7 @@ impl Render for TokenUsageTooltip {
                             .border_t_1()
                             .border_color(cx.theme().colors().border_variant)
                             .child(
-                                Label::new("Cost")
+                                Label::new("成本")
                                     .color(Color::Muted)
                                     .size(LabelSize::Small),
                             )
@@ -4351,7 +4351,7 @@ impl Render for TokenUsageTooltip {
                                 .border_t_1()
                                 .border_color(cx.theme().colors().border_variant)
                                 .child(
-                                    Label::new("Rules")
+                                    Label::new("规则")
                                         .color(Color::Muted)
                                         .size(LabelSize::Small),
                                 )
@@ -4362,7 +4362,7 @@ impl Render for TokenUsageTooltip {
                                             this.child(
                                                 Button::new(
                                                     "open-user-rules",
-                                                    format!("{} user rules", user_rules_count),
+                                                    format!("{} 条用户规则", user_rules_count),
                                                 )
                                                 .end_icon(
                                                     Icon::new(IconName::ArrowUpRight)
@@ -4386,7 +4386,7 @@ impl Render for TokenUsageTooltip {
                                                 Button::new(
                                                     "open-project-rules",
                                                     format!(
-                                                        "{} project rules",
+                                                        "{} 条项目规则",
                                                         project_rules_count
                                                     ),
                                                 )
@@ -4527,11 +4527,11 @@ impl ThreadView {
                                 .gap_2()
                                 .child(Divider::horizontal())
                                 .child(
-                                    Button::new("restore-checkpoint", "Restore Checkpoint")
+                                    Button::new("restore-checkpoint", "恢复检查点")
                                         .start_icon(Icon::new(IconName::Undo).size(IconSize::XSmall).color(Color::Muted))
                                         .label_size(LabelSize::XSmall)
                                         .color(Color::Muted)
-                                        .tooltip(Tooltip::text("Restores all files in the project to the content they had at this point in the conversation."))
+                                        .tooltip(Tooltip::text("将项目中的所有文件恢复到对话中此时的内容。"))
                                         .on_click(cx.listener(move |this, _, _window, cx| {
                                             this.restore_checkpoint(&message_id, cx);
                                         }))
@@ -4600,7 +4600,7 @@ impl ThreadView {
                                                 if is_loading_contents {
                                                     div()
                                                         .id("loading-edited-message-content")
-                                                        .tooltip(Tooltip::text("Loading Added Context…"))
+                                                        .tooltip(Tooltip::text("正在加载添加的上下文…"))
                                                         .child(loading_contents_spinner(IconSize::XSmall))
                                                         .into_any_element()
                                                 } else {
@@ -4608,7 +4608,7 @@ impl ThreadView {
                                                         .icon_color(Color::Muted)
                                                         .icon_size(IconSize::XSmall)
                                                         .tooltip(Tooltip::text(
-                                                            "Editing will restart the thread from this point."
+                                                            "编辑会从此处重新开始线程。"
                                                         ))
                                                         .on_click(cx.listener({
                                                             let editor = editor.clone();
@@ -4634,11 +4634,11 @@ impl ThreadView {
                                                     move |_, _| {
                                                         v_flex()
                                                             .gap_1()
-                                                            .child(Label::new("Unavailable Editing"))
+                                                            .child(Label::new("编辑不可用"))
                                                             .child(
                                                                 div().max_w_64().child(
                                                                     Label::new(format!(
-                                                                        "Editing previous messages is not available for {} yet.",
+                                                                        "{} 尚不支持编辑历史消息。",
                                                                         agent_name
                                                                     ))
                                                                     .size(LabelSize::Small)
@@ -4774,13 +4774,13 @@ impl ThreadView {
                                         .size(IconSize::Small),
                                 )
                                 .child(
-                                    Label::new("Subagent Output")
+                                    Label::new("子 Agent 输出")
                                         .size(LabelSize::Custom(self.tool_name_font_size()))
                                         .color(Color::Muted),
                                 ),
                         )
                         .child(Divider::horizontal())
-                        .tooltip(Tooltip::text("Everything below this line was sent as output from this subagent to the main agent.")),
+                        .tooltip(Tooltip::text("下方所有内容均作为此子 Agent 的输出发送给主 Agent。")),
                 )
                 .child(primary)
                 .into_any_element()
@@ -4917,7 +4917,7 @@ impl ThreadView {
             .shape(ui::IconButtonShape::Square)
             .icon_size(IconSize::Small)
             .icon_color(Color::Ignored)
-            .tooltip(Tooltip::text("Open Thread as Markdown"))
+            .tooltip(Tooltip::text("以 Markdown 打开线程"))
             .on_click(cx.listener(move |this, _, window, cx| {
                 if let Some(workspace) = this.workspace.upgrade() {
                     this.open_thread_as_markdown(workspace, window, cx)
@@ -4930,7 +4930,7 @@ impl ThreadView {
                 .shape(ui::IconButtonShape::Square)
                 .icon_size(IconSize::Small)
                 .icon_color(Color::Ignored)
-                .tooltip(Tooltip::text("Scroll To Most Recent User Prompt"))
+                .tooltip(Tooltip::text("滚动到最近的用户提示"))
                 .on_click(cx.listener(move |this, _, _, cx| {
                     this.scroll_to_most_recent_user_prompt(cx);
                 }));
@@ -4939,7 +4939,7 @@ impl ThreadView {
             .shape(ui::IconButtonShape::Square)
             .icon_size(IconSize::Small)
             .icon_color(Color::Ignored)
-            .tooltip(Tooltip::text("Scroll To Top"))
+            .tooltip(Tooltip::text("滚动到顶部"))
             .on_click(cx.listener(move |this, _, _, cx| {
                 this.scroll_to_top(cx);
             }));
@@ -4965,7 +4965,7 @@ impl ThreadView {
                     .last_turn_tokens
                     .filter(|&tokens| tokens > TOKEN_THRESHOLD)
                     .map(|tokens| {
-                        Label::new(format!("{} tokens", crate::humanize_token_count(tokens)))
+                        Label::new(format!("{} 个 token", crate::humanize_token_count(tokens)))
                             .size(LabelSize::Small)
                             .color(Color::Muted)
                     })
@@ -5011,7 +5011,7 @@ impl ThreadView {
 
             let tooltip_meta = || {
                 SharedString::new(
-                    "Rating the thread sends all of your current conversation to the Zed team.",
+                    "为此线程评分会将你当前的整个对话发送给 Zed 团队。",
                 )
             };
 
@@ -5026,10 +5026,10 @@ impl ThreadView {
                             })
                             .tooltip(move |window, cx| match feedback {
                                 Some(ThreadFeedback::Positive) => {
-                                    Tooltip::text("Thanks for your feedback!")(window, cx)
+                                    Tooltip::text("感谢你的反馈！")(window, cx)
                                 }
                                 _ => {
-                                    Tooltip::with_meta("Helpful Response", None, tooltip_meta(), cx)
+                                    Tooltip::with_meta("回复有帮助", None, tooltip_meta(), cx)
                                 }
                             })
                             .on_click(cx.listener(move |this, _, window, cx| {
@@ -5047,12 +5047,12 @@ impl ThreadView {
                             .tooltip(move |window, cx| match feedback {
                                 Some(ThreadFeedback::Negative) => {
                                     Tooltip::text(
-                                    "We appreciate your feedback and will use it to improve in the future.",
+                                    "感谢你的反馈，我们会用它改进后续体验。",
                                 )(window, cx)
                                 }
                                 _ => {
                                     Tooltip::with_meta(
-                                        "Not Helpful Response",
+                                        "回复没有帮助",
                                         None,
                                         tooltip_meta(),
                                         cx,
@@ -5075,7 +5075,7 @@ impl ThreadView {
                     .shape(ui::IconButtonShape::Square)
                     .icon_size(IconSize::Small)
                     .icon_color(Color::Ignored)
-                    .tooltip(Tooltip::text("Sync with source thread"))
+                    .tooltip(Tooltip::text("与源线程同步"))
                     .on_click(cx.listener(move |this, _, window, cx| {
                         this.sync_thread(project.clone(), server_view.clone(), window, cx);
                     }))
@@ -5084,7 +5084,7 @@ impl ThreadView {
                     .shape(ui::IconButtonShape::Square)
                     .icon_size(IconSize::Small)
                     .icon_color(Color::Ignored)
-                    .tooltip(Tooltip::text("Share Thread"))
+                    .tooltip(Tooltip::text("分享线程"))
                     .on_click(cx.listener(move |this, _, window, cx| {
                         this.share_thread(window, cx);
                     }))
@@ -5386,7 +5386,7 @@ impl ThreadView {
                     )
                     .child(
                         div().min_w(rems(8.)).child(
-                            LoadingLabel::new("Awaiting Confirmation")
+                            LoadingLabel::new("等待确认")
                                 .size(LabelSize::Small)
                                 .color(Color::Muted),
                         ),
@@ -5419,7 +5419,7 @@ impl ThreadView {
                                 .color(Color::Muted),
                         )
                         .child(
-                            Label::new(format!("{} tokens", tokens))
+                            Label::new(format!("{} 个 token", tokens))
                                 .size(LabelSize::Small)
                                 .color(Color::Muted),
                         ),
@@ -5601,7 +5601,7 @@ impl ThreadView {
                                 div()
                                     .text_size(self.tool_name_font_size())
                                     .text_color(cx.theme().colors().text_muted)
-                                    .child("Thinking"),
+                                    .child("思考中"),
                             ),
                     )
                     .child(
@@ -5710,7 +5710,7 @@ impl ThreadView {
                     });
 
                     let copy_this_agent_response =
-                        ContextMenuEntry::new("Copy This Agent Response").handler({
+                        ContextMenuEntry::new("复制此 Agent 响应").handler({
                             let entity = entity.clone();
                             move |_, cx| {
                                 entity.update(cx, |this, cx| {
@@ -5725,7 +5725,7 @@ impl ThreadView {
                         });
 
                     let scroll_item = if is_at_top {
-                        ContextMenuEntry::new("Scroll to Bottom").handler({
+                        ContextMenuEntry::new("滚动到底部").handler({
                             let entity = entity.clone();
                             move |_, cx| {
                                 entity.update(cx, |this, cx| {
@@ -5734,7 +5734,7 @@ impl ThreadView {
                             }
                         })
                     } else {
-                        ContextMenuEntry::new("Scroll to Top").handler({
+                        ContextMenuEntry::new("滚动到顶部").handler({
                             let entity = entity.clone();
                             move |_, cx| {
                                 entity.update(cx, |this, cx| {
@@ -5744,7 +5744,7 @@ impl ThreadView {
                         })
                     };
 
-                    let open_thread_as_markdown = ContextMenuEntry::new("Open Thread as Markdown")
+                    let open_thread_as_markdown = ContextMenuEntry::new("以 Markdown 打开线程")
                         .handler({
                             let entity = entity.clone();
                             let workspace = workspace.clone();
@@ -5761,14 +5761,14 @@ impl ThreadView {
 
                     menu.when_some(focus, |menu, focus| menu.context(focus))
                         .when_some(context_menu_link, |menu, url| {
-                            menu.entry("Copy Link", None, move |_, cx| {
+                            menu.entry("复制链接", None, move |_, cx| {
                                 cx.write_to_clipboard(ClipboardItem::new_string(url.to_string()));
                             })
                             .separator()
                         })
                         .action_disabled_when(
                             !has_selection,
-                            "Copy Selection",
+                            "复制选择",
                             Box::new(markdown::CopyAsMarkdown),
                         )
                         .item(copy_this_agent_response)
@@ -5891,7 +5891,7 @@ impl ThreadView {
         let run_command_label = if is_preview {
             Some(
                 h_flex().h_6().child(
-                    Label::new("Run Command")
+                    Label::new("运行命令")
                         .buffer_font(cx)
                         .size(LabelSize::XSmall)
                         .color(Color::Muted),
@@ -5910,7 +5910,7 @@ impl ThreadView {
                     border: false,
                 });
         let copy_button = CopyButton::new("copy-command", command_text)
-            .tooltip_label("Copy Command")
+            .tooltip_label("复制命令")
             .visible_on_hover(group.clone());
 
         v_flex()
@@ -5984,7 +5984,7 @@ impl ThreadView {
         let working_dir = working_dir
             .as_ref()
             .map(|path| path.display().to_string())
-            .unwrap_or_else(|| "current directory".to_string());
+            .unwrap_or_else(|| "当前目录".to_string());
 
         let command_element = self.render_collapsible_command(
             header_group.clone(),
@@ -6068,9 +6068,9 @@ impl ThreadView {
                         .icon_color(Color::Error)
                         .tooltip(move |_window, cx| {
                             Tooltip::with_meta(
-                                "Stop This Command",
+                                "停止此命令",
                                 None,
-                                "Also possible by placing your cursor inside the terminal and using regular terminal bindings.",
+                                "也可以将光标放入终端并使用常规终端快捷键。",
                                 cx,
                             )
                         })
@@ -6090,18 +6090,16 @@ impl ThreadView {
             .when(truncated_output, |header| {
                 let tooltip = if let Some(output) = output {
                     if output_line_count + 10 > terminal::MAX_SCROLL_HISTORY_LINES {
-                       format!("Output exceeded terminal max lines and was \
-                            truncated, the model received the first {}.", format_file_size(output.content.len() as u64, true))
+                       format!("输出超过终端最大行数，已截断；模型收到前 {}。", format_file_size(output.content.len() as u64, true))
                     } else {
                         format!(
-                            "Output is {} long, and to avoid unexpected token usage, \
-                                only {} was sent back to the agent.",
+                            "输出长度为 {}。为避免意外的 token 用量，仅将 {} 发送回智能体。",
                             format_file_size(output.original_content_len as u64, true),
                              format_file_size(output.content.len() as u64, true)
                         )
                     }
                 } else {
-                    "Output was truncated".to_string()
+                    "输出已截断".to_string()
                 };
 
                 header.child(
@@ -6114,7 +6112,7 @@ impl ThreadView {
                                 .color(Color::Ignored),
                         )
                         .child(
-                            Label::new("Truncated")
+                            Label::new("已截断")
                                 .color(Color::Muted)
                                 .size(LabelSize::XSmall),
                         )
@@ -6374,7 +6372,7 @@ impl ThreadView {
                             self.expanded_tool_call_raw_inputs.contains(&tool_call.id);
 
                         let input_header = if is_raw_input_expanded {
-                            "Raw Input:"
+                            "原始输入："
                         } else {
                             "View Raw Input"
                         };
@@ -6464,7 +6462,7 @@ impl ThreadView {
                                 .gap_1()
                                 .border_l_1()
                                 .border_color(self.tool_card_border_color(cx))
-                                .child(input_output_header("Raw Input:".into()))
+                                .child(input_output_header("原始输入：".into()))
                                 .children(tool_call.raw_input_markdown.clone().map(|input| {
                                     div().id(("tool-call-raw-input-markdown", entry_ix)).child(
                                         self.render_markdown(
@@ -6473,7 +6471,7 @@ impl ThreadView {
                                         ),
                                     )
                                 }))
-                                .child(input_output_header("Output:".into())),
+                                .child(input_output_header("输出：".into())),
                         )
                     })
                     .children(
@@ -6612,7 +6610,7 @@ impl ThreadView {
                                                             div()
                                                                 .id(entry_ix)
                                                                 .tooltip(Tooltip::text(
-                                                                    "Interrupted Edit",
+                                                                    "中断的编辑",
                                                                 ))
                                                                 .child(
                                                                     Icon::new(IconName::XCircle)
@@ -6645,9 +6643,9 @@ impl ThreadView {
                                                             .icon_size(IconSize::Small)
                                                             .tooltip(move |_, cx| {
                                                                 Tooltip::with_meta(
-                                                                    "Discard Interrupted Edit",
+                                                                    "丢弃中断的编辑",
                                                                     None,
-                                                                    "You can discard this interrupted partial edit and restore the original file content.",
+                                                                    "可以丢弃这次中断的部分编辑，并恢复原始文件内容。",
                                                                     cx,
                                                                 )
                                                             })
@@ -6684,7 +6682,7 @@ impl ThreadView {
                                     })
                                     .when(tool_call_output_focus, |this| {
                                         this.child(
-                                            Button::new("open-file-button", "Open File")
+                                            Button::new("open-file-button", "打开文件")
                                                 .style(ButtonStyle::Outlined)
                                                 .label_size(LabelSize::Small)
                                                 .key_binding(
@@ -6773,13 +6771,13 @@ impl ThreadView {
 
         let dropdown_label: SharedString =
             if matches!(selection, Some(PermissionSelection::SelectedPatterns(_))) {
-                "Always for selected commands".into()
+                "始终允许所选命令".into()
             } else {
                 choices
                     .get(selected_index)
                     .or(choices.last())
                     .map(|choice| choice.label())
-                    .unwrap_or_else(|| "Only this time".into())
+                    .unwrap_or_else(|| "仅此次".into())
             };
 
         let dropdown = if let Some((pattern_list, tool_name)) = patterns {
@@ -6816,7 +6814,7 @@ impl ThreadView {
                 h_flex()
                     .gap_0p5()
                     .child(
-                        Button::new(("allow-btn", entry_ix), "Allow")
+                        Button::new(("allow-btn", entry_ix), "允许")
                             .start_icon(
                                 Icon::new(IconName::Check)
                                     .size(IconSize::XSmall)
@@ -6848,7 +6846,7 @@ impl ThreadView {
                             })),
                     )
                     .child(
-                        Button::new(("deny-btn", entry_ix), "Deny")
+                        Button::new(("deny-btn", entry_ix), "拒绝")
                             .start_icon(
                                 Icon::new(IconName::Close)
                                     .size(IconSize::XSmall)
@@ -7062,7 +7060,7 @@ impl ThreadView {
                             );
                         }
 
-                        menu = menu.separator().header("Select Options…");
+                        menu = menu.separator().header("选择选项…");
 
                         for (pattern_index, label) in patterns.iter() {
                             let label = label.clone();
@@ -7119,7 +7117,7 @@ impl ThreadView {
                                 .py_1()
                                 .w_full()
                                 .child(
-                                    Button::new("apply-patterns", "Apply")
+                                    Button::new("apply-patterns", "应用")
                                         .full_width()
                                         .style(ButtonStyle::Outlined)
                                         .label_size(LabelSize::Small)
@@ -7294,7 +7292,7 @@ impl ThreadView {
         let tool_icon = if is_file && has_failed && has_revealed_diff {
             div()
                 .id(entry_ix)
-                .tooltip(Tooltip::text("Interrupted Edit"))
+                .tooltip(Tooltip::text("中断的编辑"))
                 .child(DecoratedIcon::new(
                     file_icon,
                     Some(
@@ -7398,7 +7396,7 @@ impl ThreadView {
                             },
                         ),
                     )
-                    .tooltip(Tooltip::text("Go to File"))
+                    .tooltip(Tooltip::text("转到文件"))
                     .on_click(cx.listener(move |this, _, window, cx| {
                         this.open_tool_call_location(entry_ix, 0, window, cx);
                     }))
@@ -7739,7 +7737,7 @@ impl ThreadView {
                         }))
                         .when_some(location, |this, _loc| {
                             this.child(
-                                Button::new(("go-to-file", entry_ix), "Go to File")
+                                Button::new(("go-to-file", entry_ix), "转到文件")
                                     .label_size(LabelSize::Small)
                                     .on_click(cx.listener(move |this, _, window, cx| {
                                         this.open_tool_call_location(entry_ix, 0, window, cx);
@@ -7855,11 +7853,11 @@ impl ThreadView {
         } else if !tool_call_label.is_empty() {
             tool_call_label.into()
         } else if is_cancelled {
-            "Subagent Canceled".into()
+            "子 Agent 已取消".into()
         } else if is_failed {
-            "Subagent Failed".into()
+            "子 Agent 失败".into()
         } else {
-            "Spawning Agent…".into()
+            "正在启动 Agent…".into()
         };
 
         let card_header_id = format!("subagent-header-{}", entry_ix);
@@ -7880,7 +7878,7 @@ impl ThreadView {
                             cx.theme().colors().icon_disabled.opacity(0.5),
                         )),
                 )
-                .tooltip(Tooltip::text("Subagent Cancelled"))
+                .tooltip(Tooltip::text("子 Agent 已取消"))
                 .into_any_element()
         } else if is_failed {
             div()
@@ -7890,7 +7888,7 @@ impl ThreadView {
                         .size(IconSize::Small)
                         .color(Color::Error),
                 )
-                .tooltip(Tooltip::text("Subagent Failed"))
+                .tooltip(Tooltip::text("子 Agent 失败"))
                 .into_any_element()
         } else {
             Icon::new(IconName::Check)
@@ -7904,9 +7902,9 @@ impl ThreadView {
             .map_or(false, |thread| !thread.read(cx).entries().is_empty());
 
         let tooltip_meta_description = if is_expanded {
-            "Click to Collapse"
+            "点击收起"
         } else {
-            "Click to Preview"
+            "点击预览"
         };
 
         let error_message = self.subagent_error_message(&tool_call.status, tool_call, cx);
@@ -7952,9 +7950,9 @@ impl ThreadView {
                                     .when(files_changed > 0, |this| {
                                         this.child(
                                             Label::new(format!(
-                                                "— {} {} changed",
+                                                "— 已更改 {} {}",
                                                 files_changed,
-                                                if files_changed == 1 { "file" } else { "files" }
+                                                "个文件"
                                             ))
                                             .size(LabelSize::Custom(self.tool_name_font_size()))
                                             .color(Color::Muted),
@@ -8017,7 +8015,7 @@ impl ThreadView {
                             IconButton::new(format!("stop-subagent-{}", entry_ix), IconName::Stop)
                                 .icon_size(IconSize::Small)
                                 .icon_color(Color::Error)
-                                .tooltip(Tooltip::text("Stop Subagent"))
+                                .tooltip(Tooltip::text("停止子 Agent"))
                                 .when_some(
                                     thread_view
                                         .as_ref()
@@ -8061,7 +8059,7 @@ impl ThreadView {
                             .color(Color::Muted)
                             .size(IconSize::Small),
                     )
-                    .tooltip(Tooltip::text("Make Subagent Full Screen"))
+                    .tooltip(Tooltip::text("让子 Agent 全屏"))
                     .on_click(cx.listener(move |this, _event, window, cx| {
                         telemetry::event!("Subagent Maximized");
                         this.server_view
@@ -8342,7 +8340,7 @@ impl ThreadView {
             ),
             ThreadError::NoModelSelected => self.render_error_callout(
                 "No Model Selected",
-                "Select a model from the model picker below to get started.".into(),
+                "从下方模型选择器选择一个模型即可开始。".into(),
                 false,
                 false,
                 cx,
@@ -8366,15 +8364,13 @@ impl ThreadView {
     fn render_refusal_error(&self, cx: &mut Context<'_, Self>) -> Callout {
         let model_or_agent_name = self.current_model_name(cx);
         let refusal_message = format!(
-            "{} refused to respond to this prompt. \
-            This can happen when a model believes the prompt violates its content policy \
-            or safety guidelines, so rephrasing it can sometimes address the issue.",
+            "{} 拒绝响应此提示。这可能是因为模型认为提示违反了其内容政策或安全准则，换一种说法有时可以解决这个问题。",
             model_or_agent_name
         );
 
         Callout::new()
             .severity(Severity::Error)
-            .title("Request Refused")
+            .title("请求被拒绝")
             .icon(IconName::XCircle)
             .description(refusal_message.clone())
             .actions_slot(self.create_copy_button(&refusal_message))
@@ -8388,7 +8384,7 @@ impl ThreadView {
     ) -> Callout {
         Callout::new()
             .severity(Severity::Error)
-            .title("Authentication Required")
+            .title("需要认证")
             .icon(IconName::XCircle)
             .description(error.clone())
             .actions_slot(
@@ -8402,12 +8398,12 @@ impl ThreadView {
 
     fn render_payment_required_error(&self, cx: &mut Context<Self>) -> Callout {
         const ERROR_MESSAGE: &str =
-            "You reached your free usage limit. Upgrade to Zed Pro for more prompts.";
+            "你已达到免费用量限制。升级到 Zed Pro 可获得更多提示额度。";
 
         Callout::new()
             .severity(Severity::Error)
             .icon(IconName::XCircle)
-            .title("Free Usage Exceeded")
+            .title("免费用量已超限")
             .description(ERROR_MESSAGE)
             .actions_slot(
                 h_flex()
@@ -8448,13 +8444,12 @@ impl ThreadView {
     }
 
     fn render_prompt_too_large_error(&self, cx: &mut Context<Self>) -> Callout {
-        const MESSAGE: &str = "This conversation is too long for the model's context window. \
-            Start a new thread or remove some attached files to continue.";
+        const MESSAGE: &str = "此对话已超出模型的上下文窗口。请新建线程或移除部分附件后继续。";
 
         Callout::new()
             .severity(Severity::Error)
             .icon(IconName::XCircle)
-            .title("Context Too Large")
+            .title("上下文过大")
             .description(MESSAGE)
             .actions_slot(
                 h_flex()
@@ -8466,7 +8461,7 @@ impl ThreadView {
     }
 
     fn retry_button(&self, cx: &mut Context<Self>) -> impl IntoElement {
-        Button::new("retry", "Retry")
+        Button::new("retry", "重试")
             .label_size(LabelSize::Small)
             .style(ButtonStyle::Filled)
             .on_click(cx.listener(|this, _, _, cx| {
@@ -8475,7 +8470,7 @@ impl ThreadView {
     }
 
     fn new_thread_button(&self, cx: &mut Context<Self>) -> impl IntoElement {
-        Button::new("new_thread", "New Thread")
+        Button::new("new_thread", "新线程")
             .label_size(LabelSize::Small)
             .style(ButtonStyle::Filled)
             .on_click(cx.listener(|this, _, window, cx| {
@@ -8485,7 +8480,7 @@ impl ThreadView {
     }
 
     fn upgrade_button(&self, cx: &mut Context<Self>) -> impl IntoElement {
-        Button::new("upgrade", "Upgrade")
+        Button::new("upgrade", "升级")
             .label_size(LabelSize::Small)
             .style(ButtonStyle::Tinted(ui::TintColor::Accent))
             .on_click(cx.listener({
@@ -8497,7 +8492,7 @@ impl ThreadView {
     }
 
     fn authenticate_button(&self, cx: &mut Context<Self>) -> impl IntoElement {
-        Button::new("authenticate", "Authenticate")
+        Button::new("authenticate", "认证")
             .label_size(LabelSize::Small)
             .style(ButtonStyle::Filled)
             .on_click(cx.listener({
@@ -8535,7 +8530,7 @@ impl ThreadView {
                 .clone()
                 .and_then(|selector| selector.read(cx).active_model(cx))
                 .map(|model| model.name.clone())
-                .unwrap_or_else(|| SharedString::from("The model"))
+                .unwrap_or_else(|| SharedString::from("模型"))
         } else {
             // ACP agent - use the agent name (e.g., "Claude Agent", "Gemini CLI")
             self.agent_id.0.clone()
@@ -8567,7 +8562,7 @@ impl ThreadView {
         Callout::new()
             .severity(Severity::Error)
             .icon(IconName::XCircle)
-            .title("An Error Happened")
+            .title("发生错误")
             .description_slot(description)
             .actions_slot(
                 h_flex()
@@ -8576,7 +8571,7 @@ impl ThreadView {
                         this.child(
                             IconButton::new("retry", IconName::RotateCw)
                                 .icon_size(IconSize::Small)
-                                .tooltip(Tooltip::text("Retry Generation"))
+                                .tooltip(Tooltip::text("重试生成"))
                                 .on_click(cx.listener(|this, _, _window, cx| {
                                     this.retry_generation(cx);
                                 })),
@@ -8597,13 +8592,13 @@ impl ThreadView {
     fn create_copy_button(&self, message: impl Into<String>) -> impl IntoElement {
         let message = message.into();
 
-        CopyButton::new("copy-error-message", message).tooltip_label("Copy Error Message")
+        CopyButton::new("copy-error-message", message).tooltip_label("复制错误消息")
     }
 
     fn dismiss_error_button(&self, cx: &mut Context<Self>) -> impl IntoElement {
         IconButton::new("dismiss", IconName::Close)
             .icon_size(IconSize::Small)
-            .tooltip(Tooltip::text("Dismiss"))
+            .tooltip(Tooltip::text("关闭"))
             .on_click(cx.listener({
                 move |this, _, _, cx| {
                     this.clear_thread_error(cx);
@@ -8613,13 +8608,13 @@ impl ThreadView {
     }
 
     fn render_resume_notice(_cx: &Context<Self>) -> AnyElement {
-        let description = "This agent does not support viewing previous messages. However, your session will still continue from where you last left off.";
+        let description = "此 Agent 不支持查看历史消息，但会从上次离开的地方继续会话。";
 
         Callout::new()
             .border_position(ui::BorderPosition::Bottom)
             .severity(Severity::Info)
             .icon(IconName::Info)
-            .title("Resumed Session")
+            .title("已恢复会话")
             .description(description)
             .into_any_element()
     }
@@ -8628,10 +8623,10 @@ impl ThreadView {
         Callout::new()
             .icon(IconName::Warning)
             .severity(Severity::Warning)
-            .title("Codex on Windows")
-            .description("For best performance, run Codex in Windows Subsystem for Linux (WSL2)")
+            .title("Windows 上的 Codex")
+            .description("为获得最佳性能，请在 Windows Subsystem for Linux (WSL2) 中运行 Codex")
             .actions_slot(
-                Button::new("open-wsl-modal", "Open in WSL").on_click(cx.listener({
+                Button::new("open-wsl-modal", "在 WSL 中打开").on_click(cx.listener({
                     move |_, _, _window, cx| {
                         #[cfg(windows)]
                         _window.dispatch_action(
@@ -8646,7 +8641,7 @@ impl ThreadView {
                 IconButton::new("dismiss", IconName::Close)
                     .icon_size(IconSize::Small)
                     .icon_color(Color::Muted)
-                    .tooltip(Tooltip::text("Dismiss Warning"))
+                    .tooltip(Tooltip::text("关闭警告"))
                     .on_click(cx.listener({
                         move |this, _, _, cx| {
                             this.show_codex_windows_warning = false;
@@ -8660,13 +8655,13 @@ impl ThreadView {
         Callout::new()
             .icon(IconName::Warning)
             .severity(Severity::Warning)
-            .title("Review before sending")
-            .description("This prompt was pre-filled by an external link. Read it carefully before you send it.")
+            .title("发送前审查")
+            .description("此提示已由外部链接预先填充。发送前请仔细阅读。")
             .dismiss_action(
                 IconButton::new("dismiss-external-source-prompt-warning", IconName::Close)
                     .icon_size(IconSize::Small)
                     .icon_color(Color::Muted)
-                    .tooltip(Tooltip::text("Dismiss Warning"))
+                    .tooltip(Tooltip::text("关闭警告"))
                     .on_click(cx.listener({
                         move |this, _, _, cx| {
                             this.show_external_source_prompt_warning = false;
@@ -8697,10 +8692,10 @@ impl ThreadView {
             .next()
             .and_then(|p| p.file_name())
             .map(|name| name.to_string_lossy().to_string())
-            .unwrap_or_else(|| "one folder".to_string());
+            .unwrap_or_else(|| "一个文件夹".to_string());
 
         let description = format!(
-            "This agent only operates on \"{}\". Other folders in this workspace are not accessible to it.",
+            "此 Agent 仅在“{}”中运行。它无法访问此工作区中的其他文件夹。",
             active_dir
         );
 
@@ -8708,13 +8703,13 @@ impl ThreadView {
             Callout::new()
                 .severity(Severity::Warning)
                 .icon(IconName::Warning)
-                .title("External Agents currently don't support multi-root workspaces")
+                .title("外部 Agent 当前不支持多根工作区")
                 .description(description)
                 .border_position(ui::BorderPosition::Bottom)
                 .dismiss_action(
                     IconButton::new("dismiss-multi-root-callout", IconName::Close)
                         .icon_size(IconSize::Small)
-                        .tooltip(Tooltip::text("Dismiss"))
+                        .tooltip(Tooltip::text("关闭"))
                         .on_click(cx.listener(|this, _, _, cx| {
                             this.multi_root_callout_dismissed = true;
                             cx.notify();
@@ -8727,14 +8722,14 @@ impl ThreadView {
         let server_view = self.server_view.clone();
         let has_version = !version.is_empty();
         let title = if has_version {
-            "New version available"
+            "有新版本可用"
         } else {
-            "Agent update available"
+            "Agent 有更新可用"
         };
         let button_label = if has_version {
-            format!("Update to v{}", version)
+            format!("更新到 v{}", version)
         } else {
-            "Reconnect".to_string()
+            "重新连接".to_string()
         };
 
         v_flex().w_full().justify_end().child(
@@ -8783,16 +8778,16 @@ impl ThreadView {
             acp_thread::TokenUsageRatio::Warning => (
                 Severity::Warning,
                 IconName::Warning,
-                "Thread reaching the token limit soon",
+                "线程即将达到 token 上限",
             ),
             acp_thread::TokenUsageRatio::Exceeded => (
                 Severity::Error,
                 IconName::XCircle,
-                "Thread reached the token limit",
+                "线程已达到 token 上限",
             ),
         };
 
-        let description = "To continue, start a new thread from a summary.";
+        let description = "若要继续，请从摘要开始新线程。";
 
         Some(
             Callout::new()
@@ -8802,7 +8797,7 @@ impl ThreadView {
                 .description(description)
                 .actions_slot(
                     h_flex().gap_0p5().child(
-                        Button::new("start-new-thread", "Start New Thread")
+                        Button::new("start-new-thread", "新建线程")
                             .label_size(LabelSize::Small)
                             .on_click(cx.listener(|this, _, window, cx| {
                                 let session_id = this.thread.read(cx).session_id().clone();

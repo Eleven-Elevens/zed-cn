@@ -516,32 +516,32 @@ impl Render for ConfigurationView {
         let api_key_section = if self.should_render_editor(cx) {
             v_flex()
                 .on_action(cx.listener(Self::save_api_key))
-                .child(Label::new("To use Zed's agent with OpenAI, you need to add an API key. Follow these steps:"))
+                .child(Label::new("要在 Zed 的 Agent 中使用 OpenAI，你需要添加 API 密钥。请按以下步骤操作："))
                 .child(
                     List::new()
                         .child(
                             ListBulletItem::new("")
-                                .child(Label::new("Create one by visiting"))
-                                .child(ButtonLink::new("OpenAI's console", "https://platform.openai.com/api-keys"))
+                                .child(Label::new("访问以下地址创建"))
+                                .child(ButtonLink::new("OpenAI 控制台", "https://platform.openai.com/api-keys"))
                         )
                         .child(
-                            ListBulletItem::new("Ensure your OpenAI account has credits")
+                            ListBulletItem::new("确保您的 OpenAI 帐户有积分")
                         )
                         .child(
-                            ListBulletItem::new("Paste your API key below and hit enter to start using the agent")
+                            ListBulletItem::new("将您的 API 密钥粘贴到下面并按 Enter 键开始使用代理")
                         ),
                 )
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(format!(
-                        "You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Zed."
+                        "你也可以设置 {API_KEY_ENV_VAR_NAME} 环境变量，然后重启 Zed。"
                     ))
                     .size(LabelSize::Small)
                     .color(Color::Muted),
                 )
                 .child(
                     Label::new(
-                        "Note that having a subscription for another service like GitHub Copilot won't work.",
+                        "请注意，GitHub Copilot 等其他服务的订阅不能用于这里。",
                     )
                     .size(LabelSize::Small).color(Color::Muted),
                 )
@@ -573,10 +573,10 @@ impl Render for ConfigurationView {
                             .size(IconSize::XSmall)
                             .color(Color::Muted),
                     )
-                    .child(Label::new("Zed also supports OpenAI-compatible models.")),
+                    .child(Label::new("Zed 也支持 OpenAI 兼容模型。")),
             )
             .child(
-                Button::new("docs", "Learn More")
+                Button::new("docs", "了解更多")
                     .end_icon(
                         Icon::new(IconName::ArrowUpRight)
                             .size(IconSize::Small)
@@ -588,7 +588,7 @@ impl Render for ConfigurationView {
             );
 
         if self.load_credentials_task.is_some() {
-            div().child(Label::new("Loading credentials…")).into_any()
+            div().child(Label::new("正在加载凭据…")).into_any()
         } else {
             v_flex()
                 .size_full()

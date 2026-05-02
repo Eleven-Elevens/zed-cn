@@ -655,22 +655,22 @@ impl LanguageModel for BedrockModel {
         if self.model.supports_adaptive_thinking() {
             vec![
                 language_model::LanguageModelEffortLevel {
-                    name: "Low".into(),
+                    name: "低".into(),
                     value: "low".into(),
                     is_default: false,
                 },
                 language_model::LanguageModelEffortLevel {
-                    name: "Medium".into(),
+                    name: "中".into(),
                     value: "medium".into(),
                     is_default: false,
                 },
                 language_model::LanguageModelEffortLevel {
-                    name: "High".into(),
+                    name: "高".into(),
                     value: "high".into(),
                     is_default: true,
                 },
                 language_model::LanguageModelEffortLevel {
-                    name: "Max".into(),
+                    name: "最大".into(),
                     value: "max".into(),
                     is_default: false,
                 },
@@ -1488,7 +1488,7 @@ impl Render for ConfigurationView {
             .and_then(|s| s.authentication_method.clone());
 
         if self.load_credentials_task.is_some() {
-            return div().child(Label::new("Loading credentials...")).into_any();
+            return div().child(Label::new("正在加载凭据...")).into_any();
         }
 
         let configured_label = match &auth {
@@ -1559,14 +1559,14 @@ impl Render for ConfigurationView {
             .on_action(cx.listener(Self::on_tab))
             .on_action(cx.listener(Self::on_tab_prev))
             .on_action(cx.listener(ConfigurationView::save_credentials))
-            .child(Label::new("To use Zed's agent with Bedrock, you can set a custom authentication strategy through your settings file or use static credentials."))
-            .child(Label::new("But first, to access models on AWS, you need to:").mt_1())
+            .child(Label::new("要在 Zed 的 Agent 中使用 Bedrock，你可以通过设置文件配置自定义认证策略，或使用静态凭据。"))
+            .child(Label::new("但首先，要访问 AWS 上的模型，你需要：").mt_1())
             .child(
                 List::new()
                     .child(
                         ListBulletItem::new("")
                             .child(Label::new(
-                                "Grant permissions to the strategy you'll use according to the:",
+                                "根据以下文档为你将使用的策略授予权限：",
                             ))
                             .child(ButtonLink::new(
                                 "先决条件",
@@ -1575,7 +1575,7 @@ impl Render for ConfigurationView {
                     )
                     .child(
                         ListBulletItem::new("")
-                            .child(Label::new("Select the models you would like access to:"))
+                            .child(Label::new("选择你想访问的模型："))
                             .child(ButtonLink::new(
                                 "Bedrock 模型目录",
                                 "https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/model-catalog",
@@ -1600,7 +1600,7 @@ impl ConfigurationView {
             .child(
                 ListBulletItem::new("")
                     .child(Label::new(
-                        "For access keys: Create an IAM user in the AWS console with programmatic access",
+                        "对于访问密钥：在 AWS 控制台中创建具有编程访问权限的 IAM 用户",
                     ))
                     .child(ButtonLink::new(
                         "IAM 控制台",
@@ -1609,7 +1609,7 @@ impl ConfigurationView {
             )
             .child(
                 ListBulletItem::new("")
-                    .child(Label::new("For Bedrock API Keys: Generate an API key from the"))
+                    .child(Label::new("对于 Bedrock API 密钥：从以下位置生成 API 密钥"))
                     .child(ButtonLink::new(
                         "Bedrock 控制台",
                         "https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-use.html",
@@ -1617,7 +1617,7 @@ impl ConfigurationView {
             )
             .child(
                 ListBulletItem::new("")
-                    .child(Label::new("Attach the necessary Bedrock permissions to"))
+                    .child(Label::new("将必要的 Bedrock 权限附加到"))
                     .child(ButtonLink::new(
                         "此用户",
                         "https://docs.aws.amazon.com/bedrock/latest/userguide/inference-prereq.html",
@@ -1633,7 +1633,7 @@ impl ConfigurationView {
             .gap_1p5()
             .child(section_header("静态凭据".into()))
             .child(Label::new(
-                "This method uses your AWS access key ID and secret access key, or a Bedrock API Key.",
+                "此方法使用你的 AWS 访问密钥 ID 和秘密访问密钥，或 Bedrock API 密钥。",
             ))
             .child(list_item)
             .child(self.access_key_id_editor.clone())

@@ -343,9 +343,9 @@ impl AddLlmProviderModal {
             .child(
                 h_flex()
                     .justify_between()
-                    .child(Label::new("Models").size(LabelSize::Small))
+                    .child(Label::new("模型").size(LabelSize::Small))
                     .child(
-                        Button::new("add-model", "Add Model")
+                        Button::new("add-model", "添加模型")
                             .start_icon(
                                 Icon::new(IconName::Plus)
                                     .size(IconSize::XSmall)
@@ -392,7 +392,7 @@ impl AddLlmProviderModal {
                     .gap_1()
                     .child(
                         Checkbox::new(("supports-tools", ix), model.capabilities.supports_tools)
-                            .label("Supports tools")
+                            .label("支持工具")
                             .on_click(cx.listener(move |this, checked, _window, cx| {
                                 this.input.models[ix].capabilities.supports_tools = *checked;
                                 cx.notify();
@@ -400,7 +400,7 @@ impl AddLlmProviderModal {
                     )
                     .child(
                         Checkbox::new(("supports-images", ix), model.capabilities.supports_images)
-                            .label("Supports images")
+                            .label("支持图片")
                             .on_click(cx.listener(move |this, checked, _window, cx| {
                                 this.input.models[ix].capabilities.supports_images = *checked;
                                 cx.notify();
@@ -411,7 +411,7 @@ impl AddLlmProviderModal {
                             ("supports-parallel-tool-calls", ix),
                             model.capabilities.supports_parallel_tool_calls,
                         )
-                        .label("Supports parallel_tool_calls")
+                        .label("支持 parallel_tool_calls")
                         .on_click(cx.listener(
                             move |this, checked, _window, cx| {
                                 this.input.models[ix]
@@ -426,7 +426,7 @@ impl AddLlmProviderModal {
                             ("supports-prompt-cache-key", ix),
                             model.capabilities.supports_prompt_cache_key,
                         )
-                        .label("Supports prompt_cache_key")
+                        .label("支持 prompt_cache_key")
                         .on_click(cx.listener(
                             move |this, checked, _window, cx| {
                                 this.input.models[ix].capabilities.supports_prompt_cache_key =
@@ -440,7 +440,7 @@ impl AddLlmProviderModal {
                             ("supports-chat-completions", ix),
                             model.capabilities.supports_chat_completions,
                         )
-                        .label("Supports /chat/completions")
+                        .label("支持 /chat/completions")
                         .on_click(cx.listener(
                             move |this, checked, _window, cx| {
                                 this.input.models[ix].capabilities.supports_chat_completions =
@@ -452,7 +452,7 @@ impl AddLlmProviderModal {
             )
             .when(has_more_than_one_model, |this| {
                 this.child(
-                    Button::new(("remove-model", ix), "Remove Model")
+                    Button::new(("remove-model", ix), "移除模型")
                         .start_icon(
                             Icon::new(IconName::Trash)
                                 .size(IconSize::XSmall)
@@ -520,10 +520,10 @@ impl Render for AddLlmProviderModal {
             }))
             .child(
                 Modal::new("configure-context-server", None)
-                    .header(ModalHeader::new().headline("Add LLM Provider").description(
+                    .header(ModalHeader::new().headline("添加 LLM 提供商").description(
                         match self.provider {
                             LlmCompatibleProvider::OpenAi => {
-                                "This provider will use an OpenAI compatible API."
+                                "此提供商将使用兼容 OpenAI 的 API。"
                             }
                         },
                     ))
@@ -563,7 +563,7 @@ impl Render for AddLlmProviderModal {
                             h_flex()
                                 .gap_1()
                                 .child(
-                                    Button::new("cancel", "Cancel")
+                                    Button::new("cancel", "取消")
                                         .key_binding(
                                             KeyBinding::for_action_in(
                                                 &menu::Cancel,
@@ -577,7 +577,7 @@ impl Render for AddLlmProviderModal {
                                         })),
                                 )
                                 .child(
-                                    Button::new("save-server", "Save Provider")
+                                    Button::new("save-server", "保存提供商")
                                         .key_binding(
                                             KeyBinding::for_action_in(
                                                 &menu::Confirm,

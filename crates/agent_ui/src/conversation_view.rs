@@ -1344,7 +1344,7 @@ impl ConversationView {
                 .active_view()
                 .and_then(|v| v.read(cx).thread.read(cx).title())
                 .unwrap_or_else(|| DEFAULT_THREAD_TITLE.into()),
-            ServerState::Loading { .. } => "Loading…".into(),
+            ServerState::Loading { .. } => "正在加载…".into(),
             ServerState::LoadError { error, .. } => match error {
                 LoadError::Unsupported { .. } => {
                     format!("升级 {}", self.agent.agent_id()).into()
@@ -2101,7 +2101,7 @@ impl ConversationView {
                     .map(|this| {
                         if show_fallback_description {
                             this.child(
-                                Label::new("Choose one of the following authentication options:")
+                                Label::new("选择以下认证方式之一：")
                                     .size(LabelSize::Small)
                                     .color(Color::Muted),
                             )
@@ -2874,7 +2874,7 @@ impl Render for ConversationView {
                     .items_center()
                     .justify_center()
                     .child(
-                        Label::new("Loading…").color(Color::Muted).with_animation(
+                        Label::new("正在加载…").color(Color::Muted).with_animation(
                             "loading-agent-label",
                             Animation::new(Duration::from_secs(2))
                                 .repeat()

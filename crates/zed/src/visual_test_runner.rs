@@ -2852,16 +2852,16 @@ impl gpui::Render for ErrorWrappingTestView {
                 Callout::new()
                     .severity(Severity::Error)
                     .icon(IconName::XCircle)
-                    .title("An Error Happened")
+                    .title("发生错误")
                     .description(long_error_message)
-                    .actions_slot(Button::new("dismiss", "Dismiss").label_size(LabelSize::Small)),
+                    .actions_slot(Button::new("dismiss", "关闭").label_size(LabelSize::Small)),
             )
             .child(
                 Callout::new()
                     .severity(Severity::Error)
                     .icon(IconName::XCircle)
                     .title(long_error_message)
-                    .actions_slot(Button::new("retry", "Retry").label_size(LabelSize::Small)),
+                    .actions_slot(Button::new("retry", "重试").label_size(LabelSize::Small)),
             )
     }
 }
@@ -2901,7 +2901,7 @@ impl gpui::Render for ThreadItemBranchNameTestView {
             .p_4()
             .gap_3()
             .child(
-                Label::new("ThreadItem Branch Names")
+                Label::new("ThreadItem 分支名称")
                     .size(LabelSize::Large)
                     .color(Color::Default),
             )
@@ -3151,7 +3151,7 @@ impl gpui::Render for ThreadItemIconDecorationsTestView {
             .p_4()
             .gap_3()
             .child(
-                Label::new("ThreadItem Icon Decorations")
+                Label::new("ThreadItem 图标装饰")
                     .size(LabelSize::Large)
                     .color(Color::Default),
             )

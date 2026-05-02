@@ -700,10 +700,10 @@ struct ConfigurationView {
 
 impl ConfigurationView {
     pub fn new(state: Entity<State>, _window: &mut Window, cx: &mut Context<Self>) -> Self {
-        let api_key_editor = cx.new(|cx| InputField::new(_window, cx, "sk-...").label("API key"));
+        let api_key_editor = cx.new(|cx| InputField::new(_window, cx, "sk-...").label("API 密钥"));
 
         let api_url_editor = cx.new(|cx| {
-            let input = InputField::new(_window, cx, LMSTUDIO_API_URL).label("API URL");
+            let input = InputField::new(_window, cx, LMSTUDIO_API_URL).label("API 地址");
             input.set_text(&LmStudioLanguageModelProvider::api_url(cx), _window, cx);
             input
         });
@@ -831,7 +831,7 @@ impl ConfigurationView {
                         .child(v_flex().gap_1().child(Label::new(api_url))),
                 )
                 .child(
-                    Button::new("reset-api-url", "Reset API URL")
+                    Button::new("reset-api-url", "重置 API 地址")
                         .label_size(LabelSize::Small)
                         .start_icon(Icon::new(IconName::Undo).size(IconSize::Small))
                         .layer(ElevationIndex::ModalSurface)
@@ -867,7 +867,7 @@ impl ConfigurationView {
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(format!(
-                        "You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Zed."
+                        "你也可以设置 {API_KEY_ENV_VAR_NAME} 环境变量，然后重启 Zed。"
                     ))
                     .size(LabelSize::Small)
                     .color(Color::Muted),
@@ -896,21 +896,21 @@ impl Render for ConfigurationView {
             .child(
                 v_flex()
                     .gap_1()
-                    .child(Label::new("Run local LLMs like Llama, Phi, and Qwen."))
+                    .child(Label::new("运行 Llama、Phi、Qwen 等本地 LLM。"))
                     .child(
                         List::new()
                             .child(ListBulletItem::new(
-                                "LM Studio needs to be running with at least one model downloaded.",
+                                "LM Studio 需要在至少下载一个模型的情况下运行。",
                             ))
                             .child(
                                 ListBulletItem::new("")
-                                    .child(Label::new("To get your first model, try running"))
+                                    .child(Label::new("要获取第一个模型，请尝试运行"))
                                     .child(Label::new("lms get qwen2.5-coder-7b").inline_code(cx)),
                             ),
                     )
                     .child(Label::new(
-                        "Alternatively, you can connect to an LM Studio server by specifying its \
-                        URL and API key (may not be required):",
+                        "也可以连接到 LM Studio 服务器：指定其 \
+                        URL 和 API 密钥（可能不需要）：",
                     )),
             )
             .child(self.render_api_url_editor(cx))
@@ -943,7 +943,7 @@ impl Render for ConfigurationView {
                                     this.child(
                                         Button::new(
                                             "download_lmstudio_button",
-                                            "Download LM Studio",
+                                            "下载 LM Studio",
                                         )
                                         .style(ButtonStyle::Subtle)
                                         .end_icon(
@@ -959,7 +959,7 @@ impl Render for ConfigurationView {
                                 }
                             })
                             .child(
-                                Button::new("view-models", "Model Catalog")
+                                Button::new("view-models", "模型目录")
                                     .style(ButtonStyle::Subtle)
                                     .end_icon(
                                         Icon::new(IconName::ArrowUpRight)
@@ -981,12 +981,12 @@ impl Render for ConfigurationView {
                                         h_flex()
                                             .gap_2()
                                             .child(Icon::new(IconName::Check).color(Color::Success))
-                                            .child(Label::new("Connected"))
+                                            .child(Label::new("已连接"))
                                             .into_any_element(),
                                     )
                                     .child(
                                         IconButton::new("refresh-models", IconName::RotateCcw)
-                                            .tooltip(Tooltip::text("Refresh Models"))
+                                            .tooltip(Tooltip::text("刷新模型"))
                                             .on_click(cx.listener(|this, _, _window, cx| {
                                                 this.state.update(cx, |state, _| {
                                                     state.available_models.clear();
@@ -997,7 +997,7 @@ impl Render for ConfigurationView {
                             )
                         } else {
                             this.child(
-                                Button::new("retry_lmstudio_models", "Connect")
+                                Button::new("retry_lmstudio_models", "连接")
                                     .start_icon(
                                         Icon::new(IconName::PlayFilled).size(IconSize::XSmall),
                                     )

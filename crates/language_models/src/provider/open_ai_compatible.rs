@@ -498,7 +498,7 @@ impl Render for ConfigurationView {
         let api_key_section = if self.should_render_editor(cx) {
             v_flex()
                 .on_action(cx.listener(Self::save_api_key))
-                .child(Label::new("To use Zed's agent with an OpenAI-compatible provider, you need to add an API key."))
+                .child(Label::new("要在 Zed 的 Agent 中使用 OpenAI 兼容提供商，你需要添加 API 密钥。"))
                 .child(
                     div()
                         .pt(DynamicSpacing::Base04.rems(cx))
@@ -506,7 +506,7 @@ impl Render for ConfigurationView {
                 )
                 .child(
                     Label::new(
-                        format!("You can also set the {env_var_name} environment variable and restart Zed."),
+                        format!("你也可以设置 {env_var_name} 环境变量，然后重启 Zed。"),
                     )
                     .size(LabelSize::Small).color(Color::Muted),
                 )
@@ -544,7 +544,7 @@ impl Render for ConfigurationView {
                     h_flex()
                         .flex_shrink_0()
                         .child(
-                            Button::new("reset-api-key", "Reset API Key")
+                            Button::new("reset-api-key", "重置 API 密钥")
                                 .label_size(LabelSize::Small)
                                 .start_icon(Icon::new(IconName::Undo).size(IconSize::Small))
                                 .layer(ElevationIndex::ModalSurface)
@@ -558,7 +558,7 @@ impl Render for ConfigurationView {
         };
 
         if self.load_credentials_task.is_some() {
-            div().child(Label::new("Loading credentials…")).into_any()
+            div().child(Label::new("正在加载凭据…")).into_any()
         } else {
             v_flex().size_full().child(api_key_section).into_any()
         }

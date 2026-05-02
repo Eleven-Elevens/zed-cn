@@ -517,7 +517,7 @@ impl Render for DapLogToolbarItemView {
         let current_client = current_session_id
             .and_then(|session_id| menu_rows.iter().find(|row| row.session_id == session_id));
 
-        let dap_menu: PopoverMenu<_> = PopoverMenu::new("DapLogView")
+        let dap_menu: PopoverMenu<_> = PopoverMenu::new("DAP 日志视图")
             .anchor(gpui::Anchor::TopLeft)
             .trigger(Button::new(
                 "debug_client_menu_header",
@@ -632,7 +632,7 @@ impl Render for DapLogToolbarItemView {
             .child(
                 div()
                     .child(
-                        Button::new("clear_log_button", "Clear").on_click(cx.listener(
+                        Button::new("clear_log_button", "清除").on_click(cx.listener(
                             |this, _, window, cx| {
                                 if let Some(log_view) = this.log_view.as_ref() {
                                     log_view.update(cx, |log_view, cx| {

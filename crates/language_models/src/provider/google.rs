@@ -453,31 +453,31 @@ impl Render for ConfigurationView {
 
         if self.load_credentials_task.is_some() {
             div()
-                .child(Label::new("Loading credentials..."))
+                .child(Label::new("正在加载凭据..."))
                 .into_any_element()
         } else if self.should_render_editor(cx) {
             v_flex()
                 .size_full()
                 .on_action(cx.listener(Self::save_api_key))
-                .child(Label::new(format!("To use {}, you need to add an API key. Follow these steps:", match &self.target_agent {
-                    ConfigurationViewTargetAgent::ZedAgent => "Zed's agent with Google AI".into(),
+                .child(Label::new(format!("要使用 {}，你需要添加 API 密钥。请按以下步骤操作：", match &self.target_agent {
+                    ConfigurationViewTargetAgent::ZedAgent => "使用 Google AI 的 Zed Agent".into(),
                     ConfigurationViewTargetAgent::Other(agent) => agent.clone(),
                 })))
                 .child(
                     List::new()
                         .child(
                             ListBulletItem::new("")
-                                .child(Label::new("Create one by visiting"))
-                                .child(ButtonLink::new("Google AI's console", "https://aistudio.google.com/app/apikey"))
+                                .child(Label::new("访问以下地址创建"))
+                                .child(ButtonLink::new("Google AI 控制台", "https://aistudio.google.com/app/apikey"))
                         )
                         .child(
-                            ListBulletItem::new("Paste your API key below and hit enter to start using the agent")
+                            ListBulletItem::new("将您的 API 密钥粘贴到下面并按 Enter 键开始使用代理")
                         )
                 )
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(
-                        format!("You can also set the {GEMINI_API_KEY_VAR_NAME} environment variable and restart Zed."),
+                        format!("你也可以设置 {GEMINI_API_KEY_VAR_NAME} 环境变量，然后重启 Zed。"),
                     )
                     .size(LabelSize::Small).color(Color::Muted),
                 )

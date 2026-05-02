@@ -403,7 +403,7 @@ impl ComponentPreview {
                 let selected = self.active_page == PreviewPage::AllComponents;
 
                 ListItem::new(ix)
-                    .child(Label::new("All Components"))
+                    .child(Label::new("所有组件"))
                     .selectable(true)
                     .toggle_state(selected)
                     .inset(true)
@@ -551,7 +551,7 @@ impl ComponentPreview {
                 .size_full()
                 .items_center()
                 .justify_center()
-                .child("Component not found")
+                .child("未找到组件")
                 .into_any_element()
         }
     }
@@ -640,7 +640,7 @@ impl Render for ComponentPreview {
                             .border_t_1()
                             .border_color(cx.theme().colors().border)
                             .child(
-                                Button::new("toast-test", "Launch Toast")
+                                Button::new("toast-test", "触发 Toast")
                                     .full_width()
                                     .on_click(cx.listener({
                                         move |this, _, _window, cx| {
@@ -971,11 +971,11 @@ impl ComponentPreviewPage {
             // Fall back to component preview
             preview(window, cx).unwrap_or_else(|| {
                 div()
-                    .child("Failed to load preview. This path should be unreachable")
+                    .child("加载预览失败。此路径不应被访问")
                     .into_any_element()
             })
         } else {
-            div().child("No preview available").into_any_element()
+            div().child("没有可用预览").into_any_element()
         };
 
         v_flex()

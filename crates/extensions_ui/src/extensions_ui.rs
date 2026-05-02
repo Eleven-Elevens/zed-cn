@@ -899,7 +899,7 @@ impl ExtensionsPage {
                                 .icon_size(IconSize::Small)
                                 .tooltip(move |_, cx| {
                                     Tooltip::with_meta(
-                                        "Visit Extension Repository",
+                                        "访问扩展仓库",
                                         None,
                                         repo_url_for_tooltip.clone(),
                                         cx,
@@ -1463,7 +1463,7 @@ impl ExtensionsPage {
     fn render_acp_registry_upsell(&self, cx: &mut Context<Self>) -> impl IntoElement {
         let registry_url = zed_urls::acp_registry_blog(cx);
 
-        let view_registry = Button::new("view_registry", "View Registry")
+        let view_registry = Button::new("view_registry", "查看注册表")
             .style(ButtonStyle::Tinted(ui::TintColor::Warning))
             .on_click({
                 let registry_url = registry_url.clone();
@@ -1476,7 +1476,7 @@ impl ExtensionsPage {
                     window.dispatch_action(Box::new(zed_actions::AcpRegistry), cx)
                 }
             });
-        let open_registry_button = Button::new("open_registry", "Learn More")
+        let open_registry_button = Button::new("open_registry", "了解更多")
             .end_icon(
                 Icon::new(IconName::ArrowUpRight)
                     .size(IconSize::Small)
@@ -1498,7 +1498,7 @@ impl ExtensionsPage {
                 .severity(Severity::Warning)
                 .child(
                     Label::new(
-                        "Agent Server extensions will be deprecated in favor of the ACP registry.",
+                        "Agent Server 扩展将被弃用，改用 ACP 注册表。",
                     )
                     .mt_0p5(),
                 )
@@ -1518,7 +1518,7 @@ impl ExtensionsPage {
         vim: bool,
         cx: &mut Context<Self>,
     ) -> impl IntoElement {
-        let docs_url_button = Button::new("open_docs", "View Documentation")
+        let docs_url_button = Button::new("open_docs", "查看文档")
             .end_icon(Icon::new(IconName::ArrowUpRight).size(IconSize::Small))
             .on_click({
                 move |_event, _window, cx| {
@@ -1549,7 +1549,7 @@ impl ExtensionsPage {
                                         h_flex()
                                             .pl_1()
                                             .gap_1()
-                                            .child(Label::new("Enable Vim mode"))
+                                            .child(Label::new("启用 Vim 模式"))
                                             .child(
                                                 Switch::new(
                                                     "enable-vim",
@@ -1725,7 +1725,7 @@ impl Render for ExtensionsPage {
                             .justify_between()
                             .child(Headline::new("扩展").size(HeadlineSize::Large))
                             .child(
-                                Button::new("install-dev-extension", "Install Dev Extension")
+                                Button::new("install-dev-extension", "安装开发扩展")
                                     .style(ButtonStyle::Outlined)
                                     .size(ButtonSize::Medium)
                                     .on_click(|_event, window, cx| {
@@ -1745,7 +1745,7 @@ impl Render for ExtensionsPage {
                                         "filter-buttons",
                                         [
                                             ToggleButtonSimple::new(
-                                                "All",
+                                                "全部",
                                                 cx.listener(|this, _event, _, cx| {
                                                     this.filter = ExtensionFilter::All;
                                                     this.filter_extension_entries(cx);
@@ -1794,7 +1794,7 @@ impl Render for ExtensionsPage {
                     .border_color(cx.theme().colors().border_variant)
                     .overflow_x_scroll()
                     .child(
-                        Button::new("filter-all-categories", "All")
+                        Button::new("filter-all-categories", "全部")
                             .when(self.provides_filter.is_none(), |button| {
                                 button.style(ButtonStyle::Filled)
                             })

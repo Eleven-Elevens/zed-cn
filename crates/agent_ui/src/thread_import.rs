@@ -408,7 +408,7 @@ impl Render for ThreadImportModal {
                                 .when(has_agents, |this| this.children(agent_rows))
                                 .when(!has_agents, |this| {
                                     this.child(
-                                        Label::new("No ACP agents available.")
+                                        Label::new("没有可用的 ACP Agent。")
                                             .color(Color::Muted)
                                             .size(LabelSize::Small),
                                     )
@@ -426,7 +426,7 @@ impl Render for ThreadImportModal {
                                 )
                             })
                             .end_slot(
-                                Button::new("import-threads", "Import Threads")
+                                Button::new("import-threads", "导入线程")
                                     .loading(self.is_importing)
                                     .disabled(disabled_import_thread)
                                     .key_binding(

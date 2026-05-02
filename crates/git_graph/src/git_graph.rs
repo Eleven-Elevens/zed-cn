@@ -189,7 +189,7 @@ impl ChangedFileEntry {
                         } else {
                             format!("{}/{}", dir_path, file_name).into()
                         };
-                        move |_, cx| Tooltip::with_meta("View Changes", None, meta.clone(), cx)
+                        move |_, cx| Tooltip::with_meta("查看更改", None, meta.clone(), cx)
                     })
                     .on_click({
                         let entry = self.clone();
@@ -2281,7 +2281,7 @@ impl GitGraph {
             .child(Divider::horizontal())
             .child(
                 h_flex().p_1p5().w_full().child(
-                    Button::new("view-commit", "View Commit")
+                    Button::new("view-commit", "查看提交")
                         .full_width()
                         .style(ButtonStyle::OutlinedGhost)
                         .on_click(cx.listener(|this, _, window, cx| {
@@ -2774,28 +2774,28 @@ impl Render for GitGraph {
                             if !is_path_history {
                                 TableRow::from_vec(
                                     vec![
-                                        Label::new("Graph")
+                                        Label::new("图")
                                             .color(Color::Muted)
                                             .truncate()
                                             .into_any_element(),
-                                        Label::new("Description")
+                                        Label::new("描述")
                                             .color(Color::Muted)
                                             .into_any_element(),
-                                        Label::new("Date").color(Color::Muted).into_any_element(),
-                                        Label::new("Author").color(Color::Muted).into_any_element(),
-                                        Label::new("Commit").color(Color::Muted).into_any_element(),
+                                        Label::new("日期").color(Color::Muted).into_any_element(),
+                                        Label::new("作者").color(Color::Muted).into_any_element(),
+                                        Label::new("提交").color(Color::Muted).into_any_element(),
                                     ],
                                     5,
                                 )
                             } else {
                                 TableRow::from_vec(
                                     vec![
-                                        Label::new("Description")
+                                        Label::new("描述")
                                             .color(Color::Muted)
                                             .into_any_element(),
-                                        Label::new("Date").color(Color::Muted).into_any_element(),
-                                        Label::new("Author").color(Color::Muted).into_any_element(),
-                                        Label::new("Commit").color(Color::Muted).into_any_element(),
+                                        Label::new("日期").color(Color::Muted).into_any_element(),
+                                        Label::new("作者").color(Color::Muted).into_any_element(),
+                                        Label::new("提交").color(Color::Muted).into_any_element(),
                                     ],
                                     4,
                                 )

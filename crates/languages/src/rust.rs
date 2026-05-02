@@ -1907,7 +1907,7 @@ mod tests {
             adapter
                 .label_for_symbol(
                     &language::Symbol {
-                        name: "Variant".to_string(),
+                        name: "变体".to_string(),
                         kind: lsp::SymbolKind::ENUM_MEMBER,
                         container_name: None,
                     },
@@ -1915,7 +1915,7 @@ mod tests {
                 )
                 .await,
             Some(CodeLabel::new(
-                "Variant".to_string(),
+                "变体".to_string(),
                 0..7,
                 vec![(0..7, highlight_type)],
             ))

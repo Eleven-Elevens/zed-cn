@@ -303,7 +303,7 @@ fn render_conflict_buttons(
         .gap_1()
         .bg(cx.theme().colors().editor_background)
         .child(
-            Button::new("head", format!("Use {}", conflict.ours_branch_name))
+            Button::new("head", format!("使用 {}", conflict.ours_branch_name))
                 .label_size(LabelSize::Small)
                 .on_click({
                     let editor = editor.clone();
@@ -322,7 +322,7 @@ fn render_conflict_buttons(
                 }),
         )
         .child(
-            Button::new("origin", format!("Use {}", conflict.theirs_branch_name))
+            Button::new("origin", format!("使用 {}", conflict.theirs_branch_name))
                 .label_size(LabelSize::Small)
                 .on_click({
                     let editor = editor.clone();
@@ -341,7 +341,7 @@ fn render_conflict_buttons(
                 }),
         )
         .child(
-            Button::new("both", "Use Both")
+            Button::new("both", "两者都使用")
                 .label_size(LabelSize::Small)
                 .on_click({
                     let editor = editor.clone();
@@ -362,7 +362,7 @@ fn render_conflict_buttons(
         )
         .when(is_ai_enabled, |this| {
             this.child(Divider::vertical()).child(
-                Button::new("resolve-with-agent", "Resolve with Agent")
+                Button::new("resolve-with-agent", "用 Agent 解决")
                     .label_size(LabelSize::Small)
                     .start_icon(
                         Icon::new(IconName::ZedAssistant)
@@ -642,7 +642,7 @@ impl Render for MergeConflictIndicator {
                         Tooltip::with_meta(
                             tooltip_label.clone(),
                             None,
-                            "Click to Resolve with Agent",
+                            "点击用 Agent 解决",
                             cx,
                         )
                     })

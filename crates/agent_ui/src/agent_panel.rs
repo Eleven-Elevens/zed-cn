@@ -592,19 +592,19 @@ fn format_timestamp_human(dt: &DateTime<Utc>) -> String {
     let duration = now.signed_duration_since(*dt);
 
     let relative = if duration.num_seconds() < 0 {
-        "in the future".to_string()
+        "未来".to_string()
     } else if duration.num_seconds() < 60 {
         let seconds = duration.num_seconds();
-        format!("{seconds} seconds ago")
+        format!("{seconds} 秒前")
     } else if duration.num_minutes() < 60 {
         let minutes = duration.num_minutes();
-        format!("{minutes} minutes ago")
+        format!("{minutes} 分钟前")
     } else if duration.num_hours() < 24 {
         let hours = duration.num_hours();
-        format!("{hours} hours ago")
+        format!("{hours} 小时前")
     } else {
         let days = duration.num_days();
-        format!("{days} days ago")
+        format!("{days} 天前")
     };
 
     format!("{} ({})", dt.to_rfc3339(), relative)
@@ -1602,7 +1602,7 @@ impl AgentPanel {
 
     fn copy_thread_to_clipboard(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         let Some(thread) = self.active_native_agent_thread(cx) else {
-            Self::show_deferred_toast(&self.workspace, "No active native thread to copy", cx);
+            Self::show_deferred_toast(&self.workspace, "没有可复制的活动原生线程", cx);
             return;
         };
 
@@ -1623,7 +1623,7 @@ impl AgentPanel {
                         workspace.show_toast(
                             workspace::Toast::new(
                                 workspace::notifications::NotificationId::unique::<ThreadCopiedToast>(),
-                                "Thread copied to clipboard (base64 encoded)",
+                                "线程已复制到剪贴板（base64 编码）",
                             )
                             .autohide(),
                             cx,
@@ -1662,12 +1662,12 @@ impl AgentPanel {
 
     fn load_thread_from_clipboard(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         let Some(clipboard) = cx.read_from_clipboard() else {
-            Self::show_deferred_toast(&self.workspace, "No clipboard content available", cx);
+            Self::show_deferred_toast(&self.workspace, "剪贴板没有可用内容", cx);
             return;
         };
 
         let Some(encoded) = clipboard.text() else {
-            Self::show_deferred_toast(&self.workspace, "Clipboard does not contain text", cx);
+            Self::show_deferred_toast(&self.workspace, "剪贴板不包含文本", cx);
             return;
         };
 
@@ -1677,7 +1677,7 @@ impl AgentPanel {
             Err(_) => {
                 Self::show_deferred_toast(
                     &self.workspace,
-                    "Failed to decode clipboard content (expected base64)",
+                    "解码剪贴板内容失败（预期为 base64）",
                     cx,
                 );
                 return;
@@ -1689,7 +1689,7 @@ impl AgentPanel {
             Err(_) => {
                 Self::show_deferred_toast(
                     &self.workspace,
-                    "Failed to parse thread data from clipboard",
+                    "解析剪贴板中的线程数据失败",
                     cx,
                 );
                 return;
@@ -1720,7 +1720,7 @@ impl AgentPanel {
                         workspace.show_toast(
                             workspace::Toast::new(
                                 workspace::notifications::NotificationId::unique::<ThreadLoadedToast>(),
-                                "Thread loaded from clipboard",
+                                "已从剪贴板加载线程",
                             )
                             .autohide(),
                             cx,
@@ -1741,23 +1741,23 @@ impl AgentPanel {
         cx: &mut Context<Self>,
     ) {
         let Some(thread_id) = self.active_thread_id(cx) else {
-            Self::show_deferred_toast(&self.workspace, "No active thread", cx);
+            Self::show_deferred_toast(&self.workspace, "没有活动线程", cx);
             return;
         };
 
         let Some(store) = ThreadMetadataStore::try_global(cx) else {
-            Self::show_deferred_toast(&self.workspace, "Thread metadata store not available", cx);
+            Self::show_deferred_toast(&self.workspace, "线程元数据存储不可用", cx);
             return;
         };
 
         let Some(metadata) = store.read(cx).entry(thread_id).cloned() else {
-            Self::show_deferred_toast(&self.workspace, "No metadata found for active thread", cx);
+            Self::show_deferred_toast(&self.workspace, "未找到活动线程的元数据", cx);
             return;
         };
 
         let json = thread_metadata_to_debug_json(&metadata);
         let text = serde_json::to_string_pretty(&json).unwrap_or_default();
-        let title = format!("Thread Metadata: {}", metadata.display_title());
+        let title = format!("线程元数据：{}", metadata.display_title());
 
         self.open_json_buffer(title, text, window, cx);
     }
@@ -1769,7 +1769,7 @@ impl AgentPanel {
         cx: &mut Context<Self>,
     ) {
         let Some(store) = ThreadMetadataStore::try_global(cx) else {
-            Self::show_deferred_toast(&self.workspace, "Thread metadata store not available", cx);
+            Self::show_deferred_toast(&self.workspace, "线程元数据存储不可用", cx);
             return;
         };
 
@@ -2733,7 +2733,7 @@ impl AgentPanel {
                                     IconButton::new("retry-thread-title", IconName::XCircle)
                                         .icon_color(Color::Error)
                                         .icon_size(IconSize::Small)
-                                        .tooltip(Tooltip::text("Title generation failed. Retry"))
+                                        .tooltip(Tooltip::text("标题生成失败。重试"))
                                         .on_click({
                                             let conversation_view = conversation_view.clone();
                                             move |_event, _window, cx| {
@@ -2757,9 +2757,9 @@ impl AgentPanel {
                 }
             }
             VisibleSurface::Configuration(_) => {
-                Label::new("Settings").truncate().into_any_element()
+                Label::new("设置").truncate().into_any_element()
             }
-            VisibleSurface::Uninitialized => Label::new("Agent").truncate().into_any_element(),
+            VisibleSurface::Uninitialized => Label::new("智能体").truncate().into_any_element(),
         };
 
         h_flex()
@@ -2820,7 +2820,7 @@ impl AgentPanel {
                     let focus_handle = focus_handle.clone();
                     move |_window, cx| {
                         Tooltip::for_action_in(
-                            "Toggle Agent Menu",
+                            "切换 Agent 菜单",
                             &ToggleOptionsMenu,
                             &focus_handle,
                             cx,
@@ -2836,11 +2836,11 @@ impl AgentPanel {
                         menu = menu.context(focus_handle.clone());
 
                         if can_regenerate_thread_title {
-                            menu = menu.header("Current Thread");
+                            menu = menu.header("当前线程");
 
                             if let Some(conversation_view) = conversation_view.as_ref() {
                                 menu = menu
-                                    .entry("Regenerate Thread Title", None, {
+                                    .entry("重新生成线程标题", None, {
                                         let conversation_view = conversation_view.clone();
                                         move |_, cx| {
                                             Self::handle_regenerate_thread_title(
@@ -2854,9 +2854,9 @@ impl AgentPanel {
                         }
 
                         menu = menu
-                            .header("MCP Servers")
+                            .header("MCP 服务器")
                             .action(
-                                "View Server Extensions",
+                                "查看服务器扩展",
                                 Box::new(zed_actions::Extensions {
                                     category_filter: Some(
                                         zed_actions::ExtensionCategoryFilter::ContextServers,
@@ -2864,16 +2864,16 @@ impl AgentPanel {
                                     id: None,
                                 }),
                             )
-                            .action("Add Custom Server…", Box::new(AddContextServer))
+                            .action("添加自定义服务器…", Box::new(AddContextServer))
                             .separator()
-                            .action("Rules", Box::new(OpenRulesLibrary::default()))
-                            .action("Profiles", Box::new(ManageProfiles::default()))
-                            .action("Settings", Box::new(OpenSettings))
+                            .action("规则", Box::new(OpenRulesLibrary::default()))
+                            .action("配置档案", Box::new(ManageProfiles::default()))
+                            .action("设置", Box::new(OpenSettings))
                             .separator()
-                            .action("Toggle Threads Sidebar", Box::new(ToggleWorkspaceSidebar));
+                            .action("切换线程侧边栏", Box::new(ToggleWorkspaceSidebar));
 
                         if has_auth_methods {
-                            menu = menu.action("Reauthenticate", Box::new(ReauthenticateAgent))
+                            menu = menu.action("重新认证", Box::new(ReauthenticateAgent))
                         }
 
                         menu
@@ -2892,7 +2892,7 @@ impl AgentPanel {
             }))
             .tooltip({
                 move |_window, cx| {
-                    Tooltip::for_action_in("Go Back", &workspace::GoBack, &focus_handle, cx)
+                    Tooltip::for_action_in("后退", &workspace::GoBack, &focus_handle, cx)
                 }
             })
     }
@@ -2948,7 +2948,7 @@ impl AgentPanel {
                             if !thread.is_empty() {
                                 let session_id = thread.id().clone();
                                 this.item(
-                                    ContextMenuEntry::new("New From Summary")
+                                    ContextMenuEntry::new("从摘要新建")
                                         .icon(IconName::ThreadFromSummary)
                                         .icon_color(Color::Muted)
                                         .handler(move |window, cx| {
@@ -2965,7 +2965,7 @@ impl AgentPanel {
                             }
                         })
                         .item(
-                            ContextMenuEntry::new("Zed Agent")
+                            ContextMenuEntry::new("Zed 智能体")
                                 .when(is_agent_selected(Agent::NativeAgent), |this| {
                                     this.action(Box::new(NewExternalAgentThread { agent: None }))
                                 })
@@ -3025,7 +3025,7 @@ impl AgentPanel {
                                 .collect::<Vec<_>>();
 
                             if !agent_items.is_empty() {
-                                menu = menu.separator().header("External Agents");
+                                menu = menu.separator().header("外部 Agent");
                             }
                             for item in &agent_items {
                                 let mut entry = ContextMenuEntry::new(item.display_name.clone());
@@ -3090,7 +3090,7 @@ impl AgentPanel {
                         })
                         .separator()
                         .item(
-                            ContextMenuEntry::new("Add More Agents")
+                            ContextMenuEntry::new("添加更多 Agent")
                                 .icon(IconName::Plus)
                                 .icon_color(Color::Muted)
                                 .handler({
@@ -3132,7 +3132,7 @@ impl AgentPanel {
                 Tooltip::with_meta(
                     selected_agent_label_for_tooltip.clone(),
                     None,
-                    "Selected Agent",
+                    "已选 Agent",
                     cx,
                 )
             });
@@ -3159,14 +3159,14 @@ impl AgentPanel {
         let full_screen_button = if is_full_screen {
             IconButton::new("disable-full-screen", IconName::Minimize)
                 .icon_size(IconSize::Small)
-                .tooltip(move |_, cx| Tooltip::for_action("Disable Full Screen", &ToggleZoom, cx))
+                .tooltip(move |_, cx| Tooltip::for_action("退出全屏", &ToggleZoom, cx))
                 .on_click(cx.listener(move |this, _, window, cx| {
                     this.toggle_zoom(&ToggleZoom, window, cx);
                 }))
         } else {
             IconButton::new("enable-full-screen", IconName::Maximize)
                 .icon_size(IconSize::Small)
-                .tooltip(move |_, cx| Tooltip::for_action("Enable Full Screen", &ToggleZoom, cx))
+                .tooltip(move |_, cx| Tooltip::for_action("进入全屏", &ToggleZoom, cx))
                 .on_click(cx.listener(move |this, _, window, cx| {
                     this.toggle_zoom(&ToggleZoom, window, cx);
                 }))

@@ -153,9 +153,9 @@ fn render_provider_dropdown(window: &mut Window, cx: &mut App) -> AnyElement {
                         .w_full()
                         .min_w_0()
                         .max_w_1_2()
-                        .child(Label::new("Provider"))
+                        .child(Label::new("提供商"))
                         .child(
-                            Label::new("Select which provider to use for edit predictions.")
+                            Label::new("选择用于编辑预测的提供商。")
                                 .size(LabelSize::Small)
                                 .color(Color::Muted),
                         ),
@@ -246,7 +246,7 @@ fn render_api_key_provider(
             .flex_wrap()
             .gap_0p5()
             .child(
-                Label::new("Visit the")
+                Label::new("访问")
                     .size(LabelSize::Small)
                     .color(Color::Muted),
             )
@@ -257,7 +257,7 @@ fn render_api_key_provider(
                     .label_color(Color::Muted),
             )
             .child(
-                Label::new("to generate an API key.")
+                Label::new("以生成 API 密钥。")
                     .size(LabelSize::Small)
                     .color(Color::Muted),
             ),
@@ -298,7 +298,7 @@ fn render_api_key_provider(
                         .w_full()
                         .min_w_0()
                         .max_w_1_2()
-                        .child(Label::new("API Key"))
+                        .child(Label::new("API 密钥"))
                         .child(description)
                         .when_some(env_var_name, |this, env_var_name| {
                             this.child({

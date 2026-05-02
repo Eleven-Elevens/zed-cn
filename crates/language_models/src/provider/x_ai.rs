@@ -361,7 +361,7 @@ impl ConfigurationView {
                 cx,
                 "xai-0000000000000000000000000000000000000000000000000",
             )
-            .label("API key")
+            .label("API 密钥")
         });
 
         cx.observe(&state, |_, _, cx| {
@@ -445,28 +445,28 @@ impl Render for ConfigurationView {
         let api_key_section = if self.should_render_editor(cx) {
             v_flex()
                 .on_action(cx.listener(Self::save_api_key))
-                .child(Label::new("To use Zed's agent with xAI, you need to add an API key. Follow these steps:"))
+                .child(Label::new("要在 Zed 的 Agent 中使用 xAI，你需要添加 API 密钥。请按以下步骤操作："))
                 .child(
                     List::new()
                         .child(
                             ListBulletItem::new("")
-                                .child(Label::new("Create one by visiting"))
-                                .child(ButtonLink::new("xAI console", "https://console.x.ai/team/default/api-keys"))
+                                .child(Label::new("访问以下地址创建"))
+                                .child(ButtonLink::new("xAI 控制台", "https://console.x.ai/team/default/api-keys"))
                         )
                         .child(
-                            ListBulletItem::new("Paste your API key below and hit enter to start using the agent")
+                            ListBulletItem::new("将您的 API 密钥粘贴到下面并按 Enter 键开始使用代理")
                         ),
                 )
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(format!(
-                        "You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Zed."
+                        "你也可以设置 {API_KEY_ENV_VAR_NAME} 环境变量，然后重启 Zed。"
                     ))
                     .size(LabelSize::Small)
                     .color(Color::Muted),
                 )
                 .child(
-                    Label::new("Note that xAI is a custom OpenAI-compatible provider.")
+                    Label::new("请注意，xAI 是一个自定义 OpenAI 兼容提供商。")
                         .size(LabelSize::Small)
                         .color(Color::Muted),
                 )
@@ -482,7 +482,7 @@ impl Render for ConfigurationView {
         };
 
         if self.load_credentials_task.is_some() {
-            div().child(Label::new("Loading credentials…")).into_any()
+            div().child(Label::new("正在加载凭据…")).into_any()
         } else {
             v_flex().size_full().child(api_key_section).into_any()
         }

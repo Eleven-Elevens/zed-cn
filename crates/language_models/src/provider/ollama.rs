@@ -624,16 +624,16 @@ struct ConfigurationView {
 
 impl ConfigurationView {
     pub fn new(state: Entity<State>, window: &mut Window, cx: &mut Context<Self>) -> Self {
-        let api_key_editor = cx.new(|cx| InputField::new(window, cx, "63e02e...").label("API key"));
+        let api_key_editor = cx.new(|cx| InputField::new(window, cx, "63e02e...").label("API 密钥"));
 
         let api_url_editor = cx.new(|cx| {
-            let input = InputField::new(window, cx, OLLAMA_API_URL).label("API URL");
+            let input = InputField::new(window, cx, OLLAMA_API_URL).label("API 地址");
             input.set_text(&OllamaLanguageModelProvider::api_url(cx), window, cx);
             input
         });
 
         let context_window_editor = cx.new(|cx| {
-            let input = InputField::new(window, cx, "8192").label("Context Window");
+            let input = InputField::new(window, cx, "8192").label("上下文窗口");
             if let Some(context_window) = OllamaLanguageModelProvider::settings(cx).context_window {
                 input.set_text(&context_window.to_string(), window, cx);
             }
@@ -790,29 +790,29 @@ impl ConfigurationView {
         v_flex()
             .gap_2()
             .child(Label::new(
-                "Run LLMs locally on your machine with Ollama, or connect to an Ollama server. \
-                Can provide access to Llama, Mistral, Gemma, and hundreds of other models.",
+                "在你的机器上使用 Ollama 本地运行 LLM，或连接到 Ollama 服务器。\
+                可访问 Llama、Mistral、Gemma 以及数百种其他模型。",
             ))
-            .child(Label::new("To use local Ollama:"))
+            .child(Label::new("要使用本地 Ollama："))
             .child(
                 List::new()
                     .child(
                         ListBulletItem::new("")
-                            .child(Label::new("Download and install Ollama from"))
+                            .child(Label::new("从以下位置下载并安装 Ollama"))
                             .child(ButtonLink::new("ollama.com", "https://ollama.com/download")),
                     )
                     .child(
                         ListBulletItem::new("")
-                            .child(Label::new("Start Ollama and download a model:"))
+                            .child(Label::new("启动 Ollama 并下载模型："))
                             .child(Label::new("ollama run gpt-oss:20b").inline_code(cx)),
                     )
                     .child(ListBulletItem::new(
-                        "Click 'Connect' below to start using Ollama in Zed",
+                        "单击下面的“连接”即可开始在 Zed 中使用 Ollama",
                     )),
             )
             .child(Label::new(
-                "Alternatively, you can connect to an Ollama server by specifying its \
-                URL and API key (may not be required):",
+                "也可以连接到 Ollama 服务器：指定其 \
+                URL 和 API 密钥（可能不需要）：",
             ))
     }
 
@@ -831,7 +831,7 @@ impl ConfigurationView {
               .child(self.api_key_editor.clone())
               .child(
                   Label::new(
-                      format!("You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Zed.")
+                      format!("你也可以设置 {API_KEY_ENV_VAR_NAME} 环境变量，然后重启 Zed。")
                   )
                   .size(LabelSize::Small)
                   .color(Color::Muted),
@@ -865,12 +865,12 @@ impl ConfigurationView {
                         .gap_2()
                         .child(Icon::new(IconName::Check).color(Color::Success))
                         .child(v_flex().gap_1().child(Label::new(format!(
-                            "Context Window: {}",
+                            "上下文窗口：{}",
                             settings.context_window.unwrap()
                         )))),
                 )
                 .child(
-                    Button::new("reset-context-window", "Reset")
+                    Button::new("reset-context-window", "重置")
                         .label_size(LabelSize::Small)
                         .start_icon(Icon::new(IconName::Undo).size(IconSize::Small))
                         .layer(ElevationIndex::ModalSurface)
@@ -889,7 +889,7 @@ impl ConfigurationView {
                 )
                 .child(self.context_window_editor.clone())
                 .child(
-                    Label::new("Default: Model specific")
+                    Label::new("默认：模型特定")
                         .size(LabelSize::Small)
                         .color(Color::Muted),
                 )
@@ -915,7 +915,7 @@ impl ConfigurationView {
                         .child(v_flex().gap_1().child(Label::new(api_url))),
                 )
                 .child(
-                    Button::new("reset-api-url", "Reset API URL")
+                    Button::new("reset-api-url", "重置 API 地址")
                         .label_size(LabelSize::Small)
                         .start_icon(Icon::new(IconName::Undo).size(IconSize::Small))
                         .layer(ElevationIndex::ModalSurface)
@@ -969,7 +969,7 @@ impl Render for ConfigurationView {
                                     )
                                 } else {
                                     this.child(
-                                        Button::new("download_ollama_button", "Download Ollama")
+                                        Button::new("download_ollama_button", "下载 Ollama")
                                             .style(ButtonStyle::Subtle)
                                             .end_icon(
                                                 Icon::new(IconName::ArrowUpRight)
@@ -984,7 +984,7 @@ impl Render for ConfigurationView {
                                 }
                             })
                             .child(
-                                Button::new("view-models", "View All Models")
+                                Button::new("view-models", "查看所有模型")
                                     .style(ButtonStyle::Subtle)
                                     .end_icon(
                                         Icon::new(IconName::ArrowUpRight)
@@ -1004,12 +1004,12 @@ impl Render for ConfigurationView {
                                         h_flex()
                                             .gap_2()
                                             .child(Icon::new(IconName::Check).color(Color::Success))
-                                            .child(Label::new("Connected"))
+                                            .child(Label::new("已连接"))
                                             .into_any_element(),
                                     )
                                     .child(
                                         IconButton::new("refresh-models", IconName::RotateCcw)
-                                            .tooltip(Tooltip::text("Refresh Models"))
+                                            .tooltip(Tooltip::text("刷新模型"))
                                             .on_click(cx.listener(|this, _, window, cx| {
                                                 this.state.update(cx, |state, _| {
                                                     state.fetched_models.clear();
@@ -1020,7 +1020,7 @@ impl Render for ConfigurationView {
                             )
                         } else {
                             this.child(
-                                Button::new("retry_ollama_models", "Connect")
+                                Button::new("retry_ollama_models", "连接")
                                     .start_icon(
                                         Icon::new(IconName::PlayOutlined).size(IconSize::XSmall),
                                     )

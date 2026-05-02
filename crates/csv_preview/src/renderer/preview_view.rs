@@ -28,7 +28,7 @@ impl Render for CsvPreviewView {
                             FontType::Monospace => div.font_buffer(cx),
                         })
                         .text_color(cx.theme().colors().text_muted)
-                        .child("No CSV content to display")
+                        .child("没有可显示的 CSV 内容")
                         .into_any_element()
                 } else {
                     self.create_table(&self.column_widths.widths, cx)

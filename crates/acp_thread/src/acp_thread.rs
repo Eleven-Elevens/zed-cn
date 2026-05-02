@@ -5251,18 +5251,18 @@ mod tests {
         // When the real title arrives via set_title, it replaces the
         // provisional title and propagates to the connection.
         let task = thread.update(cx, |thread, cx| {
-            thread.set_title("Helping with Rust question".into(), cx)
+            thread.set_title("帮助解决 Rust 问题".into(), cx)
         });
         task.await.expect("set_title should succeed");
         thread.read_with(cx, |thread, _| {
             assert_eq!(
                 thread.title().as_ref().map(|s| s.as_str()),
-                Some("Helping with Rust question")
+                Some("帮助解决 Rust 问题")
             );
         });
         assert_eq!(
             set_title_calls.borrow().as_slice(),
-            &[SharedString::from("Helping with Rust question")],
+            &[SharedString::from("帮助解决 Rust 问题")],
             "real title should propagate to the connection"
         );
     }
@@ -5314,7 +5314,7 @@ mod tests {
         let result = thread.update(cx, |thread, cx| {
             thread.handle_session_update(
                 acp::SessionUpdate::SessionInfoUpdate(
-                    acp::SessionInfoUpdate::new().title("Helping with Rust question"),
+                    acp::SessionInfoUpdate::new().title("帮助解决 Rust 问题"),
                 ),
                 cx,
             )
@@ -5324,7 +5324,7 @@ mod tests {
         thread.read_with(cx, |thread, _| {
             assert_eq!(
                 thread.title().as_ref().map(|s| s.as_str()),
-                Some("Helping with Rust question")
+                Some("帮助解决 Rust 问题")
             );
             assert!(
                 !thread.has_provisional_title(),

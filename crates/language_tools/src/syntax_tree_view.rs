@@ -531,14 +531,14 @@ impl Render for SyntaxTreeView {
                         .max_w_3_5()
                         .map(|this| {
                             if editor_state.is_some_and(|state| !state.has_language()) {
-                                this.child(Label::new("Current editor has no associated language"))
+                                this.child(Label::new("当前编辑器没有关联语言"))
                                     .child(
                                         Label::new("尝试分配语言，或切换到其他缓冲区")
                                         .size(LabelSize::Small),
                                     )
                             } else {
-                                this.child(Label::new("Not attached to an editor")).child(
-                                    Label::new("Focus an editor to show a new tree view")
+                                this.child(Label::new("未附加到编辑器")).child(
+                                    Label::new("聚焦编辑器以显示新的树视图")
                                         .size(LabelSize::Small),
                                 )
                             }
@@ -568,7 +568,7 @@ impl Item for SyntaxTreeView {
     fn to_item_events(_: &Self::Event, _: &mut dyn FnMut(workspace::item::ItemEvent)) {}
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        "Syntax Tree".into()
+        "语法树".into()
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {
@@ -629,7 +629,7 @@ impl SyntaxTreeToolbarItemView {
 
         let view = cx.weak_entity();
         Some(
-            PopoverMenu::new("Syntax Tree")
+            PopoverMenu::new("语法树")
                 .trigger(Self::render_header(&active_layer))
                 .menu(move |window, cx| {
                     ContextMenu::build(window, cx, |mut menu, _, _| {

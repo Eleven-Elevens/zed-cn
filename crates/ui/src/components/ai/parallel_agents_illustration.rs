@@ -103,7 +103,7 @@ impl RenderOnce for ParallelAgentsIllustration {
             .col_span(3)
             .bg(cx.theme().colors().elevated_surface_background)
             .child(agent(
-                "Fix branch label".into(),
+                "修复分支标签".into(),
                 IconName::ZedAgent,
                 true,
                 vec![
@@ -157,7 +157,7 @@ impl RenderOnce for ParallelAgentsIllustration {
                     .border_b_1()
                     .border_color(cx.theme().colors().border.opacity(0.5))
                     .child(
-                        Label::new("Fix branch label")
+                        Label::new("修复分支标签")
                             .size(LabelSize::XSmall)
                             .color(Color::Muted),
                     )

@@ -1779,7 +1779,7 @@ impl PickerDelegate for FileFinderDelegate {
                 this.child(
                     h_flex()
                         .id("project-scan-indicator")
-                        .tooltip(Tooltip::text("Project Scan in Progress…"))
+                        .tooltip(Tooltip::text("项目扫描中…"))
                         .child(
                             Icon::new(IconName::LoadCircle)
                                 .color(Color::Accent)
@@ -1871,7 +1871,7 @@ impl PickerDelegate for FileFinderDelegate {
                                 })
                                 .trigger(
                                     ButtonLike::new("split-trigger")
-                                        .child(Label::new("Split…"))
+                                        .child(Label::new("拆分…"))
                                         .selected_style(ButtonStyle::Tinted(TintColor::Accent))
                                         .child(
                                             KeyBinding::for_action_in(
@@ -1912,7 +1912,7 @@ impl PickerDelegate for FileFinderDelegate {
                                 }),
                         )
                         .child(
-                            Button::new("open-selection", "Open")
+                            Button::new("open-selection", "打开")
                                 .key_binding(
                                     KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
                                         .map(|kb| kb.size(rems_from_px(12.))),
