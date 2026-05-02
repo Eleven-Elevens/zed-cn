@@ -274,14 +274,14 @@ impl GroupedModels {
         let mut entries = Vec::new();
 
         if !self.favorites.is_empty() {
-            entries.push(LanguageModelPickerEntry::Separator("Favorite".into()));
+            entries.push(LanguageModelPickerEntry::Separator("收藏".into()));
             for info in &self.favorites {
                 entries.push(LanguageModelPickerEntry::Model(info.clone()));
             }
         }
 
         if !self.recommended.is_empty() {
-            entries.push(LanguageModelPickerEntry::Separator("Recommended".into()));
+            entries.push(LanguageModelPickerEntry::Separator("推荐".into()));
             for info in &self.recommended {
                 entries.push(LanguageModelPickerEntry::Model(info.clone()));
             }
@@ -411,7 +411,7 @@ impl PickerDelegate for LanguageModelPickerDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Select a model…".into()
+        "选择模型…".into()
     }
 
     fn update_matches(
@@ -818,7 +818,7 @@ mod tests {
 
         assert!(matches!(
             entries.first(),
-            Some(LanguageModelPickerEntry::Separator(s)) if s == "Favorite"
+            Some(LanguageModelPickerEntry::Separator(s)) if s == "收藏"
         ));
 
         assert_models_eq(grouped_models.favorites, vec!["zed/gemini"]);
@@ -834,7 +834,7 @@ mod tests {
 
         assert!(matches!(
             entries.first(),
-            Some(LanguageModelPickerEntry::Separator(s)) if s == "Recommended"
+            Some(LanguageModelPickerEntry::Separator(s)) if s == "推荐"
         ));
 
         assert!(grouped_models.favorites.is_empty());

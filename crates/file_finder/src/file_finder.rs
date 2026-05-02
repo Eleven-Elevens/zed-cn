@@ -1821,7 +1821,7 @@ impl PickerDelegate for FileFinderDelegate {
                                 let focus_handle = focus_handle.clone();
                                 move |_window, cx| {
                                     Tooltip::for_action_in(
-                                        "Filter Options",
+                                        "筛选选项",
                                         &ToggleFilterMenu,
                                         &focus_handle,
                                         cx,
@@ -1838,7 +1838,7 @@ impl PickerDelegate for FileFinderDelegate {
                                     let focus_handle = focus_handle.clone();
                                     move |menu, _, _| {
                                         menu.context(focus_handle.clone())
-                                            .header("Filter Options")
+                                            .header("筛选选项")
                                             .toggleable_entry(
                                                 "Include Ignored Files",
                                                 include_ignored.unwrap_or(false),
@@ -1891,19 +1891,19 @@ impl PickerDelegate for FileFinderDelegate {
                                             move |menu, _, _| {
                                                 menu.context(focus_handle)
                                                     .action(
-                                                        "Split Left",
+                                                        "向左拆分",
                                                         pane::SplitLeft::default().boxed_clone(),
                                                     )
                                                     .action(
-                                                        "Split Right",
+                                                        "向右拆分",
                                                         pane::SplitRight::default().boxed_clone(),
                                                     )
                                                     .action(
-                                                        "Split Up",
+                                                        "向上拆分",
                                                         pane::SplitUp::default().boxed_clone(),
                                                     )
                                                     .action(
-                                                        "Split Down",
+                                                        "向下拆分",
                                                         pane::SplitDown::default().boxed_clone(),
                                                     )
                                             }

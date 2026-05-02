@@ -984,7 +984,7 @@ impl Component for Table {
     }
 
     fn description() -> Option<&'static str> {
-        Some("A table component for displaying data in rows and columns with optional styling.")
+        Some("一个表格组件，用于以可选样式显示行和列中的数据。")
     }
 
     fn preview(_window: &mut Window, _cx: &mut App) -> Option<AnyElement> {
@@ -993,10 +993,10 @@ impl Component for Table {
                 .gap_6()
                 .children(vec![
                     example_group_with_title(
-                        "Basic Tables",
+                        "基本表",
                         vec![
                             single_example(
-                                "Simple Table",
+                                "简单表",
                                 Table::new(3)
                                     .width(px(400.))
                                     .header(vec!["Name", "Age", "City"])
@@ -1006,7 +1006,7 @@ impl Component for Table {
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Two Column Table",
+                                "两栏表",
                                 Table::new(2)
                                     .header(vec!["Category", "Value"])
                                     .width(px(300.))
@@ -1018,10 +1018,10 @@ impl Component for Table {
                         ],
                     ),
                     example_group_with_title(
-                        "Styled Tables",
+                        "样式表",
                         vec![
                             single_example(
-                                "Default",
+                                "默认",
                                 Table::new(3)
                                     .width(px(400.))
                                     .header(vec!["Product", "Price", "Stock"])
@@ -1031,7 +1031,7 @@ impl Component for Table {
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Striped",
+                                "有条纹的",
                                 Table::new(3)
                                     .width(px(400.))
                                     .striped()
@@ -1045,9 +1045,9 @@ impl Component for Table {
                         ],
                     ),
                     example_group_with_title(
-                        "Mixed Content Table",
+                        "混合内容表",
                         vec![single_example(
-                            "Table with Elements",
+                            "包含元素的表",
                             Table::new(5)
                                 .width(px(840.))
                                 .header(vec!["Status", "Name", "Priority", "Deadline", "Action"])

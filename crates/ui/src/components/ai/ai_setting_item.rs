@@ -16,12 +16,12 @@ pub enum AiSettingItemStatus {
 impl AiSettingItemStatus {
     fn tooltip_text(&self) -> &'static str {
         match self {
-            Self::Stopped => "Server is stopped.",
-            Self::Starting => "Server is starting.",
-            Self::Running => "Server is active.",
-            Self::Error => "Server has an error.",
-            Self::AuthRequired => "Authentication required.",
-            Self::Authenticating => "Waiting for authorization…",
+            Self::Stopped => "服务器已停止。",
+            Self::Starting => "服务器正在启动。",
+            Self::Running => "服务器处于活动状态。",
+            Self::Error => "服务器出现错误。",
+            Self::AuthRequired => "需要认证。",
+            Self::Authenticating => "正在等待授权…",
         }
     }
 
@@ -58,9 +58,9 @@ impl AiSettingItemSource {
 
     fn tooltip_text(&self, label: &str) -> String {
         match self {
-            Self::Extension => format!("{label} was installed from an extension."),
-            Self::Registry => format!("{label} was installed from the ACP registry."),
-            Self::Custom => format!("{label} was configured manually."),
+            Self::Extension => format!("{label} 是通过扩展安装的。"),
+            Self::Registry => format!("{label} 是从 ACP 注册表安装的。"),
+            Self::Custom => format!("{label} 是手动配置的。"),
         }
     }
 }
@@ -283,7 +283,7 @@ impl Component for AiSettingItem {
 
         let examples = vec![
             single_example(
-                "MCP server with letter avatar (running)",
+                "带有字母头像的 MCP 服务器（正在运行）",
                 container()
                     .child(
                         AiSettingItem::new(
@@ -307,7 +307,7 @@ impl Component for AiSettingItem {
                     .into_any_element(),
             ),
             single_example(
-                "MCP server (stopped)",
+                "MCP 服务器（已停止）",
                 container()
                     .child(AiSettingItem::new(
                         "custom-mcp",
@@ -318,7 +318,7 @@ impl Component for AiSettingItem {
                     .into_any_element(),
             ),
             single_example(
-                "MCP server (starting, animated)",
+                "MCP 服务器（启动，动画）",
                 container()
                     .child(AiSettingItem::new(
                         "starting-mcp",
@@ -329,7 +329,7 @@ impl Component for AiSettingItem {
                     .into_any_element(),
             ),
             single_example(
-                "Agent with icon (running)",
+                "带有图标的代理（正在运行）",
                 container()
                     .child(
                         AiSettingItem::new(
@@ -357,7 +357,7 @@ impl Component for AiSettingItem {
                     .into_any_element(),
             ),
             single_example(
-                "Registry agent (starting, animated)",
+                "注册代理（启动，动画）",
                 container()
                     .child(
                         AiSettingItem::new(
@@ -375,7 +375,7 @@ impl Component for AiSettingItem {
                     .into_any_element(),
             ),
             single_example(
-                "Error with details",
+                "详细信息错误",
                 container()
                     .child(
                         AiSettingItem::new(

@@ -1106,7 +1106,7 @@ impl GitGraph {
 
         let search_editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Search commits…", window, cx);
+            editor.set_placeholder_text("搜索提交…", window, cx);
             editor
         });
 
@@ -2079,9 +2079,9 @@ impl GitGraph {
                                 let is_copied = copied_state.read(cx).is_copied();
 
                                 let (icon, icon_color, tooltip_label) = if is_copied {
-                                    (IconName::Check, Color::Success, "Email Copied!")
+                                    (IconName::Check, Color::Success, "邮箱已复制！")
                                 } else {
-                                    (IconName::Envelope, Color::Muted, "Copy Email")
+                                    (IconName::Envelope, Color::Muted, "复制邮箱")
                                 };
 
                                 let copy_email = author_email.clone();
@@ -2130,9 +2130,9 @@ impl GitGraph {
                                 let is_copied = copied_state.read(cx).is_copied();
 
                                 let (icon, icon_color, tooltip_label) = if is_copied {
-                                    (IconName::Check, Color::Success, "Commit SHA Copied!")
+                                    (IconName::Check, Color::Success, "提交 SHA 已复制！")
                                 } else {
-                                    (IconName::Hash, Color::Muted, "Copy Commit SHA")
+                                    (IconName::Hash, Color::Muted, "复制提交 SHA")
                                 };
 
                                 Button::new("sha-button", &full_sha)

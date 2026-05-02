@@ -263,10 +263,10 @@ pub fn authorize_with_sensitive_settings(
 ) -> Task<Result<()>> {
     match kind {
         Some(SensitiveSettingsKind::Local) => {
-            event_stream.authorize_always_prompt(format!("{title} (local settings)"), context, cx)
+            event_stream.authorize_always_prompt(format!("{title}（本地设置）"), context, cx)
         }
         Some(SensitiveSettingsKind::Global) => {
-            event_stream.authorize_always_prompt(format!("{title} (settings)"), context, cx)
+            event_stream.authorize_always_prompt(format!("{title}（设置）"), context, cx)
         }
         None => event_stream.authorize(title, context, cx),
     }
@@ -295,7 +295,7 @@ pub fn authorize_symlink_escapes(
         .map(|(path, target)| format!("`{}` → `{}`", path, target.display()))
         .collect::<Vec<_>>()
         .join(" and ");
-    let title = format!("{} (symlinks outside project)", targets);
+    let title = format!("{}（符号链接指向项目外）", targets);
 
     let context = ToolPermissionContext::symlink_target(
         tool_name,
@@ -486,7 +486,7 @@ pub fn authorize_file_edit(
                         vec![path_owned.to_string_lossy().to_string()],
                     );
                     event_stream.authorize_always_prompt(
-                        format!("{} (local settings)", display_description),
+                        format!("{}（本地设置）", display_description),
                         context,
                         cx,
                     )
@@ -500,7 +500,7 @@ pub fn authorize_file_edit(
                         vec![path_owned.to_string_lossy().to_string()],
                     );
                     event_stream.authorize_always_prompt(
-                        format!("{} (settings)", display_description),
+                        format!("{}（设置）", display_description),
                         context,
                         cx,
                     )

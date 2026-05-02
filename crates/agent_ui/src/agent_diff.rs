@@ -531,13 +531,13 @@ impl Item for AgentDiffPane {
     }
 
     fn tab_tooltip_text(&self, _: &App) -> Option<SharedString> {
-        Some("Agent Diff".into())
+        Some("Agent 差异".into())
     }
 
     fn tab_content(&self, params: TabContentParams, _window: &Window, cx: &App) -> AnyElement {
         let title = self.thread.read(cx).title();
         Label::new(if let Some(title) = title {
-            format!("Review: {}", title)
+            format!("审查：{}", title)
         } else {
             "Review".to_string()
         })
@@ -665,7 +665,7 @@ impl Item for AgentDiffPane {
     }
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        "Agent Diff".into()
+        "Agent 差异".into()
     }
 }
 
@@ -769,7 +769,7 @@ fn render_diff_hunk_controls(
         .block_mouse_except_scroll()
         .shadow_md()
         .children(vec![
-            Button::new(("reject", row as u64), "Reject")
+            Button::new(("reject", row as u64), "拒绝")
                 .disabled(is_created_file)
                 .key_binding(
                     KeyBinding::for_action_in(&Reject, &editor.read(cx).focus_handle(cx), cx)
@@ -793,7 +793,7 @@ fn render_diff_hunk_controls(
                         })
                     }
                 }),
-            Button::new(("keep", row as u64), "Keep")
+            Button::new(("keep", row as u64), "保留")
                 .key_binding(
                     KeyBinding::for_action_in(&Keep, &editor.read(cx).focus_handle(cx), cx)
                         .map(|kb| kb.size(rems_from_px(12.))),
@@ -1138,7 +1138,7 @@ impl Render for AgentDiffToolbar {
                             IconButton::new("review", IconName::ListTodo)
                                 .icon_size(IconSize::Small)
                                 .tooltip(Tooltip::for_action_title_in(
-                                    "Review All Files",
+                                    "审阅所有文件",
                                     &OpenAgentDiff,
                                     &editor_focus_handle,
                                 ))

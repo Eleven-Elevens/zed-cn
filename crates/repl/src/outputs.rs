@@ -231,7 +231,7 @@ impl Output {
                                             let mut multi_buffer =
                                                 MultiBuffer::singleton(buffer.clone(), cx);
 
-                                            multi_buffer.set_title("REPL Output".to_string(), cx);
+                                            multi_buffer.set_title("REPL 输出".to_string(), cx);
                                             multi_buffer
                                         });
 
@@ -323,7 +323,7 @@ impl Output {
                             let full_error = format!("{}: {}\n{}", ename, evalue, traceback_text);
 
                             CopyButton::new("copy-full-error", full_error)
-                                .tooltip_label("Copy Full Error")
+                                .tooltip_label("复制完整错误")
                         })
                         .child(
                             IconButton::new(
@@ -353,7 +353,7 @@ impl Output {
                                                 let mut multi_buffer =
                                                     MultiBuffer::singleton(buffer.clone(), cx);
                                                 multi_buffer
-                                                    .set_title("Full Error".to_string(), cx);
+                                                    .set_title("完整错误".to_string(), cx);
                                                 multi_buffer
                                             });
                                             Editor::for_multibuffer(multibuffer, None, window, cx)
@@ -536,7 +536,7 @@ impl ExecutionView {
 
             let editor = cx.new(|cx| {
                 let mut editor = Editor::single_line(window, cx);
-                editor.set_placeholder_text("Type here and press Enter", window, cx);
+                editor.set_placeholder_text("在此输入并按 Enter", window, cx);
                 if password {
                     editor.set_masked(true, cx);
                 }
@@ -784,7 +784,7 @@ impl Render for ExecutionView {
             ExecutionStatus::Queued => Label::new("Queued...")
                 .color(Color::Muted)
                 .into_any_element(),
-            ExecutionStatus::KernelErrored(error) => Label::new(format!("Kernel error: {}", error))
+            ExecutionStatus::KernelErrored(error) => Label::new(format!("内核错误：{}", error))
                 .color(Color::Error)
                 .into_any_element(),
         };

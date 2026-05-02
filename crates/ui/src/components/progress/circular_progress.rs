@@ -177,7 +177,7 @@ impl Component for CircularProgress {
 
     fn description() -> Option<&'static str> {
         Some(
-            "A circular progress indicator that displays progress as an arc growing clockwise from the top.",
+            "圆形进度指示器，将进度显示为从顶部顺时针增长的弧线。",
         )
     }
 
@@ -187,7 +187,7 @@ impl Component for CircularProgress {
 
         Some(
             example_group(vec![single_example(
-                "Examples",
+                "示例",
                 h_flex()
                     .gap_6()
                     .child(

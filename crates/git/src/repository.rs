@@ -41,7 +41,7 @@ use uuid::Uuid;
 
 pub use askpass::{AskPassDelegate, AskPassResult, AskPassSession};
 
-pub const REMOTE_CANCELLED_BY_USER: &str = "Operation cancelled by user";
+pub const REMOTE_CANCELLED_BY_USER: &str = "操作已被用户取消";
 
 /// Format string used in graph log to get initial data for the git graph
 /// %H - Full commit hash
@@ -576,7 +576,7 @@ impl FetchOptions {
 
     pub fn name(&self) -> SharedString {
         match self {
-            Self::All => "Fetch all remotes".into(),
+            Self::All => "获取所有远端".into(),
             Self::Remote(remote) => remote.name.clone(),
         }
     }

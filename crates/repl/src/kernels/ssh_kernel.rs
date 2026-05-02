@@ -215,7 +215,7 @@ impl SshRunningKernel {
                 &session_id,
             )
             .await
-            .context("Failed to create iopub connection. Is `ipykernel` installed in the remote environment? Try running `pip install ipykernel` on the remote host.")?;
+            .context("创建 iopub 连接失败。远程环境中是否已安装 `ipykernel`？请尝试在远程主机上运行 `pip install ipykernel`。")?;
 
             let peer_identity = runtimelib::peer_identity_for_session(&session_id)?;
             let shell_socket = runtimelib::create_client_shell_connection_with_identity(

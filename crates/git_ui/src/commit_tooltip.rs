@@ -376,7 +376,7 @@ impl Render for CommitTooltip {
                                         .child(Divider::vertical())
                                         .child(
                                             CopyButton::new("copy-commit-sha", full_sha)
-                                                .tooltip_label("Copy SHA"),
+                                                .tooltip_label("复制 SHA"),
                                         ),
                                 ),
                         ),

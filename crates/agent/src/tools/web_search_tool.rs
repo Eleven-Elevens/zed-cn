@@ -59,7 +59,7 @@ impl AgentTool for WebSearchTool {
         _input: Result<Self::Input, serde_json::Value>,
         _cx: &mut App,
     ) -> SharedString {
-        "Searching the Web".into()
+        "正在搜索网页".into()
     }
 
     /// We currently only support Zed Cloud as a provider.
@@ -85,7 +85,7 @@ impl AgentTool for WebSearchTool {
                 let context =
                     crate::ToolPermissionContext::new(Self::NAME, vec![input.query.clone()]);
                 event_stream.authorize(
-                    format!("Search the web for {}", MarkdownInlineCode(&input.query)),
+                    format!("联网搜索 {}", MarkdownInlineCode(&input.query)),
                     context,
                     cx,
                 )
@@ -97,7 +97,7 @@ impl AgentTool for WebSearchTool {
             let search_task = cx.update(|cx| {
                 let Some(provider) = WebSearchRegistry::read_global(cx).active_provider() else {
                     return Err(WebSearchToolOutput::Error {
-                        error: "Web search is not available.".to_string(),
+                        error: "网络搜索不可用。".to_string(),
                     });
                 };
                 Ok(provider.search(input.query, cx))
@@ -115,7 +115,7 @@ impl AgentTool for WebSearchTool {
                     }
                 }
                 _ = event_stream.cancelled_by_user().fuse() => {
-                    return Err(WebSearchToolOutput::Error { error: "Web search cancelled by user".to_string() });
+                    return Err(WebSearchToolOutput::Error { error: "网络搜索已被用户取消".to_string() });
                 }
             };
 
@@ -146,7 +146,7 @@ fn emit_update(response: &WebSearchResponse, event_stream: &ToolCallEventStream)
     };
     event_stream.update_fields(
         acp::ToolCallUpdateFields::new()
-            .title(format!("Searched the web: {result_text}"))
+            .title(format!("已搜索网页：{result_text}"))
             .content(
                 response
                     .results

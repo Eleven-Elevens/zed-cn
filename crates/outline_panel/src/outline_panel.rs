@@ -702,7 +702,7 @@ impl OutlinePanel {
         cx.new(|cx| {
             let filter_editor = cx.new(|cx| {
                 let mut editor = Editor::single_line(window, cx);
-                editor.set_placeholder_text("Search buffer symbols…", window, cx);
+                editor.set_placeholder_text("搜索缓冲区符号…", window, cx);
                 editor
             });
             let filter_update_subscription = cx.subscribe_in(
@@ -1445,17 +1445,17 @@ impl OutlinePanel {
                     ui::utils::reveal_in_file_manager_label(false),
                     Box::new(RevealInFileManager),
                 )
-                .action("Open in Terminal", Box::new(OpenInTerminal))
+                .action("在终端中打开", Box::new(OpenInTerminal))
                 .when(is_unfoldable, |menu| {
-                    menu.action("Unfold Directory", Box::new(UnfoldDirectory))
+                    menu.action("展开目录", Box::new(UnfoldDirectory))
                 })
                 .when(is_foldable, |menu| {
-                    menu.action("Fold Directory", Box::new(FoldDirectory))
+                    menu.action("折叠目录", Box::new(FoldDirectory))
                 })
                 .separator()
-                .action("Copy Path", Box::new(zed_actions::workspace::CopyPath))
+                .action("复制路径", Box::new(zed_actions::workspace::CopyPath))
                 .action(
-                    "Copy Relative Path",
+                    "复制相对路径",
                     Box::new(zed_actions::workspace::CopyRelativePath),
                 )
         });
@@ -4735,9 +4735,9 @@ impl OutlinePanel {
 
     fn render_filter_footer(&mut self, pinned: bool, cx: &mut Context<Self>) -> Div {
         let (pin_button_id, icon, icon_tooltip) = if pinned {
-            ("unpin_button", IconName::Unpin, "Unpin Outline")
+            ("unpin_button", IconName::Unpin, "取消固定大纲")
         } else {
-            ("pin_button", IconName::Pin, "Pin Active Outline")
+            ("pin_button", IconName::Pin, "固定活动大纲")
         };
 
         let has_query = self.query(cx).is_some();
@@ -4912,7 +4912,7 @@ impl Panel for OutlinePanel {
     }
 
     fn icon_tooltip(&self, _window: &Window, _: &App) -> Option<&'static str> {
-        Some("Outline Panel")
+        Some("大纲面板")
     }
 
     fn toggle_action(&self) -> Box<dyn Action> {

@@ -144,14 +144,14 @@ impl RenderOnce for ModelSelectorListItem {
                         )
                     })
                     .child(Label::new(self.title).truncate())
-                    .when(self.is_latest, |parent| parent.child(Chip::new("Latest")))
+                    .when(self.is_latest, |parent| parent.child(Chip::new("最新")))
                     .when_some(self.cost_info, |this, cost_info| {
                         let tooltip_text = if cost_info.ends_with('×') {
-                            format!("Cost Multiplier: {}", cost_info)
+                            format!("成本倍率：{}", cost_info)
                         } else if cost_info.contains('$') {
-                            format!("Cost per Million Tokens: {}", cost_info)
+                            format!("每百万 Token 成本：{}", cost_info)
                         } else {
-                            format!("Cost: {}", cost_info)
+                            format!("成本：{}", cost_info)
                         };
 
                         this.child(Chip::new(cost_info).tooltip(Tooltip::text(tooltip_text)))
@@ -163,9 +163,9 @@ impl RenderOnce for ModelSelectorListItem {
             .end_slot_on_hover(div().pr_1p5().when_some(self.on_toggle_favorite, {
                 |this, handle_click| {
                     let (icon, color, tooltip) = if is_favorite {
-                        (IconName::StarFilled, Color::Accent, "Unfavorite Model")
+                        (IconName::StarFilled, Color::Accent, "取消收藏模型")
                     } else {
-                        (IconName::Star, Color::Default, "Favorite Model")
+                        (IconName::Star, Color::Default, "收藏模型")
                     };
                     this.child(
                         IconButton::new(("toggle-favorite", self.index), icon)

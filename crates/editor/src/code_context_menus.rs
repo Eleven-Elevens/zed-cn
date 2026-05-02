@@ -1524,7 +1524,7 @@ impl CodeActionsItem {
         match self {
             Self::CodeAction { action, .. } => action.lsp_action.title().replace("\n", ""),
             Self::Task(_, task) => task.resolved_label.replace("\n", ""),
-            Self::DebugScenario(scenario) => format!("debug: {}", scenario.label),
+            Self::DebugScenario(scenario) => format!("调试：{}", scenario.label),
         }
     }
 }
@@ -1680,7 +1680,7 @@ impl CodeActionsMenu {
                         action.lsp_action.title().chars().count()
                     }
                     CodeActionsItem::DebugScenario(scenario) => {
-                        format!("debug: {}", scenario.label).chars().count()
+                        format!("调试：{}", scenario.label).chars().count()
                     }
                 })
                 .map(|(ix, _)| ix),

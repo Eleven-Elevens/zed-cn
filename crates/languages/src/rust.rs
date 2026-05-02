@@ -965,7 +965,7 @@ impl ContextProvider for RustContextProvider {
                 ..TaskTemplate::default()
             },
             TaskTemplate {
-                label: "Check all targets (workspace)".into(),
+                label: "检查所有目标（工作区）".into(),
                 command: "cargo".into(),
                 args: vec!["check".into(), "--workspace".into(), "--all-targets".into()],
                 cwd: Some("$ZED_DIRNAME".to_owned()),
@@ -1066,14 +1066,14 @@ impl ContextProvider for RustContextProvider {
                 ..TaskTemplate::default()
             },
             TaskTemplate {
-                label: "Run".into(),
+                label: "运行".into(),
                 command: "cargo".into(),
                 args: run_task_args,
                 cwd: Some(RUST_MANIFEST_DIRNAME_TASK_VARIABLE.template_value()),
                 ..TaskTemplate::default()
             },
             TaskTemplate {
-                label: "Clean".into(),
+                label: "清理".into(),
                 command: "cargo".into(),
                 args: vec!["clean".into()],
                 cwd: Some(RUST_MANIFEST_DIRNAME_TASK_VARIABLE.template_value()),

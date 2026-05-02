@@ -66,15 +66,15 @@ struct AddLlmProviderInput {
 impl AddLlmProviderInput {
     fn new(provider: LlmCompatibleProvider, window: &mut Window, cx: &mut App) -> Self {
         let provider_name =
-            single_line_input("Provider Name", provider.name(), None, 1, window, cx);
-        let api_url = single_line_input("API URL", provider.api_url(), None, 2, window, cx);
+            single_line_input("提供商名称", provider.name(), None, 1, window, cx);
+        let api_url = single_line_input("API 地址", provider.api_url(), None, 2, window, cx);
         let api_key = cx.new(|cx| {
             InputField::new(
                 window,
                 cx,
                 "000000000000000000000000000000000000000000000000",
             )
-            .label("API Key")
+            .label("API 密钥")
             .tab_index(3)
             .tab_stop(true)
             .masked(true)
@@ -119,7 +119,7 @@ impl ModelInput {
         let base_tab_index = (3 + (model_index * 4)) as isize;
 
         let model_name = single_line_input(
-            "Model Name",
+            "模型名称",
             "e.g. gpt-5, claude-opus-4, gemini-2.5-pro",
             None,
             base_tab_index + 1,
@@ -127,7 +127,7 @@ impl ModelInput {
             cx,
         );
         let max_completion_tokens = single_line_input(
-            "Max Completion Tokens",
+            "最大补全 Token 数",
             "200000",
             Some("200000"),
             base_tab_index + 2,
@@ -135,16 +135,16 @@ impl ModelInput {
             cx,
         );
         let max_output_tokens = single_line_input(
-            "Max Output Tokens",
-            "Max Output Tokens",
+            "最大输出 Token 数",
+            "最大输出 Token 数",
             Some("32000"),
             base_tab_index + 3,
             window,
             cx,
         );
         let max_tokens = single_line_input(
-            "Max Tokens",
-            "Max Tokens",
+            "最大 Token 数",
+            "最大 Token 数",
             Some("200000"),
             base_tab_index + 4,
             window,
@@ -178,7 +178,7 @@ impl ModelInput {
     fn parse(&self, cx: &App) -> Result<AvailableModel, SharedString> {
         let name = self.name.read(cx).text(cx);
         if name.is_empty() {
-            return Err(SharedString::from("Model Name cannot be empty"));
+            return Err(SharedString::from("模型名称不能为空"));
         }
         Ok(AvailableModel {
             name,
@@ -188,21 +188,21 @@ impl ModelInput {
                     .read(cx)
                     .text(cx)
                     .parse::<u64>()
-                    .map_err(|_| SharedString::from("Max Completion Tokens must be a number"))?,
+                    .map_err(|_| SharedString::from("最大补全 token 数必须是数字"))?,
             ),
             max_output_tokens: Some(
                 self.max_output_tokens
                     .read(cx)
                     .text(cx)
                     .parse::<u64>()
-                    .map_err(|_| SharedString::from("Max Output Tokens must be a number"))?,
+                    .map_err(|_| SharedString::from("最大输出 token 数必须是数字"))?,
             ),
             max_tokens: self
                 .max_tokens
                 .read(cx)
                 .text(cx)
                 .parse::<u64>()
-                .map_err(|_| SharedString::from("Max Tokens must be a number"))?,
+                .map_err(|_| SharedString::from("最大 token 数必须是数字"))?,
             reasoning_effort: None,
             capabilities: ModelCapabilities {
                 tools: self.capabilities.supports_tools.selected(),
@@ -222,7 +222,7 @@ fn save_provider_to_settings(
 ) -> Task<Result<(), SharedString>> {
     let provider_name: Arc<str> = input.provider_name.read(cx).text(cx).into();
     if provider_name.is_empty() {
-        return Task::ready(Err("Provider Name cannot be empty".into()));
+        return Task::ready(Err("提供商名称不能为空".into()));
     }
 
     if LanguageModelRegistry::read_global(cx)
@@ -234,18 +234,18 @@ fn save_provider_to_settings(
         })
     {
         return Task::ready(Err(
-            "Provider Name is already taken by another provider".into()
+            "提供商名称已被其他提供商使用".into()
         ));
     }
 
     let api_url = input.api_url.read(cx).text(cx);
     if api_url.is_empty() {
-        return Task::ready(Err("API URL cannot be empty".into()));
+        return Task::ready(Err("API 地址不能为空".into()));
     }
 
     let api_key = input.api_key.read(cx).text(cx);
     if api_key.is_empty() {
-        return Task::ready(Err("API Key cannot be empty".into()));
+        return Task::ready(Err("API 密钥不能为空".into()));
     }
 
     let mut models = Vec::new();
@@ -254,7 +254,7 @@ fn save_provider_to_settings(
         match model.parse(cx) {
             Ok(model) => {
                 if !model_names.insert(model.name.clone()) {
-                    return Task::ready(Err("Model Names must be unique".into()));
+                    return Task::ready(Err("模型名称不能重复".into()));
                 }
                 models.push(model)
             }
@@ -266,7 +266,7 @@ fn save_provider_to_settings(
     let task = cx.write_credentials(&api_url, "Bearer", api_key.as_bytes());
     cx.spawn(async move |cx| {
         task.await
-            .map_err(|_| SharedString::from("Failed to write API key to keychain"))?;
+            .map_err(|_| SharedString::from("写入 API 密钥到钥匙串失败"))?;
         cx.update(|cx| {
             update_settings_file(fs, cx, |settings, _cx| {
                 settings
@@ -616,17 +616,17 @@ mod tests {
 
         assert_eq!(
             save_provider_validation_errors("", "someurl", "somekey", vec![], cx,).await,
-            Some("Provider Name cannot be empty".into())
+            Some("提供商名称不能为空".into())
         );
 
         assert_eq!(
             save_provider_validation_errors("someprovider", "", "somekey", vec![], cx,).await,
-            Some("API URL cannot be empty".into())
+            Some("API 地址不能为空".into())
         );
 
         assert_eq!(
             save_provider_validation_errors("someprovider", "someurl", "", vec![], cx,).await,
-            Some("API Key cannot be empty".into())
+            Some("API 密钥不能为空".into())
         );
 
         assert_eq!(
@@ -638,7 +638,7 @@ mod tests {
                 cx,
             )
             .await,
-            Some("Model Name cannot be empty".into())
+            Some("模型名称不能为空".into())
         );
 
         assert_eq!(
@@ -650,7 +650,7 @@ mod tests {
                 cx,
             )
             .await,
-            Some("Max Tokens must be a number".into())
+            Some("最大 token 数必须是数字".into())
         );
 
         assert_eq!(
@@ -662,7 +662,7 @@ mod tests {
                 cx,
             )
             .await,
-            Some("Max Completion Tokens must be a number".into())
+            Some("最大补全 token 数必须是数字".into())
         );
 
         assert_eq!(
@@ -674,7 +674,7 @@ mod tests {
                 cx,
             )
             .await,
-            Some("Max Output Tokens must be a number".into())
+            Some("最大输出 token 数必须是数字".into())
         );
 
         assert_eq!(
@@ -689,7 +689,7 @@ mod tests {
                 cx,
             )
             .await,
-            Some("Model Names must be unique".into())
+            Some("模型名称不能重复".into())
         );
     }
 
@@ -718,7 +718,7 @@ mod tests {
                 cx,
             )
             .await,
-            Some("Provider Name is already taken by another provider".into())
+            Some("提供商名称已被其他提供商使用".into())
         );
     }
 

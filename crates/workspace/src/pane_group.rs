@@ -403,24 +403,24 @@ impl PaneLeaderDecorator for PaneRenderContext<'_> {
                         if Some(leader_project_id) == self.project.read(cx).remote_id() {
                             is_in_unshared_view.then(|| {
                                 Label::new(format!(
-                                    "{} is in an unshared pane",
+                                    "{} 位于未共享的窗格中",
                                     leader.user.github_login
                                 ))
                             })
                         } else {
                             leader_join_data = Some((leader_project_id, leader.user.id));
                             Some(Label::new(format!(
-                                "Follow {} to their active project",
+                                "跟随 {} 到其活动项目",
                                 leader.user.github_login,
                             )))
                         }
                     }
                     ParticipantLocation::UnsharedProject => Some(Label::new(format!(
-                        "{} is viewing an unshared Zed project",
+                        "{} 正在查看未共享的 Zed 项目",
                         leader.user.github_login
                     ))),
                     ParticipantLocation::External => Some(Label::new(format!(
-                        "{} is viewing a window outside of Zed",
+                        "{} 正在查看 Zed 之外的窗口",
                         leader.user.github_login
                     ))),
                 };
@@ -447,7 +447,7 @@ impl PaneLeaderDecorator for PaneRenderContext<'_> {
                                             cx,
                                         )
                                         .detach_and_prompt_err(
-                                            "Failed to join project",
+                                            "加入项目失败",
                                             window,
                                             cx,
                                             |error, _, _| Some(format!("{error:#}")),

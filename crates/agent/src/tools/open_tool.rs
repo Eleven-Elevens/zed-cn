@@ -53,9 +53,9 @@ impl AgentTool for OpenTool {
         _cx: &mut App,
     ) -> SharedString {
         if let Ok(input) = input {
-            format!("Open `{}`", MarkdownEscaped(&input.path_or_url)).into()
+            format!("打开 `{}`", MarkdownEscaped(&input.path_or_url)).into()
         } else {
-            "Open file or URL".into()
+            "打开文件或 URL".into()
         }
     }
 

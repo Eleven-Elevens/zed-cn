@@ -377,7 +377,7 @@ impl PickerDelegate for CommandPaletteDelegate {
     type ListItem = ListItem;
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Execute a command...".into()
+        "执行命令...".into()
     }
 
     fn select_history(

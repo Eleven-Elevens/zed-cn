@@ -127,7 +127,7 @@ fn render_inspector_id(inspector_id: &InspectorElementId, cx: &App) -> Div {
                         .tooltip(Tooltip::text(
                             "Disambiguates elements from the same source location",
                         ))
-                        .child(format!("Instance {}", inspector_id.instance_id)),
+                        .child(format!("实例 {}", inspector_id.instance_id)),
                 ),
         )
         .child(

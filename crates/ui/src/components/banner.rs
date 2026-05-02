@@ -137,13 +137,13 @@ impl Component for Banner {
     fn preview(_window: &mut Window, _cx: &mut App) -> Option<AnyElement> {
         let severity_examples = vec![
             single_example(
-                "Default",
+                "默认",
                 Banner::new()
                     .child(Label::new("This is a default banner with no customization"))
                     .into_any_element(),
             ),
             single_example(
-                "Info",
+                "信息",
                 Banner::new()
                     .severity(Severity::Info)
                     .child(Label::new("This is an informational message"))
@@ -154,7 +154,7 @@ impl Component for Banner {
                     .into_any_element(),
             ),
             single_example(
-                "Success",
+                "成功",
                 Banner::new()
                     .severity(Severity::Success)
                     .child(Label::new("Operation completed successfully"))
@@ -162,7 +162,7 @@ impl Component for Banner {
                     .into_any_element(),
             ),
             single_example(
-                "Warning",
+                "警告",
                 Banner::new()
                     .severity(Severity::Warning)
                     .child(Label::new("Your settings file uses deprecated settings"))
@@ -170,7 +170,7 @@ impl Component for Banner {
                     .into_any_element(),
             ),
             single_example(
-                "Error",
+                "错误",
                 Banner::new()
                     .severity(Severity::Error)
                     .child(Label::new("Connection error: unable to connect to server"))

@@ -5019,7 +5019,7 @@ impl Repository {
                             .await
                         }
                         Ok(RepositoryState::Remote(_)) => {
-                            Err("Git graph is not supported for collab yet".into())
+                            Err("协作模式暂不支持 Git 图".into())
                         }
                         Err(e) => Err(SharedString::from(e)),
                     };

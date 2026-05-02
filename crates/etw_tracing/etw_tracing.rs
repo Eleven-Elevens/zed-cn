@@ -86,8 +86,8 @@ fn show_etw_status_notification(cx: &mut App, status: Result<StatusMessage>, out
             let display_path = output_path.display().to_string();
             show_etw_notification_with_action(
                 cx,
-                format!("ETW trace saved to {display_path}"),
-                "Show in File Manager",
+                format!("ETW 跟踪已保存到 {display_path}"),
+                "在文件管理器中显示",
                 move |_window, cx| {
                     cx.reveal_path(&output_path);
                     cx.emit(DismissEvent);
@@ -98,8 +98,8 @@ fn show_etw_status_notification(cx: &mut App, status: Result<StatusMessage>, out
             let display_path = output_path.display().to_string();
             show_etw_notification_with_action(
                 cx,
-                format!("ETW recording timed out. Trace saved to {display_path}"),
-                "Show in File Manager",
+                format!("ETW 录制超时。跟踪已保存到 {display_path}"),
+                "在文件管理器中显示",
                 move |_window, cx| {
                     cx.reveal_path(&output_path);
                     cx.emit(DismissEvent);
@@ -107,13 +107,13 @@ fn show_etw_status_notification(cx: &mut App, status: Result<StatusMessage>, out
             );
         }
         Ok(StatusMessage::Cancelled) => {
-            show_etw_notification(cx, "ETW recording cancelled");
+            show_etw_notification(cx, "ETW 录制已取消");
         }
         Ok(_) => {
-            show_etw_notification(cx, "ETW recording ended unexpectedly");
+            show_etw_notification(cx, "ETW 录制意外结束");
         }
         Err(error) => {
-            show_etw_notification(cx, format!("Failed to complete ETW recording: {error:#}"));
+            show_etw_notification(cx, format!("ETW 录制完成失败：{error:#}"));
         }
     }
 }
@@ -132,15 +132,15 @@ pub fn init(cx: &mut App) {
     cx.on_action(|_: &SaveEtwTrace, cx: &mut App| {
         let session = cx.global_mut::<GlobalEtwSession>().0.as_mut();
         let Some(session) = session else {
-            show_etw_notification(cx, "No active ETW recording to stop");
+            show_etw_notification(cx, "没有可停止的活动 ETW 录制");
             return;
         };
         match send_json(&mut session.writer, &Command::Save) {
             Ok(()) => {
-                show_etw_notification(cx, "Stopping ETW recording...");
+                show_etw_notification(cx, "正在停止 ETW 录制...");
             }
             Err(error) => {
-                show_etw_notification(cx, format!("Failed to stop ETW recording: {error:#}"));
+                show_etw_notification(cx, format!("停止 ETW 录制失败：{error:#}"));
             }
         }
     });
@@ -148,15 +148,15 @@ pub fn init(cx: &mut App) {
     cx.on_action(|_: &CancelEtwTrace, cx: &mut App| {
         let session = cx.global_mut::<GlobalEtwSession>().0.as_mut();
         let Some(session) = session else {
-            show_etw_notification(cx, "No active ETW recording to cancel");
+            show_etw_notification(cx, "没有可取消的活动 ETW 录制");
             return;
         };
         match send_json(&mut session.writer, &Command::Cancel) {
             Ok(()) => {
-                show_etw_notification(cx, "Cancelling ETW recording...");
+                show_etw_notification(cx, "正在取消 ETW 录制...");
             }
             Err(error) => {
-                show_etw_notification(cx, format!("Failed to cancel ETW recording: {error:#}"));
+                show_etw_notification(cx, format!("取消 ETW 录制失败：{error:#}"));
             }
         }
     });
@@ -164,7 +164,7 @@ pub fn init(cx: &mut App) {
 
 fn start_etw_recording(cx: &mut App, heap_pid: Option<u32>) {
     if has_active_etw_session(cx) {
-        show_etw_notification(cx, "ETW recording is already in progress");
+        show_etw_notification(cx, "ETW 录制正在进行中");
         return;
     }
     let save_dialog = cx.prompt_for_new_path(&PathBuf::default(), Some("zed-trace.etl"));
@@ -174,7 +174,7 @@ fn start_etw_recording(cx: &mut App, heap_pid: Option<u32>) {
             Ok(Ok(None)) => return,
             Ok(Err(error)) => {
                 cx.update(|cx| {
-                    show_etw_notification(cx, format!("Failed to pick save location: {error:#}"));
+                    show_etw_notification(cx, format!("选择保存位置失败：{error:#}"));
                 });
                 return;
             }

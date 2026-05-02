@@ -621,13 +621,13 @@ impl CommitView {
     fn apply_stash(workspace: &mut Workspace, window: &mut Window, cx: &mut App) {
         Self::stash_action(
             workspace,
-            "Apply",
+            "应用",
             window,
             cx,
             async move |repository, sha, stash, commit_view, workspace, cx| {
                 let result = repository.update(cx, |repo, cx| {
                     if !stash_matches_index(&sha, stash, repo) {
-                        return Err(anyhow::anyhow!("Stash has changed, not applying"));
+                        return Err(anyhow::anyhow!("贮藏已变化，未应用"));
                     }
                     Ok(repo.stash_apply(Some(stash), cx))
                 });
@@ -648,13 +648,13 @@ impl CommitView {
     fn pop_stash(workspace: &mut Workspace, window: &mut Window, cx: &mut App) {
         Self::stash_action(
             workspace,
-            "Pop",
+            "弹出",
             window,
             cx,
             async move |repository, sha, stash, commit_view, workspace, cx| {
                 let result = repository.update(cx, |repo, cx| {
                     if !stash_matches_index(&sha, stash, repo) {
-                        return Err(anyhow::anyhow!("Stash has changed, pop aborted"));
+                        return Err(anyhow::anyhow!("贮藏已变化，已中止弹出"));
                     }
                     Ok(repo.stash_pop(Some(stash), cx))
                 });
@@ -675,13 +675,13 @@ impl CommitView {
     fn remove_stash(workspace: &mut Workspace, window: &mut Window, cx: &mut App) {
         Self::stash_action(
             workspace,
-            "Drop",
+            "删除",
             window,
             cx,
             async move |repository, sha, stash, commit_view, workspace, cx| {
                 let result = repository.update(cx, |repo, cx| {
                     if !stash_matches_index(&sha, stash, repo) {
-                        return Err(anyhow::anyhow!("Stash has changed, drop aborted"));
+                        return Err(anyhow::anyhow!("贮藏已变化，已中止删除"));
                     }
                     Ok(repo.stash_drop(Some(stash), cx))
                 });
@@ -723,11 +723,12 @@ impl CommitView {
             return;
         };
         let sha = commit_view.read(cx).commit.sha.clone();
+        let prompt = format!("{} stash@{{{}}}？", str_action, stash);
         let answer = window.prompt(
             PromptLevel::Info,
-            &format!("{} stash@{{{}}}?", str_action, stash),
+            &prompt,
             None,
-            &[str_action, "Cancel"],
+            &[str_action, "取消"],
             cx,
         );
 

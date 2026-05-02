@@ -677,9 +677,9 @@ impl PickerDelegate for TasksModalDelegate {
                         .boxed_clone();
                         this.child({
                             let spawn_oneshot_label = if current_modifiers.secondary() {
-                                "Spawn Oneshot Without History"
+                                "生成一次性任务（不带历史）"
                             } else {
-                                "Spawn Oneshot"
+                                "生成一次性任务"
                             };
 
                             Button::new("spawn-onehshot", spawn_oneshot_label)
@@ -691,9 +691,9 @@ impl PickerDelegate for TasksModalDelegate {
                     } else if current_modifiers.secondary() {
                         this.child({
                             let label = if is_recent_selected {
-                                "Rerun Without History"
+                                "重新运行（不带历史）"
                             } else {
-                                "Spawn Without History"
+                                "生成任务（不带历史）"
                             };
                             Button::new("spawn", label)
                                 .key_binding(KeyBinding::for_action(&menu::SecondaryConfirm, cx))
@@ -703,8 +703,11 @@ impl PickerDelegate for TasksModalDelegate {
                         })
                     } else {
                         this.child({
-                            let run_entry_label =
-                                if is_recent_selected { "Rerun" } else { "Spawn" };
+                            let run_entry_label = if is_recent_selected {
+                                "重新运行"
+                            } else {
+                                "生成任务"
+                            };
 
                             Button::new("spawn", run_entry_label)
                                 .key_binding(KeyBinding::for_action(&menu::Confirm, cx))

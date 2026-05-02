@@ -508,7 +508,7 @@ impl Sidebar {
 
         let filter_editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Search…", window, cx);
+            editor.set_placeholder_text("搜索…", window, cx);
             editor
         });
 
@@ -1849,7 +1849,7 @@ impl Sidebar {
 
                         let menu = menu.when(show_multi_project_entries, |this| {
                             this.entry(
-                                "Open Project in New Window",
+                                "在新窗口中打开项目",
                                 Some(Box::new(workspace::MoveProjectToNewWindow)),
                                 {
                                     let project_group_key = project_group_key.clone();
@@ -1935,7 +1935,7 @@ impl Sidebar {
                         let menu = if open_workspaces.is_empty() {
                             menu
                         } else {
-                            let mut menu = menu.separator().header("Open Worktrees");
+                            let mut menu = menu.separator().header("打开的工作树");
 
                             for (
                                 workspace_index,
@@ -2050,7 +2050,7 @@ impl Sidebar {
                         let project_group_key = project_group_key.clone();
                         let remove_multi_workspace = multi_workspace.clone();
                         menu.separator()
-                            .entry("Remove Project", None, move |window, cx| {
+                            .entry("移除项目", None, move |window, cx| {
                                 remove_multi_workspace
                                     .update(cx, |multi_workspace, cx| {
                                         multi_workspace
@@ -2837,7 +2837,7 @@ impl Sidebar {
                             path_replacements.push((row.worktree_path.clone(), restored_path));
                         }
                         Err(error) => {
-                            log::error!("Failed to restore worktree: {error:#}");
+                            log::error!("恢复 worktree 失败：{error:#}");
                             this.update_in(cx, |this, _window, cx| {
                                 this.restoring_tasks.remove(&thread_id);
                                 if let Some(weak_archive_view) = &weak_archive_view {
@@ -2856,7 +2856,7 @@ impl Sidebar {
                                             Toast::new(
                                                 NotificationId::unique::<RestoreWorktreeErrorToast>(
                                                 ),
-                                                format!("Failed to restore worktree: {error:#}"),
+                                                format!("恢复 worktree 失败：{error:#}"),
                                             )
                                             .autohide(),
                                             cx,
@@ -4684,7 +4684,7 @@ impl Sidebar {
             .join(" and ");
 
         let description = format!(
-            "Import threads from {} to continue where you left off.",
+            "从 {} 导入线程，从上次离开的地方继续。",
             channel_names
         );
 

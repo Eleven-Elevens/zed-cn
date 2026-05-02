@@ -1084,7 +1084,7 @@ fn initialize_settings(
                         project_id: REMOTE_SERVER_PROJECT_ID,
                         notification_id: "server-settings-failed".to_string(),
                         message: format!(
-                            "Error in settings on remote host {:?}: {}",
+                            "远程主机 {:?} 上的设置有错误：{}",
                             paths::settings_file(),
                             e
                         ),

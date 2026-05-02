@@ -250,10 +250,10 @@ impl LanguageModel for CopilotChatLanguageModel {
             .iter()
             .map(|level| {
                 let name = match level.as_str() {
-                    "low" => "Low".into(),
-                    "medium" => "Medium".into(),
+                    "low" => "低".into(),
+                    "medium" => "中".into(),
                     "high" => "High".into(),
-                    "xhigh" => "Extra High".into(),
+                    "xhigh" => "极高".into(),
                     _ => language_model::SharedString::from(level.clone()),
                 };
                 LanguageModelEffortLevel {

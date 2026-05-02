@@ -151,7 +151,7 @@ impl PickerDelegate for SidebarRecentProjectsDelegate {
     type ListItem = AnyElement;
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Search recent projects…".into()
+        "搜索最近项目…".into()
     }
 
     fn render_editor(
@@ -296,7 +296,7 @@ impl PickerDelegate for SidebarRecentProjectsDelegate {
                             .await
                     })
                     .detach_and_prompt_err(
-                        "Failed to open project",
+                        "打开项目失败",
                         window,
                         cx,
                         |_, _, _| None,
@@ -311,9 +311,9 @@ impl PickerDelegate for SidebarRecentProjectsDelegate {
 
     fn no_matches_text(&self, _window: &mut Window, _cx: &mut App) -> Option<SharedString> {
         let text = if self.workspaces.is_empty() {
-            "Recently opened projects will show up here"
+            "最近打开的项目会显示在这里"
         } else {
-            "No matches"
+            "无匹配项"
         };
         Some(text.into())
     }

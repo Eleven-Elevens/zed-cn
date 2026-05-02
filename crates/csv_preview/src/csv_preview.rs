@@ -265,9 +265,9 @@ impl Item for CsvPreviewView {
                 local_file
                     .abs_path(cx)
                     .file_name()
-                    .map(|name| format!("Preview {}", name.to_string_lossy()).into())
+                    .map(|name| format!("预览 {}", name.to_string_lossy()).into())
             })
-            .unwrap_or_else(|| SharedString::from("CSV Preview"))
+            .unwrap_or_else(|| SharedString::from("CSV 预览"))
     }
 }
 
@@ -299,7 +299,7 @@ impl PerformanceMetrics {
             .map(|(name, (duration, time))| {
                 let took = duration.as_secs_f32() * 1000.;
                 let ago = time.elapsed().as_secs();
-                format!("{name}: {took:.2}ms {ago}s ago")
+                format!("{name}: {took:.2}ms，{ago} 秒前")
             })
             .collect::<Vec<_>>()
             .join("\n")

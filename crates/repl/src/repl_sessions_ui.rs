@@ -184,7 +184,7 @@ impl Item for ReplSessionsPage {
     type Event = ItemEvent;
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        "REPL Sessions".into()
+        "REPL 会话".into()
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {
@@ -219,9 +219,9 @@ impl Render for ReplSessionsPage {
         // install kernels. It can be assumed they don't have a running kernel if we have no
         // specifications.
         if kernel_specifications.is_empty() {
-            let instructions = "To start interactively running code in your editor, you need to install and configure Jupyter kernels.";
+            let instructions = "要在编辑器中交互式运行代码，需要安装并配置 Jupyter 内核。";
 
-            return ReplSessionsContainer::new("No Jupyter Kernels Available")
+            return ReplSessionsContainer::new("没有可用的 Jupyter 内核")
                 .child(Label::new(instructions))
                 .child(
                     h_flex().w_full().p_4().justify_center().gap_2().child(
@@ -241,16 +241,16 @@ impl Render for ReplSessionsPage {
 
         // When there are no sessions, show the command to run code in an editor
         if sessions.is_empty() {
-            let instructions = "To run code in a Jupyter kernel, select some code and use the 'repl::Run' command.";
+            let instructions = "要在 Jupyter 内核中运行代码，请选择一些代码并使用 'repl::Run' 命令。";
 
-            return ReplSessionsContainer::new("No Jupyter Kernel Sessions").child(
+            return ReplSessionsContainer::new("没有 Jupyter 内核会话").child(
                 v_flex()
                     .child(Label::new(instructions))
                     .child(KeyBinding::for_action(&Run, cx)),
             );
         }
 
-        ReplSessionsContainer::new("Jupyter Kernel Sessions").children(sessions)
+        ReplSessionsContainer::new("Jupyter 内核会话").children(sessions)
     }
 }
 

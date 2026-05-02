@@ -619,7 +619,7 @@ impl Item for ProjectSearchView {
             .is_empty()
             .not()
             .then(|| query_text.into())
-            .or_else(|| Some("Project Search".into()))
+            .or_else(|| Some("项目搜索".into()))
     }
 
     fn act_as_type<'a>(
@@ -663,7 +663,7 @@ impl Item for ProjectSearchView {
 
         last_query
             .filter(|query| !query.is_empty())
-            .unwrap_or_else(|| "Project Search".into())
+            .unwrap_or_else(|| "项目搜索".into())
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {
@@ -977,7 +977,7 @@ impl ProjectSearchView {
 
         let query_editor = cx.new(|cx| {
             let mut editor = Editor::auto_height(1, 4, window, cx);
-            editor.set_placeholder_text("Search all files…", window, cx);
+            editor.set_placeholder_text("搜索所有文件…", window, cx);
             editor.set_use_autoclose(false);
             editor.set_use_selection_highlight(false);
             editor.set_text(query_text, window, cx);
@@ -1002,7 +1002,7 @@ impl ProjectSearchView {
         );
         let replacement_editor = cx.new(|cx| {
             let mut editor = Editor::auto_height(1, 4, window, cx);
-            editor.set_placeholder_text("Replace in project…", window, cx);
+            editor.set_placeholder_text("在项目中替换…", window, cx);
             if let Some(text) = replacement_text {
                 editor.set_text(text, window, cx);
             }
@@ -1032,7 +1032,7 @@ impl ProjectSearchView {
 
         let included_files_editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Include: crates/**/*.toml", window, cx);
+            editor.set_placeholder_text("包含：crates/**/*.toml", window, cx);
 
             editor
         });
@@ -1045,7 +1045,7 @@ impl ProjectSearchView {
 
         let excluded_files_editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Exclude: vendor/*, *.lock", window, cx);
+            editor.set_placeholder_text("排除：vendor/*, *.lock", window, cx);
 
             editor
         });
@@ -1321,11 +1321,11 @@ impl ProjectSearchView {
             let should_prompt_to_save = !skip_save_on_close && !will_autosave && is_dirty;
 
             let should_search = if should_prompt_to_save {
-                let options = &["Save", "Don't Save", "Cancel"];
+                let options = &["保存", "不保存", "取消"];
                 let result_channel = this.update_in(cx, |_, window, cx| {
                     window.prompt(
                         gpui::PromptLevel::Warning,
-                        "Project search buffer contains unsaved edits. Do you want to save it?",
+                        "项目搜索缓冲区包含未保存的编辑。是否保存？",
                         None,
                         options,
                         cx,

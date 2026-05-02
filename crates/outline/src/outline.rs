@@ -258,7 +258,7 @@ impl PickerDelegate for OutlineViewDelegate {
     type ListItem = ListItem;
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Search buffer symbols...".into()
+        "搜索缓冲区符号...".into()
     }
 
     fn match_count(&self) -> usize {

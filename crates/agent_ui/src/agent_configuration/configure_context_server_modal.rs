@@ -199,7 +199,7 @@ impl ConfigurationSource {
             } => {
                 let text = editor
                     .as_ref()
-                    .context("No output available")?
+                    .context("没有可用输出")?
                     .read(cx)
                     .text(cx);
                 let settings = serde_json_lenient::from_str::<serde_json::Value>(&text)?;
@@ -308,7 +308,7 @@ fn parse_http_input(text: &str) -> Result<(ContextServerId, String, HashMap<Stri
     }
     let value: HashMap<String, Temp> = serde_json_lenient::from_str(text)?;
     if value.len() != 1 {
-        anyhow::bail!("Expected exactly one context server configuration");
+        anyhow::bail!("应只包含一个上下文服务器配置");
     }
 
     let (key, value) = value.into_iter().next().unwrap();
@@ -332,7 +332,7 @@ fn resolve_context_server_extension(
         let installation = descriptor
             .configuration(worktree_store, cx)
             .await
-            .context("Failed to resolve context server configuration")
+            .context("解析上下文服务器配置失败")
             .log_err()
             .flatten();
 
@@ -407,7 +407,7 @@ impl ConfigureContextServerModal {
                     .map(|_| ContextServerSettings::default_extension())
             })
         else {
-            return Task::ready(Err(anyhow::anyhow!("Context server not found")));
+            return Task::ready(Err(anyhow::anyhow!("未找到上下文服务器")));
         };
 
         window.spawn(cx, async move |cx| {
@@ -450,7 +450,7 @@ impl ConfigureContextServerModal {
 
             match target {
                 Some(target) => Self::show_modal(target, language_registry, workspace, cx).await,
-                None => Err(anyhow::anyhow!("Failed to resolve context server")),
+                None => Err(anyhow::anyhow!("解析上下文服务器失败")),
             }
         })
     }
@@ -628,7 +628,7 @@ impl ConfigureContextServerModal {
             .update(cx, {
                 |workspace, cx| {
                     let status_toast = StatusToast::new(
-                        format!("{} configured successfully.", id.0),
+                        format!("已成功配置 {}。", id.0),
                         cx,
                         |this, _cx| {
                             this.icon(
@@ -649,8 +649,8 @@ impl ConfigureContextServerModal {
 
 fn parse_input(text: &str) -> Result<(ContextServerId, ContextServerCommand)> {
     let value: serde_json::Value = serde_json_lenient::from_str(text)?;
-    let object = value.as_object().context("Expected object")?;
-    anyhow::ensure!(object.len() == 1, "Expected exactly one key-value pair");
+    let object = value.as_object().context("应为对象")?;
+    anyhow::ensure!(object.len() == 1, "应只有一个键值对");
     let (context_server_name, value) = object.into_iter().next().unwrap();
     let command: ContextServerCommand = serde_json::from_value(value.clone())?;
     Ok((ContextServerId(context_server_name.clone().into()), command))
@@ -676,16 +676,16 @@ impl EventEmitter<DismissEvent> for ConfigureContextServerModal {}
 impl ConfigureContextServerModal {
     fn render_modal_header(&self) -> ModalHeader {
         let text: SharedString = match &self.source {
-            ConfigurationSource::New { .. } => "Add MCP Server".into(),
-            ConfigurationSource::Existing { .. } => "Configure MCP Server".into(),
-            ConfigurationSource::Extension { id, .. } => format!("Configure {}", id.0).into(),
+            ConfigurationSource::New { .. } => "添加 MCP 服务器".into(),
+            ConfigurationSource::Existing { .. } => "配置 MCP 服务器".into(),
+            ConfigurationSource::Extension { id, .. } => format!("配置 {}", id.0).into(),
         };
         ModalHeader::new().headline(text)
     }
 
     fn render_modal_description(&self, window: &mut Window, cx: &mut Context<Self>) -> AnyElement {
         const MODAL_DESCRIPTION: &str =
-            "Check the server docs for required arguments and environment variables.";
+            "查看服务器文档，了解所需参数和环境变量。";
 
         if let ConfigurationSource::Extension {
             installation_instructions: Some(installation_instructions),
@@ -739,7 +739,7 @@ impl ConfigureContextServerModal {
                 .border_b_1()
                 .border_color(cx.theme().colors().border.opacity(0.5))
                 .child(
-                    tab("Local", !is_http).on_click(cx.listener(|this, _, window, cx| {
+                    tab("本地", !is_http).on_click(cx.listener(|this, _, window, cx| {
                         if let ConfigurationSource::New { editor, is_http } = &mut this.source {
                             if *is_http {
                                 *is_http = false;
@@ -752,7 +752,7 @@ impl ConfigureContextServerModal {
                     })),
                 )
                 .child(
-                    tab("Remote", is_http).on_click(cx.listener(|this, _, window, cx| {
+                    tab("远程", is_http).on_click(cx.listener(|this, _, window, cx| {
                         if let ConfigurationSource::New { editor, is_http } = &mut this.source {
                             if !*is_http {
                                 *is_http = true;
@@ -997,13 +997,13 @@ impl Render for ConfigureContextServerModal {
                                         .child(match &self.state {
                                             State::Idle => div(),
                                             State::Waiting => {
-                                                self.render_loading("Connecting Server…")
+                                                self.render_loading("正在连接服务器…")
                                             }
                                             State::AuthRequired { server_id } => {
                                                 self.render_auth_required(&server_id.clone(), cx)
                                             }
                                             State::Authenticating { .. } => {
-                                                self.render_loading("Authenticating…")
+                                                self.render_loading("正在认证…")
                                             }
                                             State::Error(error) => {
                                                 Self::render_modal_error(error.clone())
@@ -1046,7 +1046,7 @@ fn wait_for_context_server(
             }
             ContextServerStatus::Stopped => {
                 if let Some(tx) = tx.lock().take() {
-                    let _ = tx.send(Err("Context server stopped running".into()));
+                    let _ = tx.send(Err("上下文服务器已停止运行".into()));
                 }
             }
             ContextServerStatus::Error(error) => {
@@ -1065,10 +1065,10 @@ fn wait_for_context_server(
         match result {
             futures::future::Either::Left((Ok(inner), _)) => inner,
             futures::future::Either::Left((Err(_), _)) => {
-                Err(Arc::from("Context server store was dropped"))
+                Err(Arc::from("上下文服务器存储已被释放"))
             }
             futures::future::Either::Right(_) => Err(Arc::from(format!(
-                "Timed out waiting for context server `{}` to start. Check the Zed log for details.",
+                "等待上下文服务器 `{}` 启动超时。详情请查看 Zed 日志。",
                 context_server_id_for_timeout
             ))),
         }

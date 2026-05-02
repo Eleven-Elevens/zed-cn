@@ -96,7 +96,7 @@ impl Component for Facepile {
 
     fn description() -> Option<&'static str> {
         Some(
-            "Displays a collection of avatars or initials in a compact format. Often used to represent active collaborators or a subset of contributors.",
+            "以紧凑格式显示头像或缩写的集合。通常用于代表活跃的协作者或贡献者的子集。",
         )
     }
 
@@ -105,10 +105,10 @@ impl Component for Facepile {
             v_flex()
                 .gap_6()
                 .children(vec![example_group_with_title(
-                    "Facepile Examples",
+                    "面堆示例",
                     vec![
                         single_example(
-                            "Default",
+                            "默认",
                             Facepile::new(
                                 EXAMPLE_FACES
                                     .iter()
@@ -118,7 +118,7 @@ impl Component for Facepile {
                             .into_any_element(),
                         ),
                         single_example(
-                            "Custom Size",
+                            "自定义尺寸",
                             Facepile::new(
                                 EXAMPLE_FACES
                                     .iter()

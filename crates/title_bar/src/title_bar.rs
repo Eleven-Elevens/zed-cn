@@ -647,7 +647,7 @@ impl TitleBar {
                 Tooltip::with_meta(
                     "You're in Restricted Mode",
                     Some(&ToggleWorktreeSecurity),
-                    "Mark this project as trusted and unlock all features",
+                    "将此项目标记为受信任并解锁所有功能",
                     cx,
                 )
             })
@@ -698,11 +698,11 @@ impl TitleBar {
                 .label_size(LabelSize::Small)
                 .tooltip(move |_, cx| {
                     let tooltip_title = format!(
-                        "{} is sharing this project. Click to follow.",
+                        "{} 正在共享此项目。点击跟随。",
                         host_user.github_login
                     );
 
-                    Tooltip::with_meta(tooltip_title, None, "Click to Follow", cx)
+                    Tooltip::with_meta(tooltip_title, None, "点击跟随", cx)
                 })
                 .on_click({
                     let host_peer_id = host.peer_id;
@@ -731,7 +731,7 @@ impl TitleBar {
         let display_name = if let Some(ref name) = name {
             util::truncate_and_trailoff(name, MAX_PROJECT_NAME_LENGTH)
         } else {
-            "Open Recent Project".to_string()
+            "打开最近项目".to_string()
         };
 
         let is_sidebar_open = self
@@ -922,9 +922,9 @@ impl TitleBar {
 
         let display_label: SharedString = if let Some(ref name) = creation_in_progress {
             if is_switch {
-                format!("Loading {}…", name).into()
+                format!("正在加载 {}…", name).into()
             } else {
-                format!("Creating {}…", name).into()
+                format!("正在创建 {}…", name).into()
             }
         } else {
             worktree_label.clone()
@@ -957,7 +957,7 @@ impl TitleBar {
                         Tooltip::with_meta(
                             "Worktree",
                             Some(&zed_actions::git::Worktree),
-                            format!("Currently In Use: {}", worktree_label),
+                            format!("当前使用中：{}", worktree_label),
                             cx,
                         )
                     },
@@ -1008,9 +1008,9 @@ impl TitleBar {
                     })
                     .trigger_with_tooltip(trigger, move |_window, cx| {
                         let meta = if is_detached_head {
-                            format!("Detached HEAD: {}", branch_tooltip_label)
+                            format!("游离 HEAD：{}", branch_tooltip_label)
                         } else {
-                            format!("Currently Checked Out: {}", branch_tooltip_label)
+                            format!("当前检出：{}", branch_tooltip_label)
                         };
                         Tooltip::with_meta(
                             "Branch & Stash",
@@ -1111,13 +1111,13 @@ impl TitleBar {
             client::Status::UpgradeRequired => {
                 let auto_updater = auto_update::AutoUpdater::get(cx);
                 let label = match auto_updater.map(|auto_update| auto_update.read(cx).status()) {
-                    Some(AutoUpdateStatus::Updated { .. }) => "Please restart Zed to Collaborate",
+                    Some(AutoUpdateStatus::Updated { .. }) => "请重启 Zed 以使用协作",
                     Some(AutoUpdateStatus::Installing { .. })
                     | Some(AutoUpdateStatus::Downloading { .. })
-                    | Some(AutoUpdateStatus::Checking) => "Updating...",
+                    | Some(AutoUpdateStatus::Checking) => "正在更新...",
                     Some(AutoUpdateStatus::Idle)
                     | Some(AutoUpdateStatus::Errored { .. })
-                    | None => "Please update Zed to Collaborate",
+                    | None => "请更新 Zed 以使用协作",
                 };
 
                 Some(
@@ -1280,7 +1280,7 @@ impl TitleBar {
                         .separator()
                     })
                     .when(has_organization, |this| {
-                        let mut this = this.header("Organization");
+                        let mut this = this.header("组织");
 
                         for (organization, plan) in &organizations {
                             let organization = organization.clone();
@@ -1331,27 +1331,27 @@ impl TitleBar {
 
                         this.separator()
                     })
-                    .action("Settings", zed_actions::OpenSettings.boxed_clone())
-                    .action("Keymap", Box::new(zed_actions::OpenKeymap))
+                    .action("设置", zed_actions::OpenSettings.boxed_clone())
+                    .action("键位映射", Box::new(zed_actions::OpenKeymap))
                     .action(
-                        "Themes…",
+                        "主题…",
                         zed_actions::theme_selector::Toggle::default().boxed_clone(),
                     )
                     .action(
-                        "Icon Themes…",
+                        "图标主题…",
                         zed_actions::icon_theme_selector::Toggle::default().boxed_clone(),
                     )
                     .action(
-                        "Extensions",
+                        "扩展",
                         zed_actions::Extensions::default().boxed_clone(),
                     )
                     .when(ai_enabled, |menu| {
                         let fs = fs.clone();
                         menu.separator()
-                            .submenu("Panel Layout", move |menu, _window, _cx| {
+                            .submenu("面板布局", move |menu, _window, _cx| {
                                 let fs = fs.clone();
                                 menu.toggleable_entry(
-                                    "Classic",
+                                    "经典",
                                     is_editor,
                                     IconPosition::Start,
                                     None,
@@ -1366,7 +1366,7 @@ impl TitleBar {
                                         }
                                     },
                                 )
-                                .toggleable_entry("Agentic", is_agent, IconPosition::Start, None, {
+                                .toggleable_entry("Agent 模式", is_agent, IconPosition::Start, None, {
                                     let fs = fs.clone();
                                     move |_window, cx| {
                                         drop(AgentSettings::set_layout(
@@ -1378,7 +1378,7 @@ impl TitleBar {
                                 })
                                 .when(is_custom, |menu| {
                                     menu.item(
-                                        ContextMenuEntry::new("Custom")
+                                        ContextMenuEntry::new("自定义")
                                             .toggleable(IconPosition::Start, true)
                                             .disabled(true),
                                     )
@@ -1387,7 +1387,7 @@ impl TitleBar {
                     })
                     .when(is_signed_in, |this| {
                         this.separator()
-                            .action("Sign Out", client::SignOut.boxed_clone())
+                            .action("退出登录", client::SignOut.boxed_clone())
                     })
                 })
                 .into()

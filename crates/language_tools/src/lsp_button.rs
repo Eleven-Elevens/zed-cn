@@ -246,9 +246,9 @@ impl LanguageServerState {
         for item in &self.items {
             if let LspMenuItem::ToggleServersButton { restart } = item {
                 let label = if *restart {
-                    "Restart All Servers"
+                    "重启所有服务器"
                 } else {
-                    "Stop All Servers"
+                    "停止所有服务器"
                 };
 
                 let restart = *restart;
@@ -359,7 +359,7 @@ impl LanguageServerState {
                             let workspace_for_message = workspace.clone();
                             let message_for_handler = message.clone();
                             let server_name_for_message = submenu_server_name.clone();
-                            submenu = submenu.entry("View Message", None, move |window, cx| {
+                            submenu = submenu.entry("查看消息", None, move |window, cx| {
                                 let Some(create_buffer) = workspace_for_message
                                     .update(cx, |workspace, cx| {
                                         workspace.project().update(cx, |project, cx| {
@@ -419,7 +419,7 @@ impl LanguageServerState {
                             let lsp_logs_for_debug = lsp_logs.clone();
                             let workspace_for_debug = workspace.clone();
                             let server_selector_for_debug = server_selector.clone();
-                            submenu = submenu.entry("View Logs", None, move |window, cx| {
+                            submenu = submenu.entry("查看日志", None, move |window, cx| {
                                 lsp_log_view::open_server_trace(
                                     &lsp_logs_for_debug,
                                     workspace_for_debug.clone(),
@@ -434,7 +434,7 @@ impl LanguageServerState {
                         let workspace_for_restart = workspace.clone();
                         let lsp_store_for_restart = lsp_store.clone();
                         let server_name_for_restart = submenu_server_name.clone();
-                        submenu = submenu.entry("Restart Server", None, move |_window, cx| {
+                        submenu = submenu.entry("重启服务器", None, move |_window, cx| {
                             let Some(workspace) = workspace_for_restart.upgrade() else {
                                 return;
                             };
@@ -523,7 +523,7 @@ impl LanguageServerState {
                             let lsp_store_for_stop = lsp_store.clone();
                             let server_selector_for_stop = server_selector.clone();
 
-                            submenu = submenu.entry("Stop Server", None, move |_window, cx| {
+                            submenu = submenu.entry("停止服务器", None, move |_window, cx| {
                                 lsp_store_for_stop
                                     .update(cx, |lsp_store, cx| {
                                         lsp_store

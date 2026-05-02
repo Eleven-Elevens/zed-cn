@@ -120,7 +120,7 @@ impl DivInspector {
                         this.update(cx, |this, _cx| {
                             this.state = State::LoadError {
                                 message: format!(
-                                    "Failed to create buffers for style editing: {err}"
+                                    "创建样式编辑缓冲区失败：{err}"
                                 )
                                 .into(),
                             };
@@ -578,11 +578,11 @@ fn render_layout_state(inspector_state: &DivInspectorState, cx: &App) -> Div {
             div()
                 .text_ui(cx)
                 .child(format!(
-                    "Bounds: ⌜{} - {}⌟",
+                    "边界：⌜{} - {}⌟",
                     inspector_state.bounds.origin,
                     inspector_state.bounds.bottom_right()
                 ))
-                .child(format!("Size: {}", inspector_state.bounds.size)),
+                .child(format!("尺寸：{}", inspector_state.bounds.size)),
         )
         .child(
             div()
@@ -591,7 +591,7 @@ fn render_layout_state(inspector_state: &DivInspectorState, cx: &App) -> Div {
                 .tooltip(Tooltip::text("Size of the element's children"))
                 .child(
                     if inspector_state.content_size != inspector_state.bounds.size {
-                        format!("Content size: {}", inspector_state.content_size)
+                        format!("内容大小：{}", inspector_state.content_size)
                     } else {
                         "".to_string()
                     },

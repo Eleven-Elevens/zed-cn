@@ -78,8 +78,8 @@ impl AgentTool for UpdatePlanTool {
         _cx: &mut App,
     ) -> SharedString {
         match input {
-            Ok(input) if input.plan.is_empty() => "Clear plan".into(),
-            Ok(_) | Err(_) => "Update plan".into(),
+            Ok(input) if input.plan.is_empty() => "清空计划".into(),
+            Ok(_) | Err(_) => "更新计划".into(),
         }
     }
 
@@ -215,10 +215,10 @@ mod tests {
         let tool = UpdatePlanTool;
 
         let title = cx.update(|cx| tool.initial_title(Ok(sample_input()), cx));
-        assert_eq!(title, SharedString::from("Update plan"));
+        assert_eq!(title, SharedString::from("更新计划"));
 
         let title =
             cx.update(|cx| tool.initial_title(Ok(UpdatePlanToolInput { plan: Vec::new() }), cx));
-        assert_eq!(title, SharedString::from("Clear plan"));
+        assert_eq!(title, SharedString::from("清空计划"));
     }
 }

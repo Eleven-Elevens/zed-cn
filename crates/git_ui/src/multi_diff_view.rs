@@ -242,9 +242,9 @@ impl MultiDiffView {
         let suffix = if self.file_count == 1 {
             "1 file".to_string()
         } else {
-            format!("{} files", self.file_count)
+            format!("{} 个文件", self.file_count)
         };
-        format!("Diff ({suffix})").into()
+        format!("差异（{suffix}）").into()
     }
 }
 

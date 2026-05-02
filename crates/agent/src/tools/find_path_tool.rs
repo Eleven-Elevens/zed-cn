@@ -60,7 +60,7 @@ impl From<FindPathToolOutput> for LanguageModelToolResultContent {
                 all_matches_len,
             } => {
                 if current_matches_page.is_empty() {
-                    "No matches found".into()
+                    "未找到匹配项".into()
                 } else {
                     let mut llm_output = format!("Found {} total matches.", all_matches_len);
                     if all_matches_len > RESULTS_PER_PAGE {
@@ -112,9 +112,9 @@ impl AgentTool for FindPathTool {
         input: Result<Self::Input, serde_json::Value>,
         _cx: &mut App,
     ) -> SharedString {
-        let mut title = "Find paths".to_string();
+        let mut title = "查找路径".to_string();
         if let Ok(input) = input {
-            title.push_str(&format!(" matching “`{}`”", input.glob));
+            title.push_str(&format!("，匹配 “`{}`”", input.glob));
         }
         title.into()
     }
@@ -136,7 +136,7 @@ impl AgentTool for FindPathTool {
             let matches = futures::select! {
                 result = search_paths_task.fuse() => result.map_err(|e| FindPathToolOutput::Error { error: e.to_string() })?,
                 _ = event_stream.cancelled_by_user().fuse() => {
-                    return Err(FindPathToolOutput::Error { error: "Path search cancelled by user".to_string() });
+                    return Err(FindPathToolOutput::Error { error: "路径搜索已被用户取消".to_string() });
                 }
             };
             let paginated_matches: &[PathBuf] = &matches[cmp::min(input.offset, matches.len())
@@ -145,9 +145,9 @@ impl AgentTool for FindPathTool {
             event_stream.update_fields(
                 acp::ToolCallUpdateFields::new()
                     .title(if paginated_matches.is_empty() {
-                        "No matches".into()
+                        "没有匹配项".into()
                     } else if paginated_matches.len() == 1 {
-                        "1 match".into()
+                        "1 个匹配项".into()
                     } else {
                         format!("{} matches", paginated_matches.len())
                     })

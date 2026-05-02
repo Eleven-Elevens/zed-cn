@@ -122,7 +122,7 @@ impl ComponentPreview {
         let sorted_components = component_registry.sorted_components();
         let selected_index = selected_index.into().unwrap_or(0);
         let active_page = active_page.unwrap_or(PreviewPage::AllComponents);
-        let filter_editor = cx.new(|cx| InputField::new(window, cx, "Find components or usages…"));
+        let filter_editor = cx.new(|cx| InputField::new(window, cx, "查找组件或用法…"));
 
         let component_list = ListState::new(
             sorted_components.len(),
@@ -310,7 +310,7 @@ impl ComponentPreview {
             && !components.is_empty()
         {
             entries.push(PreviewEntry::Separator);
-            entries.push(PreviewEntry::SectionHeader("Uncategorized".into()));
+            entries.push(PreviewEntry::SectionHeader("未分类".into()));
             let mut sorted_components = components.clone();
             sorted_components.sort_by_key(|(c, _)| c.sort_name());
 
@@ -499,7 +499,7 @@ impl ComponentPreview {
                         .items_center()
                         .justify_center()
                         .text_color(cx.theme().colors().text_muted)
-                        .child(format!("No components matching '{}'.", self.filter_text))
+                        .child(format!("没有匹配“{}”的组件。", self.filter_text))
                         .into_any_element()
                 } else {
                     list(
@@ -560,13 +560,13 @@ impl ComponentPreview {
         if let Some(workspace) = self.workspace.upgrade() {
             workspace.update(cx, |workspace, cx| {
                 let status_toast =
-                    StatusToast::new("`zed/new-notification-system` created!", cx, |this, _cx| {
+                    StatusToast::new("`zed/new-notification-system` 已创建！", cx, |this, _cx| {
                         this.icon(
                             Icon::new(IconName::GitBranch)
                                 .size(IconSize::Small)
                                 .color(Color::Muted),
                         )
-                        .action("Open Pull Request", |_, cx| {
+                        .action("打开 Pull Request", |_, cx| {
                             cx.open_url("https://github.com/")
                         })
                     });
@@ -706,7 +706,7 @@ impl Item for ComponentPreview {
     type Event = ItemEvent;
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        "Component Preview".into()
+        "组件预览".into()
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {

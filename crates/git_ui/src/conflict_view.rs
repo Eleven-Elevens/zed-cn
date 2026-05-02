@@ -610,20 +610,11 @@ impl Render for MergeConflictIndicator {
 
         let file_count = self.conflicted_paths.len();
 
-        let message: SharedString = format!(
-            "Resolve Merge Conflict{} with Agent",
-            if file_count == 1 { "" } else { "s" }
-        )
-        .into();
+        let message: SharedString = "使用 Agent 解决合并冲突".into();
 
         let tooltip_label: SharedString = format!(
-            "Found {} {} across the codebase",
-            file_count,
-            if file_count == 1 {
-                "conflict"
-            } else {
-                "conflicts"
-            }
+            "在代码库中发现 {} 个冲突",
+            file_count
         )
         .into();
 

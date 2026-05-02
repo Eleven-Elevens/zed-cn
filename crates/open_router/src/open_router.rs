@@ -786,7 +786,7 @@ impl From<ApiError> for language_model_core::LanguageModelCompletionError {
             },
             PaymentRequiredError => Self::AuthenticationError {
                 provider,
-                message: format!("Payment required: {}", error.message),
+                message: format!("需要付款：{}", error.message),
             },
             PermissionError => Self::PermissionError {
                 provider,

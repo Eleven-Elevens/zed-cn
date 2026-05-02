@@ -444,7 +444,7 @@ impl ToolCall {
 
     pub fn to_markdown(&self, cx: &App) -> String {
         let mut markdown = format!(
-            "**Tool Call: {}**\nStatus: {}\n\n",
+            "**工具调用：{}**\n状态：{}\n\n",
             self.label.read(cx).source(),
             self.status
         );
@@ -605,13 +605,13 @@ impl Display for ToolCallStatus {
             f,
             "{}",
             match self {
-                ToolCallStatus::Pending => "Pending",
-                ToolCallStatus::WaitingForConfirmation { .. } => "Waiting for confirmation",
-                ToolCallStatus::InProgress => "In Progress",
-                ToolCallStatus::Completed => "Completed",
-                ToolCallStatus::Failed => "Failed",
-                ToolCallStatus::Rejected => "Rejected",
-                ToolCallStatus::Canceled => "Canceled",
+                ToolCallStatus::Pending => "待处理",
+                ToolCallStatus::WaitingForConfirmation { .. } => "等待确认",
+                ToolCallStatus::InProgress => "进行中",
+                ToolCallStatus::Completed => "已完成",
+                ToolCallStatus::Failed => "失败",
+                ToolCallStatus::Rejected => "已拒绝",
+                ToolCallStatus::Canceled => "已取消",
             }
         )
     }
@@ -742,7 +742,7 @@ impl ContentBlock {
     }
 
     fn image_md(_image: &acp::ImageContent) -> String {
-        "`Image`".into()
+        "`图像`".into()
     }
 
     pub fn to_markdown<'a>(&'a self, cx: &'a App) -> &'a str {
@@ -750,7 +750,7 @@ impl ContentBlock {
             ContentBlock::Empty => "",
             ContentBlock::Markdown { markdown } => markdown.read(cx).source(),
             ContentBlock::ResourceLink { resource_link } => &resource_link.uri,
-            ContentBlock::Image { .. } => "`Image`",
+            ContentBlock::Image { .. } => "`图像`",
         }
     }
 
@@ -1191,11 +1191,11 @@ impl Display for LoadError {
             } => {
                 write!(
                     f,
-                    "version {current_version} from {path} is not supported (need at least {minimum_version})"
+                    "{path} 的版本 {current_version} 不受支持（至少需要 {minimum_version}）"
                 )
             }
-            LoadError::FailedToInstall(msg) => write!(f, "Failed to install: {msg}"),
-            LoadError::Exited { status } => write!(f, "Server exited with status {status}"),
+            LoadError::FailedToInstall(msg) => write!(f, "安装失败：{msg}"),
+            LoadError::Exited { status } => write!(f, "服务器退出，状态为 {status}"),
             LoadError::Other(msg) => write!(f, "{msg}"),
         }
     }
@@ -1820,10 +1820,10 @@ impl AcpThread {
                 // Tool call not found - create a failed tool call entry
                 let failed_tool_call = ToolCall {
                     id: update.id().clone(),
-                    label: cx.new(|cx| Markdown::new("Tool call not found".into(), None, None, cx)),
+                    label: cx.new(|cx| Markdown::new("未找到工具调用".into(), None, None, cx)),
                     kind: acp::ToolKind::Fetch,
                     content: vec![ToolCallContent::ContentBlock(ContentBlock::new(
-                        "Tool call not found".into(),
+                        "未找到工具调用".into(),
                         &languages,
                         path_style,
                         cx,
@@ -2439,7 +2439,7 @@ impl AcpThread {
         cx: &mut Context<Self>,
     ) -> Task<Result<()>> {
         let Some((_, message)) = self.user_message_mut(&id) else {
-            return Task::ready(Err(anyhow!("message not found")));
+            return Task::ready(Err(anyhow!("找不到消息")));
         };
 
         let checkpoint = message
@@ -4629,7 +4629,7 @@ mod tests {
                     match content_block {
                         ContentBlock::Markdown { markdown } => {
                             let markdown_text = markdown.read(cx).source();
-                            assert!(markdown_text.contains("Tool call not found"));
+                            assert!(markdown_text.contains("未找到工具调用"));
                         }
                         ContentBlock::Empty => panic!("Expected markdown content, got empty"),
                         ContentBlock::ResourceLink { .. } => {

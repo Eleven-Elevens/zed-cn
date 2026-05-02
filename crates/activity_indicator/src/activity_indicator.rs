@@ -231,7 +231,7 @@ impl ActivityIndicator {
                     let buffer = create_buffer.await?;
                     buffer.update(cx, |buffer, cx| {
                         buffer.edit(
-                            [(0..0, format!("Language server {server_name}:\n\n{status}"))],
+                            [(0..0, format!("语言服务器 {server_name}：\n\n{status}"))],
                             None,
                             cx,
                         );
@@ -375,7 +375,7 @@ impl ActivityIndicator {
 
                 let additional_work_count = pending_work.count();
                 if additional_work_count > 0 {
-                    write!(&mut message, " + {} more", additional_work_count).unwrap();
+                    write!(&mut message, " + 另外 {} 项", additional_work_count).unwrap();
                 }
 
                 return Some(Content {
@@ -407,7 +407,7 @@ impl ActivityIndicator {
                         .with_rotate_animation(2)
                         .into_any_element(),
                 ),
-                message: format!("Debug: {}", session.read(cx).adapter()),
+                message: format!("调试：{}", session.read(cx).adapter()),
                 tooltip_message: session.read(cx).label().map(|label| label.to_string()),
                 on_click: None,
             });
@@ -504,7 +504,7 @@ impl ActivityIndicator {
                         .into_any_element(),
                 ),
                 message: format!(
-                    "Downloading {}...",
+                    "正在下载 {}...",
                     downloading.iter().map(|name| name.as_ref()).fold(
                         String::new(),
                         |mut acc, s| {
@@ -533,7 +533,7 @@ impl ActivityIndicator {
                         .into_any_element(),
                 ),
                 message: format!(
-                    "Checking for updates to {}...",
+                    "正在检查 {} 的更新...",
                     checking_for_update.iter().map(|name| name.as_ref()).fold(
                         String::new(),
                         |mut acc, s| {
@@ -562,7 +562,7 @@ impl ActivityIndicator {
                         .into_any_element(),
                 ),
                 message: format!(
-                    "Failed to run {}. Click to show error.",
+                    "{} 运行失败。点击查看错误。",
                     failed
                         .iter()
                         .map(|name| name.as_ref())
@@ -589,7 +589,7 @@ impl ActivityIndicator {
                         .size(IconSize::Small)
                         .into_any_element(),
                 ),
-                message: format!("Formatting failed: {failure}. Click to see logs."),
+                message: format!("格式化失败：{failure}。点击查看日志。"),
                 on_click: Some(Arc::new(|indicator, window, cx| {
                     indicator.project.update(cx, |project, cx| {
                         project.reset_last_formatting_failure(cx);
@@ -604,8 +604,8 @@ impl ActivityIndicator {
         if let Some((server_name, health, message)) = health_messages.pop() {
             let health_str = match health {
                 ServerHealth::Ok => format!("({server_name}) "),
-                ServerHealth::Warning => format!("({server_name}) Warning: "),
-                ServerHealth::Error => format!("({server_name}) Error: "),
+                ServerHealth::Warning => format!("({server_name}) 警告："),
+                ServerHealth::Error => format!("({server_name}) 错误："),
             };
             let single_line_message = message
                 .lines()
@@ -658,17 +658,17 @@ impl ActivityIndicator {
         {
             let (message, icon, rotate) = match operation {
                 ExtensionOperation::Install => (
-                    format!("Installing {extension_id} extension…"),
+                    format!("正在安装 {extension_id} 扩展…"),
                     IconName::LoadCircle,
                     true,
                 ),
                 ExtensionOperation::Upgrade => (
-                    format!("Updating {extension_id} extension…"),
+                    format!("正在更新 {extension_id} 扩展…"),
                     IconName::Download,
                     false,
                 ),
                 ExtensionOperation::Remove => (
-                    format!("Removing {extension_id} extension…"),
+                    format!("正在移除 {extension_id} 扩展…"),
                     IconName::LoadCircle,
                     true,
                 ),

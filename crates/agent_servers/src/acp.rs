@@ -873,8 +873,8 @@ impl AcpConnection {
             });
             let meta = acp::Meta::from_iter([("terminal-auth".to_string(), value)]);
             vec![acp::AuthMethod::Agent(
-                acp::AuthMethodAgent::new(GEMINI_TERMINAL_AUTH_METHOD_ID, "Login")
-                    .description("Login with your Google or Vertex AI account")
+                acp::AuthMethodAgent::new(GEMINI_TERMINAL_AUTH_METHOD_ID, "登录")
+                    .description("使用你的 Google 或 Vertex AI 账号登录")
                     .meta(meta),
             )]
         } else {
@@ -976,7 +976,7 @@ impl AcpConnection {
 
         // TODO: remove this once ACP supports multiple working directories
         let Some(cwd) = work_dirs.ordered_paths().next().cloned() else {
-            return Task::ready(Err(anyhow!("Working directory cannot be empty")));
+            return Task::ready(Err(anyhow!("工作目录不能为空")));
         };
 
         let shared_task = cx
@@ -1268,7 +1268,7 @@ impl AgentConnection for AcpConnection {
     ) -> Task<Result<Entity<AcpThread>>> {
         // TODO: remove this once ACP supports multiple working directories
         let Some(cwd) = work_dirs.ordered_paths().next().cloned() else {
-            return Task::ready(Err(anyhow!("Working directory cannot be empty")));
+            return Task::ready(Err(anyhow!("工作目录不能为空")));
         };
         let name = self.id.0.clone();
         let mcp_servers = mcp_servers_for_project(&project, cx);
@@ -1441,7 +1441,7 @@ impl AgentConnection for AcpConnection {
     ) -> Task<Result<Entity<AcpThread>>> {
         if !self.agent_capabilities.load_session {
             return Task::ready(Err(anyhow!(LoadError::Other(
-                "Loading sessions is not supported by this agent.".into()
+                "此 Agent 不支持加载会话。".into()
             ))));
         }
 
@@ -1487,7 +1487,7 @@ impl AgentConnection for AcpConnection {
             .is_none()
         {
             return Task::ready(Err(anyhow!(LoadError::Other(
-                "Resuming sessions is not supported by this agent.".into()
+                "此 Agent 不支持恢复会话。".into()
             ))));
         }
 
@@ -1529,7 +1529,7 @@ impl AgentConnection for AcpConnection {
     ) -> Task<Result<()>> {
         if !self.supports_close_session() {
             return Task::ready(Err(anyhow!(LoadError::Other(
-                "Closing sessions is not supported by this agent.".into()
+                "此 Agent 不支持关闭会话。".into()
             ))));
         }
 
@@ -2257,7 +2257,7 @@ mod tests {
                 ("EXTRA".into(), "2".into()),
             ])),
         };
-        let method = acp::AuthMethodTerminal::new("login", "Login");
+        let method = acp::AuthMethodTerminal::new("login", "登录");
 
         let task = terminal_auth_task(&command, &AgentId::new("test-agent"), &method);
 
@@ -2271,15 +2271,15 @@ mod tests {
                 ("EXTRA".into(), "2".into()),
             ])
         );
-        assert_eq!(task.label, "Login");
-        assert_eq!(task.command_label, "Login");
+        assert_eq!(task.label, "登录");
+        assert_eq!(task.command_label, "登录");
     }
 
     #[test]
     fn legacy_terminal_auth_task_parses_meta_and_retries_session() {
         let method_id = acp::AuthMethodId::new("legacy-login");
         let method = acp::AuthMethod::Agent(
-            acp::AuthMethodAgent::new(method_id.clone(), "Login").meta(acp::Meta::from_iter([(
+            acp::AuthMethodAgent::new(method_id.clone(), "登录").meta(acp::Meta::from_iter([(
                 "terminal-auth".to_string(),
                 serde_json::json!({
                     "label": "legacy /auth",
@@ -2309,7 +2309,7 @@ mod tests {
     fn legacy_terminal_auth_task_returns_none_for_invalid_meta() {
         let method_id = acp::AuthMethodId::new("legacy-login");
         let method = acp::AuthMethod::Agent(
-            acp::AuthMethodAgent::new(method_id.clone(), "Login").meta(acp::Meta::from_iter([(
+            acp::AuthMethodAgent::new(method_id.clone(), "登录").meta(acp::Meta::from_iter([(
                 "terminal-auth".to_string(),
                 serde_json::json!({
                     "label": "legacy /auth",
@@ -2326,7 +2326,7 @@ mod tests {
     fn first_class_terminal_auth_takes_precedence_over_legacy_meta() {
         let method_id = acp::AuthMethodId::new("login");
         let method = acp::AuthMethod::Terminal(
-            acp::AuthMethodTerminal::new(method_id, "Login")
+            acp::AuthMethodTerminal::new(method_id, "登录")
                 .args(vec!["/auth".into()])
                 .env(std::collections::HashMap::from_iter([(
                     "AUTH_MODE".into(),
@@ -2370,7 +2370,7 @@ mod tests {
                 ("AUTH_MODE".into(), "first-class".into()),
             ])
         );
-        assert_eq!(task.label, "Login");
+        assert_eq!(task.label, "登录");
     }
 
     async fn connect_fake_agent(

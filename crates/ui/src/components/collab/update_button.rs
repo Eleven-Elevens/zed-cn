@@ -72,27 +72,27 @@ impl UpdateButton {
     }
 
     pub fn checking() -> Self {
-        Self::new(IconName::ArrowCircle, "Checking for Zed updates…").icon_animate(true)
+        Self::new(IconName::ArrowCircle, "正在检查 Zed 更新…").icon_animate(true)
     }
 
     pub fn downloading(version: impl Into<SharedString>) -> Self {
-        Self::new(IconName::Download, "Downloading Zed update…").tooltip(version)
+        Self::new(IconName::Download, "正在下载 Zed 更新…").tooltip(version)
     }
 
     pub fn installing(version: impl Into<SharedString>) -> Self {
-        Self::new(IconName::ArrowCircle, "Installing Zed update…")
+        Self::new(IconName::ArrowCircle, "正在安装 Zed 更新…")
             .icon_animate(true)
             .tooltip(version)
     }
 
     pub fn updated(version: impl Into<SharedString>) -> Self {
-        Self::new(IconName::Download, "Restart to Update")
+        Self::new(IconName::Download, "重启以更新")
             .tooltip(version)
             .with_dismiss()
     }
 
     pub fn errored(error: impl Into<SharedString>) -> Self {
-        Self::new(IconName::Warning, "Failed to update Zed")
+        Self::new(IconName::Warning, "Zed 更新失败")
             .icon_color(Color::Warning)
             .tooltip(error)
             .with_dismiss()
@@ -157,7 +157,7 @@ impl Component for UpdateButton {
 
     fn description() -> Option<&'static str> {
         Some(
-            "A button component displayed in the title bar to show auto-update status and allow users to restart Zed.",
+            "标题栏中显示的按钮组件，用于显示自动更新状态并允许用户重新启动 Zed。",
         )
     }
 
@@ -169,28 +169,28 @@ impl Component for UpdateButton {
                 .gap_6()
                 .children(vec![
                     example_group_with_title(
-                        "Progress States",
+                        "进展状态",
                         vec![
-                            single_example("Checking", UpdateButton::checking().into_any_element()),
+                            single_example("检查", UpdateButton::checking().into_any_element()),
                             single_example(
-                                "Downloading",
+                                "正在下载",
                                 UpdateButton::downloading(version).into_any_element(),
                             ),
                             single_example(
-                                "Installing",
+                                "安装中",
                                 UpdateButton::installing(version).into_any_element(),
                             ),
                         ],
                     ),
                     example_group_with_title(
-                        "Actionable States",
+                        "可采取行动的国家",
                         vec![
                             single_example(
-                                "Ready to Update",
+                                "准备更新",
                                 UpdateButton::updated(version).into_any_element(),
                             ),
                             single_example(
-                                "Error",
+                                "错误",
                                 UpdateButton::errored("Network timeout").into_any_element(),
                             ),
                         ],

@@ -237,7 +237,7 @@ impl PythonEnvKernelSpecification {
     pub fn is_uv(&self) -> bool {
         matches!(
             self.environment_kind.as_deref(),
-            Some("uv" | "uv (Workspace)")
+            Some("uv" | "uv（工作区）")
         )
     }
 }
@@ -314,9 +314,9 @@ impl KernelSpecification {
                     .clone()
                     .unwrap_or_else(|| "Python Environment".to_string()),
             ),
-            Self::JupyterServer(_) => "Jupyter Server".into(),
-            Self::SshRemote(_) => "SSH Remote".into(),
-            Self::WslRemote(_) => "WSL Remote".into(),
+            Self::JupyterServer(_) => "Jupyter 服务器".into(),
+            Self::SshRemote(_) => "SSH 远程".into(),
+            Self::WslRemote(_) => "WSL 远程".into(),
         }
     }
 
@@ -356,9 +356,9 @@ impl KernelSpecification {
                 .as_ref()
                 .map(|kind| SharedString::from(kind.clone())),
             Self::Jupyter(_) => Some("Jupyter".into()),
-            Self::JupyterServer(_) => Some("Jupyter Server".into()),
-            Self::SshRemote(_) => Some("SSH Remote".into()),
-            Self::WslRemote(_) => Some("WSL Remote".into()),
+            Self::JupyterServer(_) => Some("Jupyter 服务器".into()),
+            Self::SshRemote(_) => Some("SSH 远程".into()),
+            Self::WslRemote(_) => Some("WSL 远程".into()),
         }
     }
 
@@ -384,22 +384,22 @@ fn extract_environment_kind(toolchain_json: &serde_json::Value) -> Option<String
         "Conda" => "Conda",
         "Pixi" => "pixi",
         "Homebrew" => "Homebrew",
-        "Pyenv" => "global (Pyenv)",
+        "Pyenv" => "全局 (Pyenv)",
         "GlobalPaths" => "global",
         "PyenvVirtualEnv" => "Pyenv",
         "Pipenv" => "Pipenv",
         "Poetry" => "Poetry",
-        "MacPythonOrg" => "global (Python.org)",
-        "MacCommandLineTools" => "global (Command Line Tools for Xcode)",
+        "MacPythonOrg" => "全局 (Python.org)",
+        "MacCommandLineTools" => "全局 (Command Line Tools for Xcode)",
         "LinuxGlobal" => "global",
-        "MacXCode" => "global (Xcode)",
+        "MacXCode" => "全局 (Xcode)",
         "Venv" => "venv",
         "VirtualEnv" => "virtualenv",
         "VirtualEnvWrapper" => "virtualenvwrapper",
-        "WindowsStore" => "global (Windows Store)",
-        "WindowsRegistry" => "global (Windows Registry)",
+        "WindowsStore" => "全局 (Windows Store)",
+        "WindowsRegistry" => "全局 (Windows Registry)",
         "Uv" => "uv",
-        "UvWorkspace" => "uv (Workspace)",
+        "UvWorkspace" => "uv（工作区）",
         _ => kind_str,
     };
     Some(label.to_string())
@@ -694,13 +694,13 @@ impl KernelStatus {
 impl ToString for KernelStatus {
     fn to_string(&self) -> String {
         match self {
-            KernelStatus::Idle => "Idle".to_string(),
-            KernelStatus::Busy => "Busy".to_string(),
-            KernelStatus::Starting => "Starting".to_string(),
-            KernelStatus::Error => "Error".to_string(),
-            KernelStatus::ShuttingDown => "Shutting Down".to_string(),
-            KernelStatus::Shutdown => "Shutdown".to_string(),
-            KernelStatus::Restarting => "Restarting".to_string(),
+            KernelStatus::Idle => "空闲".to_string(),
+            KernelStatus::Busy => "忙碌".to_string(),
+            KernelStatus::Starting => "正在启动".to_string(),
+            KernelStatus::Error => "错误".to_string(),
+            KernelStatus::ShuttingDown => "正在关闭".to_string(),
+            KernelStatus::Shutdown => "已关闭".to_string(),
+            KernelStatus::Restarting => "正在重启".to_string(),
         }
     }
 }

@@ -400,14 +400,14 @@ impl MemoryView {
         if !self.is_writing_memory {
             self.query_editor.update(cx, |this, cx| {
                 this.clear(window, cx);
-                this.set_placeholder_text("Write to Selected Memory Range", window, cx);
+                this.set_placeholder_text("写入所选内存范围", window, cx);
             });
             self.is_writing_memory = true;
             self.query_editor.focus_handle(cx).focus(window, cx);
         } else {
             self.query_editor.update(cx, |this, cx| {
                 this.clear(window, cx);
-                this.set_placeholder_text("Go to Memory Address / Expression", window, cx);
+                this.set_placeholder_text("转到内存地址/表达式", window, cx);
             });
             self.is_writing_memory = false;
         }
@@ -472,7 +472,7 @@ impl MemoryView {
                         _ = self.workspace.update(cx, |this, cx| {
                             this.toggle_status_toast(
                                 StatusToast::new(format!(
-                                    "Debug Adapter `{adapter_name}` does not support writing to memory"
+                                    "调试适配器 `{adapter_name}` 不支持写入内存"
                                 ), cx, |this, cx| {
                                     cx.spawn(async move |this, cx| {
                                         cx.background_executor().timer(Duration::from_secs(2)).await;
@@ -630,14 +630,14 @@ impl MemoryView {
 
             let mut menu = menu.action_disabled_when(
                 range_too_large || *memory_unreadable,
-                "Go To Selected Address",
+                "前往选定的地址",
                 GoToSelectedAddress.boxed_clone(),
             );
 
             if supports_data_breakpoints {
                 menu = menu.action_disabled_when(
                     *memory_unreadable,
-                    "Set Data Breakpoint",
+                    "设置数据断点",
                     ToggleDataBreakpoint { access_type: None }.boxed_clone(),
                 );
             }

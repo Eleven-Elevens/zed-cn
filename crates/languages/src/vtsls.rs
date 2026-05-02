@@ -20,9 +20,9 @@ use std::{
 };
 use util::{ResultExt, maybe, merge_json_value_into};
 
-const ACTION_ALWAYS: &str = "Always";
-const ACTION_NEVER: &str = "Never";
-const UPDATE_IMPORTS_MESSAGE_PATTERN: &str = "Update imports for";
+const ACTION_ALWAYS: &str = "始终";
+const ACTION_NEVER: &str = "从不";
+const UPDATE_IMPORTS_MESSAGE_PATTERN: &str = "更新导入用于";
 const VTSLS_SERVER_NAME: &str = "vtsls";
 
 fn typescript_server_binary_arguments(server_path: &Path) -> Vec<OsString> {

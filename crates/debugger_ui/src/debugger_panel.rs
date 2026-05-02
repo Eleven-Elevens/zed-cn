@@ -507,9 +507,9 @@ impl DebugPanel {
             if should_prompt {
                 let response = cx.prompt(
                     gpui::PromptLevel::Warning,
-                    "This Debug Session is still running. Are you sure you want to terminate it?",
+                    "此调试会话仍在运行。确定要终止它吗？",
                     None,
-                    &["Yes", "No"],
+                    &["是", "否"],
                 );
                 if response.await == Ok(1) {
                     return;
@@ -1411,7 +1411,7 @@ impl DebugPanel {
                                 .read(cx)
                                 .historic_snapshots();
 
-                            context_menu = context_menu.entry("Current State", None, {
+                            context_menu = context_menu.entry("当前状态", None, {
                                 let running_state = running_state.clone();
                                 move |_window, cx| {
                                     handler(None, running_state.clone(), cx);
@@ -1850,7 +1850,7 @@ impl Render for DebugPanel {
                         .child(
                             Button::new(
                                 "spawn-new-session-install-extensions",
-                                "Debugger Extensions",
+                                "调试器扩展",
                             )
                             .start_icon(
                                 Icon::new(IconName::Blocks)

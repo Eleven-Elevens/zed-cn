@@ -429,10 +429,10 @@ impl<T: ButtonBuilder, const COLS: usize, const ROWS: usize> Component
             v_flex()
                 .gap_6()
                 .children(vec![example_group_with_title(
-                    "Transparent Variant",
+                    "透明变体",
                     vec![
                         single_example(
-                            "Single Row Group",
+                            "单排组",
                             ToggleButtonGroup::single_row(
                                 "single_row_test",
                                 [
@@ -445,7 +445,7 @@ impl<T: ButtonBuilder, const COLS: usize, const ROWS: usize> Component
                             .into_any_element(),
                         ),
                         single_example(
-                            "Single Row Group with icons",
+                            "带有图标的单行组",
                             ToggleButtonGroup::single_row(
                                 "single_row_test_icon",
                                 [
@@ -470,7 +470,7 @@ impl<T: ButtonBuilder, const COLS: usize, const ROWS: usize> Component
                             .into_any_element(),
                         ),
                         single_example(
-                            "Multiple Row Group",
+                            "多行组",
                             ToggleButtonGroup::two_rows(
                                 "multiple_row_test",
                                 [
@@ -488,7 +488,7 @@ impl<T: ButtonBuilder, const COLS: usize, const ROWS: usize> Component
                             .into_any_element(),
                         ),
                         single_example(
-                            "Multiple Row Group with Icons",
+                            "带有图标的多行组",
                             ToggleButtonGroup::two_rows(
                                 "multiple_row_test_icons",
                                 [
@@ -532,10 +532,10 @@ impl<T: ButtonBuilder, const COLS: usize, const ROWS: usize> Component
                     ],
                 )])
                 .children(vec![example_group_with_title(
-                    "Outlined Variant",
+                    "概述变体",
                     vec![
                         single_example(
-                            "Single Row Group",
+                            "单排组",
                             ToggleButtonGroup::single_row(
                                 "single_row_test_outline",
                                 [
@@ -549,7 +549,7 @@ impl<T: ButtonBuilder, const COLS: usize, const ROWS: usize> Component
                             .into_any_element(),
                         ),
                         single_example(
-                            "Single Row Group with icons",
+                            "带有图标的单行组",
                             ToggleButtonGroup::single_row(
                                 "single_row_test_icon_outlined",
                                 [
@@ -575,7 +575,7 @@ impl<T: ButtonBuilder, const COLS: usize, const ROWS: usize> Component
                             .into_any_element(),
                         ),
                         single_example(
-                            "Multiple Row Group",
+                            "多行组",
                             ToggleButtonGroup::two_rows(
                                 "multiple_row_test",
                                 [
@@ -594,7 +594,7 @@ impl<T: ButtonBuilder, const COLS: usize, const ROWS: usize> Component
                             .into_any_element(),
                         ),
                         single_example(
-                            "Multiple Row Group with Icons",
+                            "带有图标的多行组",
                             ToggleButtonGroup::two_rows(
                                 "multiple_row_test",
                                 [
@@ -639,10 +639,10 @@ impl<T: ButtonBuilder, const COLS: usize, const ROWS: usize> Component
                     ],
                 )])
                 .children(vec![example_group_with_title(
-                    "Filled Variant",
+                    "填充变体",
                     vec![
                         single_example(
-                            "Single Row Group",
+                            "单排组",
                             ToggleButtonGroup::single_row(
                                 "single_row_test_outline",
                                 [
@@ -656,7 +656,7 @@ impl<T: ButtonBuilder, const COLS: usize, const ROWS: usize> Component
                             .into_any_element(),
                         ),
                         single_example(
-                            "Single Row Group with icons",
+                            "带有图标的单行组",
                             ToggleButtonGroup::single_row(
                                 "single_row_test_icon_outlined",
                                 [
@@ -682,7 +682,7 @@ impl<T: ButtonBuilder, const COLS: usize, const ROWS: usize> Component
                             .into_any_element(),
                         ),
                         single_example(
-                            "Multiple Row Group",
+                            "多行组",
                             ToggleButtonGroup::two_rows(
                                 "multiple_row_test",
                                 [
@@ -702,7 +702,7 @@ impl<T: ButtonBuilder, const COLS: usize, const ROWS: usize> Component
                             .into_any_element(),
                         ),
                         single_example(
-                            "Multiple Row Group with Icons",
+                            "带有图标的多行组",
                             ToggleButtonGroup::two_rows(
                                 "multiple_row_test",
                                 [
@@ -748,7 +748,7 @@ impl<T: ButtonBuilder, const COLS: usize, const ROWS: usize> Component
                     ],
                 )])
                 .children(vec![single_example(
-                    "With Tooltips",
+                    "带工具提示",
                     ToggleButtonGroup::single_row(
                         "with_tooltips",
                         [

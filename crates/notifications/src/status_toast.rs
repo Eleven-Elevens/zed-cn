@@ -151,17 +151,17 @@ impl Component for StatusToast {
     }
 
     fn preview(_window: &mut Window, cx: &mut App) -> Option<AnyElement> {
-        let text_example = StatusToast::new("Operation completed", cx, |this, _| this);
+        let text_example = StatusToast::new("操作已完成", cx, |this, _| this);
 
-        let action_example = StatusToast::new("Update ready to install", cx, |this, _cx| {
-            this.action("Restart", |_, _| {})
+        let action_example = StatusToast::new("更新已可安装", cx, |this, _cx| {
+            this.action("重启", |_, _| {})
         });
 
         let dismiss_button_example =
-            StatusToast::new("Dismiss Button", cx, |this, _| this.dismiss_button(true));
+            StatusToast::new("关闭按钮", cx, |this, _| this.dismiss_button(true));
 
         let icon_example = StatusToast::new(
-            "Nathan Sobo accepted your contact request",
+            "Nathan Sobo 已接受你的联系人请求",
             cx,
             |this, _| {
                 this.icon(
@@ -172,7 +172,7 @@ impl Component for StatusToast {
             },
         );
 
-        let success_example = StatusToast::new("Pushed 4 changes to `zed/main`", cx, |this, _| {
+        let success_example = StatusToast::new("已向 `zed/main` 推送 4 项更改", cx, |this, _| {
             this.icon(
                 Icon::new(IconName::Check)
                     .size(IconSize::Small)
@@ -181,7 +181,7 @@ impl Component for StatusToast {
         });
 
         let error_example = StatusToast::new(
-            "git push: Couldn't find remote origin `iamnbutler/zed`",
+            "git push：找不到远程 origin `iamnbutler/zed`",
             cx,
             |this, _cx| {
                 this.icon(
@@ -189,27 +189,27 @@ impl Component for StatusToast {
                         .size(IconSize::Small)
                         .color(Color::Error),
                 )
-                .action("More Info", |_, _| {})
+                .action("更多信息", |_, _| {})
             },
         );
 
-        let warning_example = StatusToast::new("You have outdated settings", cx, |this, _cx| {
+        let warning_example = StatusToast::new("你的设置已过期", cx, |this, _cx| {
             this.icon(
                 Icon::new(IconName::Warning)
                     .size(IconSize::Small)
                     .color(Color::Warning),
             )
-            .action("More Info", |_, _| {})
+            .action("更多信息", |_, _| {})
         });
 
         let pr_example =
-            StatusToast::new("`zed/new-notification-system` created!", cx, |this, _cx| {
+            StatusToast::new("`zed/new-notification-system` 已创建！", cx, |this, _cx| {
                 this.icon(
                     Icon::new(IconName::GitBranch)
                         .size(IconSize::Small)
                         .color(Color::Muted),
                 )
-                .action("Open Pull Request", |_, cx| {
+                .action("打开 Pull Request", |_, cx| {
                     cx.open_url("https://github.com/")
                 })
             });
@@ -229,7 +229,7 @@ impl Component for StatusToast {
                             ),
                             single_example("Icon", div().child(icon_example).into_any_element()),
                             single_example(
-                                "Dismiss Button",
+                                "关闭按钮",
                                 div().child(dismiss_button_example).into_any_element(),
                             ),
                         ],

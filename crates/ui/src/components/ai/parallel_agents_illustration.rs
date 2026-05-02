@@ -118,7 +118,7 @@ impl RenderOnce for ParallelAgentsIllustration {
             ))
             .child(Divider::horizontal())
             .child(agent(
-                "Improve thread id".into(),
+                "改进线程 ID".into(),
                 IconName::AiClaude,
                 false,
                 vec![
@@ -131,7 +131,7 @@ impl RenderOnce for ParallelAgentsIllustration {
             ))
             .child(Divider::horizontal())
             .child(agent(
-                "Refactor archive view".into(),
+                "重构归档视图".into(),
                 IconName::AiOpenAi,
                 false,
                 vec![

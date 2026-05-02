@@ -310,7 +310,7 @@ impl AnyAgentTool for ContextServerTool {
     }
 
     fn initial_title(&self, _input: serde_json::Value, _cx: &mut App) -> SharedString {
-        format!("Run MCP tool `{}`", self.tool.name).into()
+        format!("运行 MCP 工具 `{}`", self.tool.name).into()
     }
 
     fn input_schema(

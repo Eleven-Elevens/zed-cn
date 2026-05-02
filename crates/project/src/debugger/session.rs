@@ -109,11 +109,11 @@ pub enum ThreadStatus {
 impl ThreadStatus {
     pub fn label(&self) -> &'static str {
         match self {
-            ThreadStatus::Running => "Running",
-            ThreadStatus::Stopped => "Stopped",
-            ThreadStatus::Stepping => "Stepping",
-            ThreadStatus::Exited => "Exited",
-            ThreadStatus::Ended => "Ended",
+            ThreadStatus::Running => "运行中",
+            ThreadStatus::Stopped => "已停止",
+            ThreadStatus::Stepping => "单步执行中",
+            ThreadStatus::Exited => "已退出",
+            ThreadStatus::Ended => "已结束",
         }
     }
 }
@@ -487,7 +487,7 @@ impl RunningMode {
                             match errors_by_path.len() {
                                 0 => unreachable!(),
                                 1 => "".into(),
-                                2 => " and 1 other path".into(),
+                                2 => " 和另外 1 个路径".into(),
                                 n => format!(" and {} other paths", n - 1),
                             }
                         );
@@ -2979,7 +2979,7 @@ impl Session {
                         Ok(status) => {
                             if status.success() {
                                 console_output
-                                    .send("Companion process exited normally".into())
+                                    .send("伴随进程已正常退出".into())
                                     .await
                                     .ok();
                             } else {
@@ -3016,10 +3016,10 @@ impl Session {
             }
             if !companion_started {
                 console_output
-                    .send("Browser companion failed to start".into())
+                    .send("浏览器伴随进程启动失败".into())
                     .await
                     .ok();
-                bail!("Browser companion failed to start");
+                bail!("浏览器伴随进程启动失败");
             }
 
             let response = http_client
@@ -3034,7 +3034,7 @@ impl Session {
                 Ok(response) => {
                     if !response.status().is_success() {
                         console_output
-                            .send("Launch request to companion failed".into())
+                            .send("发送给伴随进程的启动请求失败".into())
                             .await
                             .ok();
                         return Err(anyhow!("launch request failed"));
@@ -3042,7 +3042,7 @@ impl Session {
                 }
                 Err(e) => {
                     console_output
-                        .send("Failed to read response from companion".into())
+                        .send("读取伴随进程响应失败".into())
                         .await
                         .ok();
                     return Err(e);

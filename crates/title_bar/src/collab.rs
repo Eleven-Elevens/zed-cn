@@ -86,7 +86,7 @@ pub fn toggle_screen_sharing(
         }
         Err(e) => Task::ready(Err(e)),
     };
-    toggle_screen_sharing.detach_and_prompt_err("Sharing Screen Failed", window, cx, |e, _, _| Some(format!("{:?}\n\nPlease check that you have given Zed permissions to record your screen in Settings.", e)));
+    toggle_screen_sharing.detach_and_prompt_err("共享屏幕失败", window, cx, |e, _, _| Some(format!("{:?}\n\n请检查是否已在设置中授予 Zed 录制屏幕的权限。", e)));
 }
 
 pub fn toggle_mute(cx: &mut App) {
@@ -240,7 +240,7 @@ impl TitleBar {
                                 .occlude()
                                 .tooltip({
                                     let login = collaborator.user.github_login.clone();
-                                    Tooltip::text(format!("Follow {login}"))
+                                    Tooltip::text(format!("跟随 {login}"))
                                 }),
                         )
                     }))
@@ -295,7 +295,7 @@ impl TitleBar {
                                         AvatarAudioStatusIndicator::new(ui::AudioStatus::Muted)
                                             .tooltip({
                                                 let github_login = user.github_login.clone();
-                                                Tooltip::text(format!("{} is muted", github_login))
+                                                Tooltip::text(format!("{github_login} 已静音"))
                                             }),
                                     )
                                 }),
@@ -419,10 +419,10 @@ impl TitleBar {
                         });
 
                     Tooltip::with_meta(
-                        format!("Connection: {quality_label}"),
+                        format!("连接：{quality_label}"),
                         Some(&ShowCallStats),
                         format!(
-                            "Latency: {latency} · Jitter: {jitter} · Loss: {packet_loss} · Input lag: {input_lag}",
+                            "延迟：{latency} · 抖动：{jitter} · 丢包：{packet_loss} · 输入延迟：{input_lag}",
                         ),
                         cx,
                     )
@@ -451,10 +451,10 @@ impl TitleBar {
             children.push(
                 Button::new(
                     "toggle_sharing",
-                    if is_shared { "Unshare" } else { "Share" },
+                    if is_shared { "取消共享" } else { "共享" },
                 )
                 .tooltip(Tooltip::text(if is_shared {
-                    "Stop sharing project with call participants"
+                    "停止与通话参与者共享项目"
                 } else {
                     "Share project with call participants"
                 }))
@@ -494,7 +494,7 @@ impl TitleBar {
                             Tooltip::with_meta(
                                 "Unmute Microphone",
                                 None,
-                                "Audio will be unmuted",
+                                "将取消静音音频",
                                 cx,
                             )
                         } else {
@@ -528,18 +528,18 @@ impl TitleBar {
             .toggle_state(is_deafened)
             .tooltip(move |_window, cx| {
                 if is_deafened {
-                    let label = "Unmute Audio";
+                    let label = "取消静音";
 
                     if !muted_by_user {
-                        Tooltip::with_meta(label, None, "Microphone will be unmuted", cx)
+                        Tooltip::with_meta(label, None, "将取消静音麦克风", cx)
                     } else {
                         Tooltip::simple(label, cx)
                     }
                 } else {
-                    let label = "Mute Audio";
+                    let label = "静音";
 
                     if !muted_by_user {
-                        Tooltip::with_meta(label, None, "Microphone will be muted", cx)
+                        Tooltip::with_meta(label, None, "将静音麦克风", cx)
                     } else {
                         Tooltip::simple(label, cx)
                     }
@@ -561,9 +561,9 @@ impl TitleBar {
                 .toggle_state(is_screen_sharing)
                 .selected_style(ButtonStyle::Tinted(TintColor::Accent))
                 .tooltip(Tooltip::text(if is_screen_sharing {
-                    "Stop Sharing Screen"
+                    "停止共享屏幕"
                 } else {
-                    "Share Screen"
+                    "共享屏幕"
                 }))
                 .on_click(move |_, window, cx| {
                     let should_share = ActiveCall::global(cx)
@@ -586,7 +586,7 @@ impl TitleBar {
                                 }
                             });
                             task.detach_and_prompt_err(
-                                "Sharing Screen Failed",
+                                "共享屏幕失败",
                                 window,
                                 cx,
                                 |e, _, _| Some(format!("{e:?}")),
@@ -660,7 +660,7 @@ impl TitleBar {
                                 let label = meta
                                     .label
                                     .clone()
-                                    .unwrap_or_else(|| SharedString::from("Unknown screen"));
+                                    .unwrap_or_else(|| SharedString::from("未知屏幕"));
                                 let resolution = SharedString::from(format!(
                                     "{} × {}",
                                     meta.resolution.width.0, meta.resolution.height.0

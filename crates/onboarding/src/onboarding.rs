@@ -351,7 +351,7 @@ impl Render for Onboarding {
                                             .child(
                                                 v_flex()
                                                     .child(
-                                                        Headline::new("Welcome to Zed")
+                                                        Headline::new("欢迎使用 Zed")
                                                             .size(HeadlineSize::Small),
                                                     )
                                                     .child(
@@ -397,7 +397,7 @@ impl Item for Onboarding {
     type Event = ItemEvent;
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        "Onboarding".into()
+        "入门引导".into()
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {
@@ -484,7 +484,7 @@ pub async fn handle_import_vscode_settings(
                 zlog::error!("{err:?}");
                 let _ = cx.prompt(
                     gpui::PromptLevel::Info,
-                    &format!("Could not find or load a {source} settings file"),
+                    &format!("找不到或无法加载 {source} 设置文件"),
                     None,
                     &["Ok"],
                 );
@@ -496,8 +496,8 @@ pub async fn handle_import_vscode_settings(
         let prompt = cx.prompt(
             gpui::PromptLevel::Warning,
             &format!(
-                "Importing {} settings may overwrite your existing settings. \
-                Will import settings from {}",
+                "导入 {} 设置可能会覆盖你现有的设置。\
+                将从 {} 导入设置",
                 vscode_settings.source,
                 truncate_and_remove_front(&vscode_settings.path.to_string_lossy(), 128),
             ),
@@ -527,7 +527,7 @@ pub async fn handle_import_vscode_settings(
         .update_in(cx, |workspace, _, cx| match result {
             Ok(_) => {
                 let confirmation_toast = StatusToast::new(
-                    format!("Your {} settings were successfully imported.", source),
+                    format!("你的 {} 设置已成功导入。", source),
                     cx,
                     |this, _| {
                         this.icon(
@@ -550,7 +550,7 @@ pub async fn handle_import_vscode_settings(
             }
             Err(_) => {
                 let error_toast = StatusToast::new(
-                    "Failed to import settings. See log for details",
+                    "导入设置失败。详情请查看日志",
                     cx,
                     |this, _| {
                         this.icon(
@@ -558,7 +558,7 @@ pub async fn handle_import_vscode_settings(
                                 .size(IconSize::Small)
                                 .color(Color::Error),
                         )
-                        .action("Open Log", |window, cx| {
+                        .action("打开日志", |window, cx| {
                             window.dispatch_action(workspace::OpenLog.boxed_clone(), cx)
                         })
                         .dismiss_button(true)

@@ -93,12 +93,12 @@ impl Display for DevContainerError {
             "{}",
             match self {
                 DevContainerError::DockerNotAvailable =>
-                    "docker CLI not found on $PATH".to_string(),
+                    "在 $PATH 中未找到 docker CLI".to_string(),
                 DevContainerError::ContainerNotValid(id) => format!(
                     "docker image {id} did not have expected configuration for a dev container"
                 ),
                 DevContainerError::DevContainerScriptsFailed =>
-                    "lifecycle scripts could not execute for dev container".to_string(),
+                    "无法执行 dev container 生命周期脚本".to_string(),
                 DevContainerError::DevContainerUpFailed(_) => {
                     "DevContainer creation failed".to_string()
                 }
@@ -106,16 +106,16 @@ impl Display for DevContainerError {
                     "DevContainer template apply failed".to_string()
                 }
                 DevContainerError::DevContainerNotFound =>
-                    "No valid dev container definition found in project".to_string(),
+                    "项目中未找到有效的 dev container 定义".to_string(),
                 DevContainerError::DevContainerParseFailed =>
-                    "Failed to parse file .devcontainer/devcontainer.json".to_string(),
-                DevContainerError::NotInValidProject => "Not within a valid project".to_string(),
+                    "解析 .devcontainer/devcontainer.json 文件失败".to_string(),
+                DevContainerError::NotInValidProject => "不在有效项目内".to_string(),
                 DevContainerError::CommandFailed(program) =>
                     format!("Failure running external program {program}"),
                 DevContainerError::FilesystemError =>
-                    "Error downloading resources locally".to_string(),
+                    "在本地下载资源时出错".to_string(),
                 DevContainerError::ResourceFetchFailed =>
-                    "Failed to fetch resources from template or feature repository".to_string(),
+                    "从模板或功能仓库获取资源失败".to_string(),
                 DevContainerError::DevContainerValidationFailed(failure) => failure.to_string(),
                 DevContainerError::MultipleMatchingContainers(ids) => format!(
                     "Multiple containers match this project's dev container labels ({}). \

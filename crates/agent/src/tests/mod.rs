@@ -1071,9 +1071,9 @@ fn test_permission_options_terminal_with_pattern() {
         .iter()
         .map(|choice| choice.allow.name.as_ref())
         .collect();
-    assert!(labels.contains(&"Always for terminal"));
-    assert!(labels.contains(&"Always for `cargo build` commands"));
-    assert!(labels.contains(&"Only this time"));
+    assert!(labels.contains(&"始终适用于 terminal"));
+    assert!(labels.contains(&"始终适用于 `cargo build` 命令"));
+    assert!(labels.contains(&"仅本次"));
 }
 
 #[test]
@@ -1091,9 +1091,9 @@ fn test_permission_options_terminal_command_with_flag_second_token() {
         .iter()
         .map(|choice| choice.allow.name.as_ref())
         .collect();
-    assert!(labels.contains(&"Always for terminal"));
-    assert!(labels.contains(&"Always for `ls` commands"));
-    assert!(labels.contains(&"Only this time"));
+    assert!(labels.contains(&"始终适用于 terminal"));
+    assert!(labels.contains(&"始终适用于 `ls` 命令"));
+    assert!(labels.contains(&"仅本次"));
 }
 
 #[test]
@@ -1111,9 +1111,9 @@ fn test_permission_options_terminal_single_word_command() {
         .iter()
         .map(|choice| choice.allow.name.as_ref())
         .collect();
-    assert!(labels.contains(&"Always for terminal"));
-    assert!(labels.contains(&"Always for `whoami` commands"));
-    assert!(labels.contains(&"Only this time"));
+    assert!(labels.contains(&"始终适用于 terminal"));
+    assert!(labels.contains(&"始终适用于 `whoami` 命令"));
+    assert!(labels.contains(&"仅本次"));
 }
 
 #[test]
@@ -1130,8 +1130,8 @@ fn test_permission_options_edit_file_with_path_pattern() {
         .iter()
         .map(|choice| choice.allow.name.as_ref())
         .collect();
-    assert!(labels.contains(&"Always for edit file"));
-    assert!(labels.contains(&"Always for `src/`"));
+    assert!(labels.contains(&"始终适用于 edit file"));
+    assert!(labels.contains(&"始终适用于 `src/`"));
 }
 
 #[test]
@@ -1148,8 +1148,8 @@ fn test_permission_options_fetch_with_domain_pattern() {
         .iter()
         .map(|choice| choice.allow.name.as_ref())
         .collect();
-    assert!(labels.contains(&"Always for fetch"));
-    assert!(labels.contains(&"Always for `docs.rs`"));
+    assert!(labels.contains(&"始终适用于 fetch"));
+    assert!(labels.contains(&"始终适用于 `docs.rs`"));
 }
 
 #[test]
@@ -1169,8 +1169,8 @@ fn test_permission_options_without_pattern() {
         .iter()
         .map(|choice| choice.allow.name.as_ref())
         .collect();
-    assert!(labels.contains(&"Always for terminal"));
-    assert!(labels.contains(&"Only this time"));
+    assert!(labels.contains(&"始终适用于 terminal"));
+    assert!(labels.contains(&"仅本次"));
     assert!(!labels.iter().any(|label| label.contains("commands")));
 }
 
@@ -1250,14 +1250,14 @@ fn test_permission_options_terminal_pipeline_produces_dropdown_with_patterns() {
 
     assert_eq!(tool_name, TerminalTool::NAME);
 
-    // Should have "Always for terminal" and "Only this time" choices
+    // Should have "始终适用于 terminal" and "仅本次" choices
     assert_eq!(choices.len(), 2);
     let labels: Vec<&str> = choices
         .iter()
         .map(|choice| choice.allow.name.as_ref())
         .collect();
-    assert!(labels.contains(&"Always for terminal"));
-    assert!(labels.contains(&"Only this time"));
+    assert!(labels.contains(&"始终适用于 terminal"));
+    assert!(labels.contains(&"仅本次"));
 
     // Should have per-command patterns for "cargo test" and "tail"
     assert_eq!(patterns.len(), 2);

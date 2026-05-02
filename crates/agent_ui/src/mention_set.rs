@@ -152,12 +152,12 @@ impl MentionSet {
                 line_range,
             } => self.confirm_mention_for_symbol(abs_path, line_range, cx),
             MentionUri::Selection { abs_path: None, .. } => Task::ready(Err(anyhow!(
-                "Untitled buffer selection mentions are not supported for paste"
+                "粘贴暂不支持未命名缓冲区选择提及"
             ))),
             MentionUri::PastedImage { .. }
             | MentionUri::TerminalSelection { .. }
             | MentionUri::MergeConflict { .. } => {
-                Task::ready(Err(anyhow!("Unsupported mention URI type for paste")))
+                Task::ready(Err(anyhow!("不支持粘贴此类提及 URI")))
             }
         }
     }
@@ -358,7 +358,7 @@ impl MentionSet {
                         format: LanguageModelImage::FORMAT,
                     }))
                 } else {
-                    Err(anyhow!("Failed to convert image"))
+                    Err(anyhow!("转换图片失败"))
                 }
             });
         }
@@ -584,7 +584,7 @@ impl MentionSet {
         cx.spawn(async move |_, _| {
             let content = diagnostics_task
                 .await?
-                .unwrap_or_else(|| "No diagnostics found.".into());
+                .unwrap_or_else(|| "未找到诊断。".into());
             Ok(Mention::Text {
                 content,
                 tracked_buffers: Vec::new(),
@@ -616,7 +616,7 @@ impl MentionSet {
             let diff_text = diff_receiver.await??;
             if diff_text.is_empty() {
                 Ok(Mention::Text {
-                    content: "No changes found in branch diff.".into(),
+                    content: "分支差异中未找到更改。".into(),
                     tracked_buffers: Vec::new(),
                 })
             } else {
@@ -811,7 +811,7 @@ pub(crate) async fn insert_images_as_context(
                         format: LanguageModelImage::FORMAT,
                     }))
                 } else {
-                    Err("Failed to convert image".into())
+                    Err("转换图片失败".into())
                 }
             })
             .shared();

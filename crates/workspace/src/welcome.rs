@@ -163,52 +163,52 @@ impl SectionEntry {
 
 const CONTENT: (Section<4>, Section<3>) = (
     Section {
-        title: "Get Started",
+        title: "开始使用",
         entries: [
             SectionEntry {
                 icon: IconName::Plus,
-                title: "New File",
+                title: "新建文件",
                 action: &NewFile,
                 visibility_guard: SectionVisibility::Always,
             },
             SectionEntry {
                 icon: IconName::FolderOpen,
-                title: "Open Project",
+                title: "打开项目",
                 action: &Open::DEFAULT,
                 visibility_guard: SectionVisibility::Always,
             },
             SectionEntry {
                 icon: IconName::CloudDownload,
-                title: "Clone Repository",
+                title: "克隆仓库",
                 action: &GitClone,
                 visibility_guard: SectionVisibility::Always,
             },
             SectionEntry {
                 icon: IconName::ListCollapse,
-                title: "Open Command Palette",
+                title: "打开命令面板",
                 action: &command_palette::Toggle,
                 visibility_guard: SectionVisibility::Always,
             },
         ],
     },
     Section {
-        title: "Configure",
+        title: "配置",
         entries: [
             SectionEntry {
                 icon: IconName::Settings,
-                title: "Open Settings",
+                title: "打开设置",
                 action: &OpenSettings,
                 visibility_guard: SectionVisibility::Always,
             },
             SectionEntry {
                 icon: IconName::Keyboard,
-                title: "Customize Keymaps",
+                title: "自定义键位映射",
                 action: &OpenKeymap,
                 visibility_guard: SectionVisibility::Always,
             },
             SectionEntry {
                 icon: IconName::Blocks,
-                title: "Explore Extensions",
+                title: "浏览扩展",
                 action: &Extensions {
                     category_filter: None,
                     id: None,
@@ -337,7 +337,7 @@ impl WelcomePage {
         let focus = self.focus_handle.clone();
         let color = cx.theme().colors();
 
-        let description = "Run multiple threads at once, mix and match any ACP-compatible agent, and keep work conflict-free with worktrees.";
+        let description = "同时运行多个线程，自由组合任何兼容 ACP 的智能体，并通过工作树保持工作互不冲突。";
 
         v_flex()
             .w_full()
@@ -388,7 +388,7 @@ impl WelcomePage {
     ) -> impl IntoElement {
         v_flex()
             .w_full()
-            .child(SectionHeader::new("Recent Projects"))
+            .child(SectionHeader::new("最近项目"))
             .children(recent_projects)
     }
 

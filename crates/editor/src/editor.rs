@@ -3307,7 +3307,7 @@ impl Editor {
             })?;
             anyhow::Ok(())
         })
-        .detach_and_prompt_err("Failed to create buffer", window, cx, |e, _, _| {
+        .detach_and_prompt_err("创建缓冲区失败", window, cx, |e, _, _| {
             match e.error_code() {
                 ErrorCode::RemoteUpgradeRequired => Some(format!(
                 "The remote instance of Zed does not support this yet. It must be upgraded to {}",
@@ -9280,9 +9280,9 @@ impl Editor {
             }))
             .tooltip(move |_window, cx| {
                 Tooltip::with_meta_in(
-                    "Remove Bookmark",
+                    "移除书签",
                     Some(&ToggleBookmark),
-                    SharedString::from("Right-click for more options"),
+                    SharedString::from("右键查看更多选项"),
                     &focus_handle,
                     cx,
                 )
@@ -9369,48 +9369,48 @@ impl Editor {
             .map(|(anchor, bp)| (anchor, Arc::from(bp)));
 
         let log_breakpoint_msg = if breakpoint.as_ref().is_some_and(|bp| bp.1.message.is_some()) {
-            "Edit Log Breakpoint"
+            "编辑日志断点"
         } else {
-            "Set Log Breakpoint"
+            "设置日志断点"
         };
 
         let condition_breakpoint_msg = if breakpoint
             .as_ref()
             .is_some_and(|bp| bp.1.condition.is_some())
         {
-            "Edit Condition Breakpoint"
+            "编辑条件断点"
         } else {
-            "Set Condition Breakpoint"
+            "设置条件断点"
         };
 
         let hit_condition_breakpoint_msg = if breakpoint
             .as_ref()
             .is_some_and(|bp| bp.1.hit_condition.is_some())
         {
-            "Edit Hit Condition Breakpoint"
+            "编辑命中条件断点"
         } else {
-            "Set Hit Condition Breakpoint"
+            "设置命中条件断点"
         };
 
         let set_breakpoint_msg = if breakpoint.as_ref().is_some() {
-            "Unset Breakpoint"
+            "取消断点"
         } else {
-            "Set Breakpoint"
+            "设置断点"
         };
 
         let bookmark = self.bookmark_at_row(row, window, cx);
 
         let set_bookmark_msg = if bookmark.as_ref().is_some() {
-            "Remove Bookmark"
+            "移除书签"
         } else {
-            "Add Bookmark"
+            "添加书签"
         };
 
         let run_to_cursor = window.is_action_available(&RunToCursor, cx);
 
         let toggle_state_msg = breakpoint.as_ref().map_or(None, |bp| match bp.1.state {
-            BreakpointState::Enabled => Some("Disable"),
-            BreakpointState::Disabled => Some("Enable"),
+            BreakpointState::Enabled => Some("禁用"),
+            BreakpointState::Disabled => Some("启用"),
         });
 
         let (anchor, breakpoint) =
@@ -9421,7 +9421,7 @@ impl Editor {
                 .context(focus_handle)
                 .when(run_to_cursor, |this| {
                     let weak_editor = weak_editor.clone();
-                    this.entry("Run to Cursor", None, move |window, cx| {
+                    this.entry("运行到光标处", None, move |window, cx| {
                         weak_editor
                             .update(cx, |editor, cx| {
                                 editor.change_selections(
@@ -9566,18 +9566,18 @@ impl Editor {
             modifiers: Modifiers::secondary_key(),
             ..Default::default()
         };
-        let primary_action_text = "Unset breakpoint";
+        let primary_action_text = "取消断点";
         let focus_handle = self.focus_handle.clone();
         let has_context_menu = self.has_mouse_context_menu();
 
         let meta = if is_rejected {
-            SharedString::from("No executable code is associated with this line.")
+            SharedString::from("此行没有关联可执行代码。")
         } else if !breakpoint.is_disabled() {
             SharedString::from(format!(
-                "{alt_as_text}-click to disable\nright-click for more options"
+                "按 {alt_as_text} 点击以禁用\n右键查看更多选项"
             ))
         } else {
-            SharedString::from("Right-click for more options")
+            SharedString::from("右键查看更多选项")
         };
         IconButton::new(("breakpoint_indicator", row.0 as usize), icon)
             .icon_size(IconSize::XSmall)
@@ -9636,8 +9636,8 @@ impl Editor {
         impl Intent {
             fn as_str(&self) -> &'static str {
                 match self {
-                    Intent::SetBookmark => "Set bookmark",
-                    Intent::SetBreakpoint => "Set breakpoint",
+                    Intent::SetBookmark => "设置书签",
+                    Intent::SetBreakpoint => "设置断点",
                 }
             }
 
@@ -9662,10 +9662,10 @@ impl Editor {
                 };
                 match self {
                     Intent::SetBookmark => format!(
-                        "{alt_as_text}-click to add a breakpoint\nright-click for more options"
+                        "按 {alt_as_text} 点击以添加断点\n右键查看更多选项"
                     ),
                     Intent::SetBreakpoint => format!(
-                        "{alt_as_text}-click to add a bookmark\nright-click for more options"
+                        "按 {alt_as_text} 点击以添加书签\n右键查看更多选项"
                     ),
                 }
             }
@@ -10897,7 +10897,7 @@ impl Editor {
                         .gap_2()
                         .flex_1()
                         .child(Icon::new(icons.base))
-                        .child(Label::new(format!("Jump to {file_name}"))),
+                        .child(Label::new(format!("跳转到 {file_name}"))),
                 )
             }
             EditPrediction::Edit {
@@ -22692,7 +22692,7 @@ impl Editor {
         // Create the prompt editor for the review input
         let prompt_editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Add a review comment...", window, cx);
+            editor.set_placeholder_text("添加审查评论...", window, cx);
             editor
         });
 
@@ -30049,9 +30049,9 @@ impl BreakpointPromptEditor {
             prompt.set_show_cursor_when_unfocused(false, cx);
             prompt.set_placeholder_text(
                 match edit_action {
-                    BreakpointPromptEditAction::Log => "Message to log when a breakpoint is hit. Expressions within {} are interpolated.",
-                    BreakpointPromptEditAction::Condition => "Condition when a breakpoint is hit. Expressions within {} are interpolated.",
-                    BreakpointPromptEditAction::HitCondition => "How many breakpoint hits to ignore",
+                    BreakpointPromptEditAction::Log => "断点命中时要记录的消息。{} 内的表达式会被插值。",
+                    BreakpointPromptEditAction::Condition => "断点命中条件。{} 内的表达式会被插值。",
+                    BreakpointPromptEditAction::HitCondition => "要忽略的断点命中次数",
                 },
                 window,
                 cx,
@@ -30327,7 +30327,7 @@ fn render_diff_hunk_controls(
         .block_mouse_except_scroll()
         .shadow_md()
         .child(if status.has_secondary_hunk() {
-            Button::new(("stage", row as u64), "Stage")
+            Button::new(("stage", row as u64), "暂存")
                 .alpha(if status.is_pending() { 0.66 } else { 1.0 })
                 .tooltip({
                     let focus_handle = editor.focus_handle(cx);
@@ -30353,7 +30353,7 @@ fn render_diff_hunk_controls(
                     }
                 })
         } else {
-            Button::new(("unstage", row as u64), "Unstage")
+            Button::new(("unstage", row as u64), "取消暂存")
                 .alpha(if status.is_pending() { 0.66 } else { 1.0 })
                 .tooltip({
                     let focus_handle = editor.focus_handle(cx);
@@ -30380,7 +30380,7 @@ fn render_diff_hunk_controls(
                 })
         })
         .child(
-            Button::new(("restore", row as u64), "Restore")
+            Button::new(("restore", row as u64), "恢复")
                 .tooltip({
                     let focus_handle = editor.focus_handle(cx);
                     move |_window, cx| {

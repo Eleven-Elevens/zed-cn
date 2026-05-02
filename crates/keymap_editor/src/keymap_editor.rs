@@ -54,7 +54,7 @@ use crate::{
     },
 };
 
-const NO_ACTION_ARGUMENTS_TEXT: SharedString = SharedString::new_static("<no arguments>");
+const NO_ACTION_ARGUMENTS_TEXT: SharedString = SharedString::new_static("<无参数>");
 const COLS: usize = 6;
 
 actions!(
@@ -555,7 +555,7 @@ impl KeymapEditor {
 
         let filter_editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Filter action names…", window, cx);
+            editor.set_placeholder_text("筛选操作名称…", window, cx);
             editor
         });
 
@@ -1089,29 +1089,29 @@ impl KeymapEditor {
             let context_menu = ContextMenu::build(window, cx, |menu, _window, _cx| {
                 menu.context(self.focus_handle.clone())
                     .when(selected_binding_is_unmapped, |this| {
-                        this.action("Create", Box::new(CreateBinding))
+                        this.action("创建", Box::new(CreateBinding))
                     })
                     .action_disabled_when(
                         selected_binding_is_non_interactable,
-                        "Edit",
+                        "编辑",
                         Box::new(EditBinding),
                     )
                     .action_disabled_when(
                         selected_binding_is_non_interactable,
-                        "Delete",
+                        "删除",
                         Box::new(DeleteBinding),
                     )
                     .separator()
-                    .action("Copy Action", Box::new(CopyAction))
+                    .action("复制操作", Box::new(CopyAction))
                     .action_disabled_when(
                         selected_binding_has_no_context,
-                        "Copy Context",
+                        "复制上下文",
                         Box::new(CopyContext),
                     )
                     .separator()
                     .action_disabled_when(
                         selected_binding_has_no_context,
-                        "Show Matching Keybindings",
+                        "显示匹配的按键绑定",
                         Box::new(ShowMatchingKeybinds),
                     )
             });
@@ -1163,7 +1163,7 @@ impl KeymapEditor {
                         Tooltip::with_meta(
                             "View conflicts",
                             Some(&ToggleConflictFilter),
-                            "Use alt+click to show all conflicts",
+                            "使用 Alt+点击 显示所有冲突",
                             cx,
                         )
                     })
@@ -1182,7 +1182,7 @@ impl KeymapEditor {
                         Tooltip::with_meta(
                             "Edit this binding",
                             Some(&ShowMatchingKeybinds),
-                            "This binding is overridden by other bindings.",
+                            "此绑定被其他绑定覆盖。",
                             cx,
                         )
                     })
@@ -1197,7 +1197,7 @@ impl KeymapEditor {
                         Tooltip::with_meta(
                             "Show matching keybinds",
                             Some(&ShowMatchingKeybinds),
-                            "This binding is overridden by other bindings.\nUse alt+click to edit this binding",
+                            "此绑定被其他绑定覆盖。\n使用 Alt+点击 编辑此绑定",
                             cx,
                         )
                     })
@@ -1244,7 +1244,7 @@ impl KeymapEditor {
             (FilterState::All, SearchMode::KeyStroke { .. }) => {
                 "No keybinds found matching the entered keystrokes"
             }
-            (FilterState::All, SearchMode::Normal) => "No matches found for the provided query",
+            (FilterState::All, SearchMode::Normal) => "没有找到匹配该查询的结果",
         };
 
         Label::new(hint).color(Color::Muted).into_any_element()
@@ -1614,7 +1614,7 @@ impl KeymapEditor {
                             .context(focus_handle.clone())
                             .header("Filters")
                             .map(add_filter(
-                                "Conflicts",
+                                "冲突",
                                 matches!(filter_state, FilterState::Conflicts),
                                 Some(ToggleConflictFilter.boxed_clone()),
                                 &focus_handle,
@@ -1622,7 +1622,7 @@ impl KeymapEditor {
                                 None,
                             ))
                             .map(add_filter(
-                                "No Action",
+                                "无操作",
                                 show_no_action_bindings,
                                 Some(ToggleNoActionBindings.boxed_clone()),
                                 &focus_handle,
@@ -1630,9 +1630,9 @@ impl KeymapEditor {
                                 None,
                             ))
                             .separator()
-                            .header("Categories")
+                            .header("类别")
                             .map(add_filter(
-                                "User",
+                                "用户",
                                 source_filters.user,
                                 None,
                                 &focus_handle,
@@ -1943,7 +1943,7 @@ impl Item for KeymapEditor {
     type Event = ();
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> ui::SharedString {
-        "Keymap Editor".into()
+        "键位映射编辑器".into()
     }
 }
 
@@ -2048,7 +2048,7 @@ impl Render for KeymapEditor {
                                             let focus_handle = focus_handle.clone();
                                             move |_window, cx| {
                                                 Tooltip::for_action_in(
-                                                    "Search by Keystrokes",
+                                                    "按键搜索",
                                                     &ToggleKeystrokeSearch,
                                                     &focus_handle,
                                                     cx,
@@ -2118,7 +2118,7 @@ impl Render for KeymapEditor {
                     .width_config(ColumnWidthConfig::redistributable(
                         self.current_widths.clone(),
                     ))
-                    .header(vec!["", "Action", "Arguments", "Keystrokes", "Context", "Source"])
+                    .header(vec!["", "行动", "参数", "按键", "上下文", "来源"])
                     .uniform_list(
                         "keymap-editor-table",
                         row_count,
@@ -2314,15 +2314,15 @@ impl Render for KeymapEditor {
                                                 let overriding_binding = this.keybindings.get(conflict.index);
                                                 let context = overriding_binding.and_then(|binding| {
                                                     match conflict.override_source {
-                                                        KeybindSource::User  => Some("your keymap"),
-                                                        KeybindSource::Vim => Some("the vim keymap"),
-                                                        KeybindSource::Base => Some("your base keymap"),
+                                                        KeybindSource::User  => Some("你的键位映射"),
+                                                        KeybindSource::Vim => Some("Vim 键位映射"),
+                                                        KeybindSource::Base => Some("你的基础键位映射"),
                                                         _ => {
                                                             log::error!("Unexpected override from the {} keymap", conflict.override_source.name());
                                                             None
                                                         }
-                                                    }.map(|source| format!("This keybinding is overridden by the '{}' binding from {}.", binding.action().humanized_name, source))
-                                                }).unwrap_or_else(|| "This binding is overridden.".to_string());
+                                                    }.map(|source| format!("此键位绑定被“{}”绑定覆盖，来源：{}。", binding.action().humanized_name, source))
+                                                }).unwrap_or_else(|| "此绑定已被覆盖。".to_string());
 
                                                 row.tooltip(Tooltip::text(context))
                                             },
@@ -2496,8 +2496,8 @@ impl KeybindingEditorModal {
             .new(|cx| KeystrokeInput::new(editing_keybind.keystrokes().map(Vec::from), window, cx));
 
         let context_editor: Entity<InputField> = cx.new(|cx| {
-            let input = InputField::new(window, cx, "Keybinding Context")
-                .label("Edit Context")
+            let input = InputField::new(window, cx, "键位绑定上下文")
+                .label("编辑上下文")
                 .label_size(LabelSize::Default);
 
             if let Some(context) = editing_keybind
@@ -2552,8 +2552,8 @@ impl KeybindingEditorModal {
                 .collect();
 
             let editor = cx.new(|cx| {
-                let input = InputField::new(window, cx, "Type an action name")
-                    .label("Action")
+                let input = InputField::new(window, cx, "输入操作名称")
+                    .label("行动")
                     .label_size(LabelSize::Default);
 
                 let editor_entity = input.editor();
@@ -2880,7 +2880,7 @@ impl KeybindingEditorModal {
                                 fallback: keymap.table_interaction_state.read(cx).scroll_offset(),
                             });
                             let status_toast = StatusToast::new(
-                                format!("Saved edits to the {} action.", humanized_action_name),
+                                format!("已保存对 {} 操作的编辑。", humanized_action_name),
                                 cx,
                                 move |this, _cx| {
                                     this.icon(
@@ -3382,7 +3382,7 @@ impl ActionArgumentsEditor {
             editor.set_text(arguments, window, cx);
         } else {
             // TODO: default value from schema?
-            editor.set_placeholder_text("Action Arguments", window, cx);
+            editor.set_placeholder_text("操作参数", window, cx);
         }
     }
 

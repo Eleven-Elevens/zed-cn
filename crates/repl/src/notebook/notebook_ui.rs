@@ -1115,12 +1115,12 @@ impl NotebookEditor {
                             .kernel_specification
                             .as_ref()
                             .map(|spec| spec.name().to_string())
-                            .unwrap_or_else(|| "Select Kernel".to_string());
+                            .unwrap_or_else(|| "选择内核".to_string());
                         IconButton::new("repl", icon)
                             .icon_color(icon_color)
                             .tooltip(move |window, cx| {
                                 Tooltip::text(format!(
-                                    "{} ({}). Click to change kernel.",
+                                    "{}（{}）。点击更改内核。",
                                     kernel_name,
                                     kernel_status.to_string()
                                 ))(window, cx)
@@ -1142,7 +1142,7 @@ impl NotebookEditor {
             .kernel_specification
             .as_ref()
             .map(|spec| spec.name().to_string())
-            .unwrap_or_else(|| "Select Kernel".to_string());
+            .unwrap_or_else(|| "选择内核".to_string());
 
         let (status_icon, status_color) = match &kernel_status {
             KernelStatus::Idle => (IconName::Circle, Color::Success),
@@ -1205,7 +1205,7 @@ impl NotebookEditor {
                                 .color(status_color),
                         ),
                     Tooltip::text(format!(
-                        "Kernel: {} ({}). Click to change.",
+                        "内核：{}（{}）。点击更改。",
                         kernel_name,
                         kernel_status.to_string()
                     )),

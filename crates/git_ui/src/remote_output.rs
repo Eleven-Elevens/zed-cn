@@ -38,13 +38,13 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
         RemoteAction::Fetch(remote) => {
             if output.stderr.is_empty() {
                 SuccessMessage {
-                    message: "Fetch: Already up to date".into(),
+                    message: "获取：已是最新".into(),
                     style: SuccessStyle::Toast,
                 }
             } else {
                 let message = match remote {
-                    Some(remote) => format!("Synchronized with {}", remote.name),
-                    None => "Synchronized with remotes".into(),
+                    Some(remote) => format!("已与 {} 同步", remote.name),
+                    None => "已与远端同步".into(),
                 };
                 SuccessMessage {
                     message,
@@ -71,20 +71,19 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
             };
             if output.stdout.ends_with("Already up to date.\n") {
                 SuccessMessage {
-                    message: "Pull: Already up to date".into(),
+                    message: "拉取：已是最新".into(),
                     style: SuccessStyle::Toast,
                 }
             } else if output.stdout.starts_with("Updating") {
                 let files_changed = get_changes(&output).log_err();
                 let message = if let Some(files_changed) = files_changed {
                     format!(
-                        "Received {} file change{} from {}",
-                        files_changed,
-                        if files_changed == 1 { "" } else { "s" },
-                        remote_ref.name
+                        "已从 {} 接收 {} 个文件更改",
+                        remote_ref.name,
+                        files_changed
                     )
                 } else {
-                    format!("Fast forwarded from {}", remote_ref.name)
+                    format!("已从 {} 快进", remote_ref.name)
                 };
                 SuccessMessage {
                     message,
@@ -94,13 +93,12 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
                 let files_changed = get_changes(&output).log_err();
                 let message = if let Some(files_changed) = files_changed {
                     format!(
-                        "Merged {} file change{} from {}",
-                        files_changed,
-                        if files_changed == 1 { "" } else { "s" },
-                        remote_ref.name
+                        "已从 {} 合并 {} 个文件更改",
+                        remote_ref.name,
+                        files_changed
                     )
                 } else {
-                    format!("Merged from {}", remote_ref.name)
+                    format!("已从 {} 合并", remote_ref.name)
                 };
                 SuccessMessage {
                     message,
@@ -108,31 +106,31 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
                 }
             } else if output.stdout.contains("Successfully rebased") {
                 SuccessMessage {
-                    message: format!("Successfully rebased from {}", remote_ref.name),
+                    message: format!("已从 {} 成功变基", remote_ref.name),
                     style: SuccessStyle::ToastWithLog { output },
                 }
             } else {
                 SuccessMessage {
-                    message: format!("Successfully pulled from {}", remote_ref.name),
+                    message: format!("已从 {} 成功拉取", remote_ref.name),
                     style: SuccessStyle::ToastWithLog { output },
                 }
             }
         }
         RemoteAction::Push(branch_name, remote_ref) => {
             let message = if output.stderr.ends_with("Everything up-to-date\n") {
-                "Push: Everything is up-to-date".to_string()
+                "推送：已是最新".to_string()
             } else {
-                format!("Pushed {} to {}", branch_name, remote_ref.name)
+                format!("已将 {} 推送到 {}", branch_name, remote_ref.name)
             };
 
             let style = if output.stderr.ends_with("Everything up-to-date\n") {
                 Some(SuccessStyle::Toast)
             } else if output.stderr.contains("\nremote: ") {
                 let pr_hints = [
-                    ("Create a pull request", "Create Pull Request"), // GitHub
-                    ("Create pull request", "Create Pull Request"),   // Bitbucket
-                    ("create a merge request", "Create Merge Request"), // GitLab
-                    ("View merge request", "View Merge Request"),     // GitLab
+                    ("Create a pull request", "创建拉取请求"), // GitHub
+                    ("Create pull request", "创建拉取请求"),   // Bitbucket
+                    ("create a merge request", "创建合并请求"), // GitLab
+                    ("View merge request", "查看合并请求"),     // GitLab
                 ];
                 pr_hints
                     .iter()
@@ -196,7 +194,7 @@ mod tests {
         let msg = format_output(&action, output);
 
         if let SuccessStyle::PushPrLink { text: hint, link } = &msg.style {
-            assert_eq!(hint, "Create Pull Request");
+            assert_eq!(hint, "创建拉取请求");
             assert_eq!(link, "https://example.com/test/test/pull/new/test");
         } else {
             panic!("Expected PushPrLink variant");
@@ -229,7 +227,7 @@ mod tests {
         let msg = format_output(&action, output);
 
         if let SuccessStyle::PushPrLink { text, link } = &msg.style {
-            assert_eq!(text, "Create Merge Request");
+            assert_eq!(text, "创建合并请求");
             assert_eq!(
                 link,
                 "https://example.com/test/test/-/merge_requests/new?merge_request%5Bsource_branch%5D=test"
@@ -269,7 +267,7 @@ mod tests {
         let msg = format_output(&action, output);
 
         if let SuccessStyle::PushPrLink { text, link } = &msg.style {
-            assert_eq!(text, "View Merge Request");
+            assert_eq!(text, "查看合并请求");
             assert_eq!(link, "https://example.com/test/test/-/merge_requests/99999");
         } else {
             panic!("Expected PushPrLink variant");

@@ -60,7 +60,7 @@ use std::{fmt::Write, path::PathBuf};
 use util::{ResultExt, debug_panic, markdown::MarkdownCodeBlock, paths::PathStyle};
 use uuid::Uuid;
 
-const TOOL_CANCELED_MESSAGE: &str = "Tool canceled by user";
+const TOOL_CANCELED_MESSAGE: &str = "工具已被用户取消";
 pub const MAX_TOOL_NAME_LENGTH: usize = 64;
 pub const MAX_SUBAGENT_DEPTH: u8 = 1;
 
@@ -146,7 +146,7 @@ impl Message {
             Message::Agent(message) => message.to_request(),
             Message::Resume => vec![LanguageModelRequestMessage {
                 role: Role::User,
-                content: vec!["Continue where you left off".into()],
+                content: vec!["从上次离开的地方继续".into()],
                 cache: false,
                 reasoning_details: None,
             }],
@@ -751,12 +751,12 @@ impl ToolPermissionContext {
             return acp_thread::PermissionOptions::Flat(vec![
                 acp::PermissionOption::new(
                     acp::PermissionOptionId::new("allow"),
-                    "Yes",
+                    "是",
                     acp::PermissionOptionKind::AllowOnce,
                 ),
                 acp::PermissionOption::new(
                     acp::PermissionOptionId::new("deny"),
-                    "No",
+                    "否",
                     acp::PermissionOptionKind::RejectOnce,
                 ),
             ]);
@@ -780,12 +780,12 @@ impl ToolPermissionContext {
                     choices.push(acp_thread::PermissionOptionChoice {
                         allow: acp::PermissionOption::new(
                             acp::PermissionOptionId::new(format!("always_allow:{}", tool_name)),
-                            format!("Always for {}", tool_name.replace('_', " ")),
+                            format!("始终适用于 {}", tool_name.replace('_', " ")),
                             acp::PermissionOptionKind::AllowAlways,
                         ),
                         deny: acp::PermissionOption::new(
                             acp::PermissionOptionId::new(format!("always_deny:{}", tool_name)),
-                            format!("Always for {}", tool_name.replace('_', " ")),
+                            format!("始终适用于 {}", tool_name.replace('_', " ")),
                             acp::PermissionOptionKind::RejectAlways,
                         ),
                         sub_patterns: vec![],
@@ -793,12 +793,12 @@ impl ToolPermissionContext {
                     choices.push(acp_thread::PermissionOptionChoice {
                         allow: acp::PermissionOption::new(
                             acp::PermissionOptionId::new("allow"),
-                            "Only this time",
+                            "仅本次",
                             acp::PermissionOptionKind::AllowOnce,
                         ),
                         deny: acp::PermissionOption::new(
                             acp::PermissionOptionId::new("deny"),
-                            "Only this time",
+                            "仅本次",
                             acp::PermissionOptionKind::RejectOnce,
                         ),
                         sub_patterns: vec![],
@@ -879,7 +879,7 @@ impl ToolPermissionContext {
 
         if shell_supports_always_allow {
             push_choice(
-                format!("Always for {}", tool_name.replace('_', " ")),
+                format!("始终适用于 {}", tool_name.replace('_', " ")),
                 format!("always_allow:{}", tool_name),
                 format!("always_deny:{}", tool_name),
                 acp::PermissionOptionKind::AllowAlways,
@@ -889,9 +889,9 @@ impl ToolPermissionContext {
 
             if let (Some(pattern), Some(display)) = (pattern, pattern_display) {
                 let button_text = if tool_name == TerminalTool::NAME {
-                    format!("Always for `{}` commands", display)
+                    format!("始终适用于 `{}` 命令", display)
                 } else {
-                    format!("Always for `{}`", display)
+                    format!("始终适用于 `{}`", display)
                 };
                 push_choice(
                     button_text,
@@ -905,7 +905,7 @@ impl ToolPermissionContext {
         }
 
         push_choice(
-            "Only this time".to_string(),
+            "仅本次".to_string(),
             "allow".to_string(),
             "deny".to_string(),
             acp::PermissionOptionKind::AllowOnce,
@@ -3764,8 +3764,8 @@ impl ToolCallEventStream {
     /// They only support `default` (allow/deny/confirm) per tool.
     ///
     /// Uses the dropdown authorization flow with two granularities:
-    /// - "Always for <display_name> MCP tool" → sets `tools.<tool_id>.default = "allow"` or "deny"
-    /// - "Only this time" → allow/deny once
+    /// - "始终适用于 <display_name> MCP 工具" → sets `tools.<tool_id>.default = "allow"` or "deny"
+    /// - "仅本次" → allow/deny once
     pub fn authorize_third_party_tool(
         &self,
         title: impl Into<String>,
@@ -3778,12 +3778,12 @@ impl ToolCallEventStream {
             acp_thread::PermissionOptionChoice {
                 allow: acp::PermissionOption::new(
                     acp::PermissionOptionId::new(format!("always_allow_mcp:{tool_id}")),
-                    format!("Always for {display_name} MCP tool"),
+                    format!("始终适用于 {display_name} MCP 工具"),
                     acp::PermissionOptionKind::AllowAlways,
                 ),
                 deny: acp::PermissionOption::new(
                     acp::PermissionOptionId::new(format!("always_deny_mcp:{tool_id}")),
-                    format!("Always for {display_name} MCP tool"),
+                    format!("始终适用于 {display_name} MCP 工具"),
                     acp::PermissionOptionKind::RejectAlways,
                 ),
                 sub_patterns: vec![],
@@ -3791,12 +3791,12 @@ impl ToolCallEventStream {
             acp_thread::PermissionOptionChoice {
                 allow: acp::PermissionOption::new(
                     acp::PermissionOptionId::new("allow"),
-                    "Only this time",
+                    "仅本次",
                     acp::PermissionOptionKind::AllowOnce,
                 ),
                 deny: acp::PermissionOption::new(
                     acp::PermissionOptionId::new("deny"),
-                    "Only this time",
+                    "仅本次",
                     acp::PermissionOptionKind::RejectOnce,
                 ),
                 sub_patterns: vec![],

@@ -222,7 +222,7 @@ impl PickerDelegate for DevContainerPickerDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Select Dev Container Configuration".into()
+        "选择 Dev Container 配置".into()
     }
 
     fn update_matches(
@@ -362,7 +362,7 @@ impl EditNicknameState {
             .and_then(|state| state.nickname)
             .filter(|text| !text.is_empty());
         this.editor.update(cx, |this, cx| {
-            this.set_placeholder_text("Add a nickname for this server", window, cx);
+            this.set_placeholder_text("为此服务器添加昵称", window, cx);
             if let Some(starting_text) = starting_text {
                 this.set_text(starting_text, window, cx);
             }
@@ -995,7 +995,7 @@ impl RemoteServerProjects {
             window,
             cx,
         )
-        .prompt_err("Failed to connect", window, cx, |_, _, _| None);
+        .prompt_err("连接失败", window, cx, |_, _, _| None);
 
         let address_editor = editor.clone();
         let creating = cx.spawn_in(window, async move |this, cx| {
@@ -1070,7 +1070,7 @@ impl RemoteServerProjects {
             window,
             cx,
         )
-        .prompt_err("Failed to connect", window, cx, |_, _, _| None);
+        .prompt_err("连接失败", window, cx, |_, _, _| None);
 
         let wsl_picker = picker.clone();
         let creating = cx.spawn_in(window, async move |this, cx| {
@@ -1184,7 +1184,7 @@ impl RemoteServerProjects {
                     window,
                     cx,
                 )
-                .prompt_err("Failed to connect", window, cx, |_, _, _| None);
+                .prompt_err("连接失败", window, cx, |_, _, _| None);
 
                 cx.spawn_in(window, async move |workspace, cx| {
                     let session = connect.await;
@@ -1393,7 +1393,7 @@ impl RemoteServerProjects {
                 } => {
                     let index = *index;
                     List::new()
-                        .empty_message("No projects.")
+                        .empty_message("没有项目。")
                         .children(projects.iter().enumerate().map(|(pix, p)| {
                             v_flex().gap_0p5().child(self.render_remote_project(
                                 index,
@@ -1584,9 +1584,9 @@ impl RemoteServerProjects {
                         log::error!("Failed to connect: {e:#}");
                         cx.prompt(
                             gpui::PromptLevel::Critical,
-                            "Failed to connect",
+                            "连接失败",
                             Some(&e.to_string()),
-                            &["Ok"],
+                            &["确定"],
                         )
                         .await
                         .ok();
@@ -1873,9 +1873,9 @@ impl RemoteServerProjects {
                         log::error!("Failed to start dev container: {:?}", e);
                         cx.prompt(
                             gpui::PromptLevel::Critical,
-                            "Failed to start Dev Container. See logs for details",
+                            "启动 Dev Container 失败。详情请查看日志",
                             Some(&format!("{e}")),
-                            &["Ok"],
+                            &["确定"],
                         )
                         .await
                         .ok();
@@ -1928,9 +1928,9 @@ impl RemoteServerProjects {
                 log::error!("Failed to connect: {e:#}");
                 cx.prompt(
                     gpui::PromptLevel::Critical,
-                    "Failed to connect",
+                    "连接失败",
                     Some(&e.to_string()),
-                    &["Ok"],
+                    &["确定"],
                 )
                 .await
                 .ok();
@@ -2038,7 +2038,7 @@ impl RemoteServerProjects {
                             .pb_1()
                             .child(
                                 ModalHeader::new().child(
-                                    Headline::new("Dev Containers").size(HeadlineSize::XSmall),
+                                    Headline::new("开发容器").size(HeadlineSize::XSmall),
                                 ),
                             )
                             .child(ListSeparator)
@@ -2304,13 +2304,13 @@ impl RemoteServerProjects {
                 window: &mut Window,
                 cx: &mut App,
             ) {
-                let prompt_message = format!("Remove WSL distro `{}`?", distro_name);
+                let prompt_message = format!("移除 WSL 发行版 `{}`？", distro_name);
 
                 let confirmation = window.prompt(
                     PromptLevel::Warning,
                     &prompt_message,
                     None,
-                    &["Yes, remove it", "No, keep it"],
+                    &["是，移除", "不，保留"],
                     cx,
                 );
 
@@ -2366,9 +2366,9 @@ impl RemoteServerProjects {
         v_flex()
             .child({
                 let label = if connection.nickname.is_some() {
-                    "Edit Nickname"
+                    "编辑昵称"
                 } else {
-                    "Add Nickname to Server"
+                    "为服务器添加昵称"
                 };
                 div()
                     .id("ssh-options-add-nickname")
@@ -2455,13 +2455,13 @@ impl RemoteServerProjects {
                     window: &mut Window,
                     cx: &mut App,
                 ) {
-                    let prompt_message = format!("Remove server `{}`?", connection_string);
+                    let prompt_message = format!("移除服务器 `{}`？", connection_string);
 
                     let confirmation = window.prompt(
                         PromptLevel::Warning,
                         &prompt_message,
                         None,
-                        &["Yes, remove it", "No, keep it"],
+                        &["是，移除", "不，保留"],
                         cx,
                     );
 
@@ -2801,7 +2801,7 @@ impl RemoteServerProjects {
         });
 
         Modal::new("remote-projects", None)
-            .header(ModalHeader::new().headline("Remote Projects"))
+            .header(ModalHeader::new().headline("远程项目"))
             .section(
                 Section::new().padded(false).child(
                     v_flex()
@@ -2853,10 +2853,10 @@ impl RemoteServerProjects {
                                     window.dispatch_action(menu::SecondaryConfirm.boxed_clone(), cx)
                                 }),
                         )
-                        .child(confirm_button("Open".into()))
+                        .child(confirm_button("打开".into()))
                         .into_any_element()
                 } else {
-                    confirm_button("Select".into()).into_any_element()
+                    confirm_button("选择".into()).into_any_element()
                 }
             }))
             .into_any_element()

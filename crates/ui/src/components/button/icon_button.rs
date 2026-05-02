@@ -246,37 +246,37 @@ impl Component for IconButton {
                 .gap_6()
                 .children(vec![
                     example_group_with_title(
-                        "Icon Button Styles",
+                        "图标按钮样式",
                         vec![
                             single_example(
-                                "Default",
+                                "默认",
                                 IconButton::new("default", IconName::Check)
                                     .layer(ElevationIndex::Background)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Filled",
+                                "填充",
                                 IconButton::new("filled", IconName::Check)
                                     .layer(ElevationIndex::Background)
                                     .style(ButtonStyle::Filled)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Subtle",
+                                "弱化",
                                 IconButton::new("subtle", IconName::Check)
                                     .layer(ElevationIndex::Background)
                                     .style(ButtonStyle::Subtle)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Tinted",
+                                "有色",
                                 IconButton::new("tinted", IconName::Check)
                                     .layer(ElevationIndex::Background)
                                     .style(ButtonStyle::Tinted(TintColor::Accent))
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Transparent",
+                                "透明",
                                 IconButton::new("transparent", IconName::Check)
                                     .layer(ElevationIndex::Background)
                                     .style(ButtonStyle::Transparent)
@@ -285,10 +285,10 @@ impl Component for IconButton {
                         ],
                     ),
                     example_group_with_title(
-                        "Icon Button Shapes",
+                        "图标按钮形状",
                         vec![
                             single_example(
-                                "Square",
+                                "正方形",
                                 IconButton::new("square", IconName::Check)
                                     .shape(IconButtonShape::Square)
                                     .style(ButtonStyle::Filled)
@@ -296,7 +296,7 @@ impl Component for IconButton {
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Wide",
+                                "宽的",
                                 IconButton::new("wide", IconName::Check)
                                     .shape(IconButtonShape::Wide)
                                     .style(ButtonStyle::Filled)
@@ -306,10 +306,10 @@ impl Component for IconButton {
                         ],
                     ),
                     example_group_with_title(
-                        "Icon Button Sizes",
+                        "图标按钮尺寸",
                         vec![
                             single_example(
-                                "XSmall",
+                                "小号",
                                 IconButton::new("xsmall", IconName::Check)
                                     .icon_size(IconSize::XSmall)
                                     .style(ButtonStyle::Filled)
@@ -317,7 +317,7 @@ impl Component for IconButton {
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Small",
+                                "小的",
                                 IconButton::new("small", IconName::Check)
                                     .icon_size(IconSize::Small)
                                     .style(ButtonStyle::Filled)
@@ -325,7 +325,7 @@ impl Component for IconButton {
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Medium",
+                                "中等的",
                                 IconButton::new("medium", IconName::Check)
                                     .icon_size(IconSize::Medium)
                                     .style(ButtonStyle::Filled)
@@ -333,7 +333,7 @@ impl Component for IconButton {
                                     .into_any_element(),
                             ),
                             single_example(
-                                "XLarge",
+                                "特大号",
                                 IconButton::new("xlarge", IconName::Check)
                                     .icon_size(IconSize::XLarge)
                                     .style(ButtonStyle::Filled)
@@ -343,10 +343,10 @@ impl Component for IconButton {
                         ],
                     ),
                     example_group_with_title(
-                        "Special States",
+                        "特殊国家",
                         vec![
                             single_example(
-                                "Disabled",
+                                "禁用",
                                 IconButton::new("disabled", IconName::Check)
                                     .disabled(true)
                                     .style(ButtonStyle::Filled)
@@ -354,7 +354,7 @@ impl Component for IconButton {
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Selected",
+                                "已选择",
                                 IconButton::new("selected", IconName::Check)
                                     .toggle_state(true)
                                     .style(ButtonStyle::Filled)
@@ -362,7 +362,7 @@ impl Component for IconButton {
                                     .into_any_element(),
                             ),
                             single_example(
-                                "With Indicator",
+                                "带指示灯",
                                 IconButton::new("indicator", IconName::Check)
                                     .indicator(Indicator::dot().color(Color::Success))
                                     .style(ButtonStyle::Filled)
@@ -372,10 +372,10 @@ impl Component for IconButton {
                         ],
                     ),
                     example_group_with_title(
-                        "Custom Colors",
+                        "定制颜色",
                         vec![
                             single_example(
-                                "Custom Icon Color",
+                                "自定义图标颜色",
                                 IconButton::new("custom_color", IconName::Check)
                                     .icon_color(Color::Accent)
                                     .style(ButtonStyle::Filled)
@@ -383,7 +383,7 @@ impl Component for IconButton {
                                     .into_any_element(),
                             ),
                             single_example(
-                                "With Alpha",
+                                "与阿尔法",
                                 IconButton::new("alpha", IconName::Check)
                                     .alpha(0.5)
                                     .style(ButtonStyle::Filled)

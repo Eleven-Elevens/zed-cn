@@ -387,7 +387,7 @@ impl Component for ListItem {
 
     fn description() -> Option<&'static str> {
         Some(
-            "A flexible list item component with support for icons, actions, disclosure toggles, and hierarchical display.",
+            "灵活的列表项组件，支持图标、操作、公开切换和分层显示。",
         )
     }
 
@@ -397,23 +397,23 @@ impl Component for ListItem {
                 .gap_6()
                 .children(vec![
                     example_group_with_title(
-                        "Basic List Items",
+                        "基本清单项目",
                         vec![
                             single_example(
-                                "Simple",
+                                "简单的",
                                 ListItem::new("simple")
                                     .child(Label::new("Simple list item"))
                                     .into_any_element(),
                             ),
                             single_example(
-                                "With Icon",
+                                "带图标",
                                 ListItem::new("with_icon")
                                     .start_slot(Icon::new(IconName::File))
                                     .child(Label::new("List item with icon"))
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Selected",
+                                "已选择",
                                 ListItem::new("selected")
                                     .toggle_state(true)
                                     .start_slot(Icon::new(IconName::Check))
@@ -423,24 +423,24 @@ impl Component for ListItem {
                         ],
                     ),
                     example_group_with_title(
-                        "List Item Spacing",
+                        "列表项间距",
                         vec![
                             single_example(
-                                "Dense",
+                                "稠密",
                                 ListItem::new("dense")
                                     .spacing(ListItemSpacing::Dense)
                                     .child(Label::new("Dense spacing"))
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Extra Dense",
+                                "超密",
                                 ListItem::new("extra_dense")
                                     .spacing(ListItemSpacing::ExtraDense)
                                     .child(Label::new("Extra dense spacing"))
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Sparse",
+                                "疏",
                                 ListItem::new("sparse")
                                     .spacing(ListItemSpacing::Sparse)
                                     .child(Label::new("Sparse spacing"))
@@ -449,17 +449,17 @@ impl Component for ListItem {
                         ],
                     ),
                     example_group_with_title(
-                        "With Slots",
+                        "带插槽",
                         vec![
                             single_example(
-                                "End Slot",
+                                "结束槽",
                                 ListItem::new("end_slot")
                                     .child(Label::new("Item with end slot"))
                                     .end_slot(Icon::new(IconName::ChevronRight))
                                     .into_any_element(),
                             ),
                             single_example(
-                                "With Toggle",
+                                "带切换",
                                 ListItem::new("with_toggle")
                                     .toggle(Some(true))
                                     .child(Label::new("Expandable item"))
@@ -468,17 +468,17 @@ impl Component for ListItem {
                         ],
                     ),
                     example_group_with_title(
-                        "States",
+                        "状态",
                         vec![
                             single_example(
-                                "Disabled",
+                                "禁用",
                                 ListItem::new("disabled")
                                     .disabled(true)
                                     .child(Label::new("Disabled item"))
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Non-selectable",
+                                "不可选择",
                                 ListItem::new("non_selectable")
                                     .selectable(false)
                                     .child(Label::new("Non-selectable item"))

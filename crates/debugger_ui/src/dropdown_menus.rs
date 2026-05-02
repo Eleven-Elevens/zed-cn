@@ -23,14 +23,14 @@ impl SessionListEntry {
         let mut label = String::new();
         for ancestor in &self.ancestors {
             label.push_str(&ancestor.update(cx, |ancestor, cx| {
-                ancestor.label(cx).unwrap_or("(child)".into())
+                ancestor.label(cx).unwrap_or("（子项）".into())
             }));
             label.push_str(" » ");
         }
         label.push_str(
             &self
                 .leaf
-                .update(cx, |leaf, cx| leaf.label(cx).unwrap_or("(child)".into())),
+                .update(cx, |leaf, cx| leaf.label(cx).unwrap_or("（子项）".into())),
         );
         let label = truncate_and_trailoff(&label, MAX_LABEL_CHARS);
 
@@ -118,10 +118,10 @@ impl DebugPanel {
         let weak = cx.weak_entity();
         let trigger_label = if let Some(active_session) = active_session.clone() {
             active_session.update(cx, |active_session, cx| {
-                active_session.label(cx).unwrap_or("(child)".into())
+                active_session.label(cx).unwrap_or("（子项）".into())
             })
         } else {
-            SharedString::new_static("Unknown Session")
+            SharedString::new_static("未知会话")
         };
         let running_state = running_state.read(cx);
 
@@ -293,7 +293,7 @@ impl DebugPanel {
                 thread
                     .name
                     .is_empty()
-                    .then(|| format!("Tid: {}", thread.id))
+                    .then(|| format!("线程 ID：{}", thread.id))
                     .unwrap_or_else(|| thread.name.clone())
             });
 
@@ -310,7 +310,7 @@ impl DebugPanel {
                             let entry_name = thread
                                 .name
                                 .is_empty()
-                                .then(|| format!("Tid: {}", thread.id))
+                                .then(|| format!("线程 ID：{}", thread.id))
                                 .unwrap_or_else(|| thread.name);
                             let entry_name = truncate_and_trailoff(&entry_name, MAX_LABEL_CHARS);
 

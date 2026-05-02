@@ -260,7 +260,7 @@ impl Component for KeybindingHint {
     }
 
     fn description() -> Option<&'static str> {
-        Some("Displays a keyboard shortcut hint with optional prefix and suffix text")
+        Some("显示带有可选前缀和后缀文本的键盘快捷键提示")
     }
 
     fn preview(_window: &mut Window, cx: &mut App) -> Option<AnyElement> {
@@ -273,10 +273,10 @@ impl Component for KeybindingHint {
                 .gap_6()
                 .children(vec![
                     example_group_with_title(
-                        "Basic",
+                        "基本的",
                         vec![
                             single_example(
-                                "With Prefix",
+                                "带前缀",
                                 KeybindingHint::with_prefix(
                                     "Go to Start:",
                                     enter.clone(),
@@ -285,12 +285,12 @@ impl Component for KeybindingHint {
                                 .into_any_element(),
                             ),
                             single_example(
-                                "With Suffix",
+                                "带后缀",
                                 KeybindingHint::with_suffix(enter.clone(), "Go to End", bg_color)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "With Prefix and Suffix",
+                                "带前缀和后缀",
                                 KeybindingHint::new(enter.clone(), bg_color)
                                     .prefix("Confirm:")
                                     .suffix("Execute selected action")
@@ -299,24 +299,24 @@ impl Component for KeybindingHint {
                         ],
                     ),
                     example_group_with_title(
-                        "Sizes",
+                        "尺寸",
                         vec![
                             single_example(
-                                "Small",
+                                "小的",
                                 KeybindingHint::new(enter.clone(), bg_color)
                                     .size(Pixels::from(12.0))
                                     .prefix("Small:")
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Medium",
+                                "中等的",
                                 KeybindingHint::new(enter.clone(), bg_color)
                                     .size(Pixels::from(16.0))
-                                    .suffix("Medium")
+                                    .suffix("中等的")
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Large",
+                                "大的",
                                 KeybindingHint::new(enter, bg_color)
                                     .size(Pixels::from(20.0))
                                     .prefix("Large:")

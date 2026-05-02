@@ -78,7 +78,7 @@ pub use thread_import::{
 use zed_actions;
 pub use zed_actions::{CreateWorktree, NewWorktreeBranchTarget, SwitchWorktree};
 
-pub const DEFAULT_THREAD_TITLE: &str = "New Agent Thread";
+pub const DEFAULT_THREAD_TITLE: &str = "新建 Agent 线程";
 const PARALLEL_AGENT_LAYOUT_BACKFILL_KEY: &str = "parallel_agent_layout_backfilled";
 actions!(
     agent,

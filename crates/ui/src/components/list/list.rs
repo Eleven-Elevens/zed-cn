@@ -101,7 +101,7 @@ impl Component for List {
 
     fn description() -> Option<&'static str> {
         Some(
-            "A container component for displaying a collection of list items with optional header and empty state.",
+            "一个容器组件，用于显示具有可选标题和空状态的列表项集合。",
         )
     }
 
@@ -110,10 +110,10 @@ impl Component for List {
             v_flex()
                 .gap_6()
                 .children(vec![example_group_with_title(
-                    "Basic Lists",
+                    "基本清单",
                     vec![
                         single_example(
-                            "Simple List",
+                            "简单列表",
                             List::new()
                                 .child(ListItem::new("item1").child(Label::new("Item 1")))
                                 .child(ListItem::new("item2").child(Label::new("Item 2")))
@@ -121,7 +121,7 @@ impl Component for List {
                                 .into_any_element(),
                         ),
                         single_example(
-                            "With Header",
+                            "带标头",
                             List::new()
                                 .header(ListHeader::new("Section Header"))
                                 .child(ListItem::new("item1").child(Label::new("Item 1")))
@@ -129,9 +129,9 @@ impl Component for List {
                                 .into_any_element(),
                         ),
                         single_example(
-                            "Empty List",
+                            "空列表",
                             List::new()
-                                .empty_message("No items to display")
+                                .empty_message("没有可显示的项目")
                                 .into_any_element(),
                         ),
                     ],

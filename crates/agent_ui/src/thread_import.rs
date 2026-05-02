@@ -276,7 +276,7 @@ impl ThreadImportModal {
 
     fn show_imported_threads_toast(&self, imported_count: usize, cx: &mut App) {
         let status_toast = if imported_count == 0 {
-            StatusToast::new("No threads found to import.", cx, |this, _cx| {
+            StatusToast::new("没有可导入的线程。", cx, |this, _cx| {
                 this.icon(
                     Icon::new(IconName::Info)
                         .size(IconSize::Small)
@@ -286,9 +286,9 @@ impl ThreadImportModal {
             })
         } else {
             let message = if imported_count == 1 {
-                "Imported 1 thread.".to_string()
+                "已导入 1 个线程。".to_string()
             } else {
-                format!("Imported {imported_count} threads.")
+                format!("已导入 {imported_count} 个线程。")
             };
             StatusToast::new(message, cx, |this, _cx| {
                 this.icon(
@@ -390,10 +390,10 @@ impl Render for ThreadImportModal {
                 Modal::new("import-threads", None)
                     .header(
                         ModalHeader::new()
-                            .headline("Import External Agent Threads")
+                            .headline("导入外部 Agent 线程")
                             .description(
-                                "Import threads from agents like Claude Agent, Codex, and more, whether started in Zed or another client. \
-                                Choose which agents to include, and their threads will appear in your thread history."
+                                "导入来自 Claude Agent、Codex 等 Agent 的线程，无论它们是在 Zed 还是其他客户端中启动。\
+                                选择要包含的 Agent 后，它们的线程会出现在你的线程历史中。"
                             )
                             .show_dismiss_button(true),
 
@@ -688,15 +688,15 @@ fn show_cross_channel_import_toast(
     cx: &mut App,
 ) {
     let status_toast = if imported_count == 0 {
-        StatusToast::new("No new threads found to import.", cx, |this, _cx| {
+        StatusToast::new("没有新的线程可导入。", cx, |this, _cx| {
             this.icon(Icon::new(IconName::Info).color(Color::Muted))
                 .dismiss_button(true)
         })
     } else {
         let message = if imported_count == 1 {
-            "Imported 1 thread from other channels.".to_string()
+            "已从其他频道导入 1 个线程。".to_string()
         } else {
-            format!("Imported {imported_count} threads from other channels.")
+            format!("已从其他频道导入 {imported_count} 个线程。")
         };
         StatusToast::new(message, cx, |this, _cx| {
             this.icon(Icon::new(IconName::Check).color(Color::Success))

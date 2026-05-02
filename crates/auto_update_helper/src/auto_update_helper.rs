@@ -115,7 +115,7 @@ mod windows_impl {
             MessageBoxW(
                 None,
                 &HSTRING::from(content),
-                windows::core::w!("Error: Zed update failed."),
+                windows::core::w!("错误：Zed 更新失败。"),
                 MB_ICONERROR | MB_SYSTEMMODAL,
             )
         };

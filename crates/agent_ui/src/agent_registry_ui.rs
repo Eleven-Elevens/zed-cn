@@ -95,7 +95,7 @@ impl AgentRegistryPage {
             let registry_store = AgentRegistryStore::global(cx);
             let query_editor = cx.new(|cx| {
                 let mut input = Editor::single_line(window, cx);
-                input.set_placeholder_text("Search agents...", window, cx);
+                input.set_placeholder_text("搜索 Agent...", window, cx);
                 input
             });
             cx.subscribe(&query_editor, Self::on_query_change).detach();
@@ -294,30 +294,30 @@ impl AgentRegistryPage {
         let registry_store = self.registry_store.read(cx);
 
         let message = if registry_store.is_fetching() {
-            "Loading registry..."
+            "正在加载注册表..."
         } else if registry_store.fetch_error().is_some() {
-            "Failed to load the agent registry. Please check your connection and try again."
+            "无法加载 Agent 注册表。请检查网络连接后重试。"
         } else {
             match self.filter {
                 RegistryFilter::All => {
                     if has_search {
-                        "No agents match your search."
+                        "没有符合搜索条件的 Agent。"
                     } else {
-                        "No agents available."
+                        "暂无可用 Agent。"
                     }
                 }
                 RegistryFilter::Installed => {
                     if has_search {
-                        "No installed agents match your search."
+                        "没有符合搜索条件的已安装 Agent。"
                     } else {
-                        "No installed agents."
+                        "暂无已安装 Agent。"
                     }
                 }
                 RegistryFilter::NotInstalled => {
                     if has_search {
-                        "No uninstalled agents match your search."
+                        "没有符合搜索条件的未安装 Agent。"
                     } else {
-                        "No uninstalled agents."
+                        "暂无未安装 Agent。"
                     }
                 }
             }
@@ -452,7 +452,7 @@ impl AgentRegistryPage {
                         h_flex()
                             .gap_1()
                             .child(
-                                Label::new(format!("ID: {}", agent.id()))
+                                Label::new(format!("ID：{}", agent.id()))
                                     .size(LabelSize::Small)
                                     .color(Color::Muted)
                                     .truncate(),
@@ -581,7 +581,7 @@ impl Render for AgentRegistryPage {
                                         "registry-filter-buttons",
                                         [
                                             ToggleButtonSimple::new(
-                                                "All",
+                                                "全部",
                                                 cx.listener(|this, _event, _, cx| {
                                                     this.filter = RegistryFilter::All;
                                                     this.filter_registry_agents(cx);
@@ -597,7 +597,7 @@ impl Render for AgentRegistryPage {
                                                 }),
                                             ),
                                             ToggleButtonSimple::new(
-                                                "Not Installed",
+                                                "未安装",
                                                 cx.listener(|this, _event, _, cx| {
                                                     this.filter = RegistryFilter::NotInstalled;
                                                     this.filter_registry_agents(cx);

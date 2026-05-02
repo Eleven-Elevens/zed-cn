@@ -1130,23 +1130,23 @@ fn python_env_kind_display(k: &PythonEnvironmentKind) -> &'static str {
         PythonEnvironmentKind::Conda => "Conda",
         PythonEnvironmentKind::Pixi => "pixi",
         PythonEnvironmentKind::Homebrew => "Homebrew",
-        PythonEnvironmentKind::Pyenv => "global (Pyenv)",
+        PythonEnvironmentKind::Pyenv => "全局 (Pyenv)",
         PythonEnvironmentKind::GlobalPaths => "global",
         PythonEnvironmentKind::PyenvVirtualEnv => "Pyenv",
         PythonEnvironmentKind::Pipenv => "Pipenv",
         PythonEnvironmentKind::Poetry => "Poetry",
-        PythonEnvironmentKind::MacPythonOrg => "global (Python.org)",
-        PythonEnvironmentKind::MacCommandLineTools => "global (Command Line Tools for Xcode)",
+        PythonEnvironmentKind::MacPythonOrg => "全局 (Python.org)",
+        PythonEnvironmentKind::MacCommandLineTools => "全局 (Command Line Tools for Xcode)",
         PythonEnvironmentKind::LinuxGlobal => "global",
-        PythonEnvironmentKind::MacXCode => "global (Xcode)",
+        PythonEnvironmentKind::MacXCode => "全局 (Xcode)",
         PythonEnvironmentKind::Venv => "venv",
         PythonEnvironmentKind::VirtualEnv => "virtualenv",
         PythonEnvironmentKind::VirtualEnvWrapper => "virtualenvwrapper",
         PythonEnvironmentKind::WinPython => "WinPython",
-        PythonEnvironmentKind::WindowsStore => "global (Windows Store)",
-        PythonEnvironmentKind::WindowsRegistry => "global (Windows Registry)",
+        PythonEnvironmentKind::WindowsStore => "全局 (Windows Store)",
+        PythonEnvironmentKind::WindowsRegistry => "全局 (Windows Registry)",
         PythonEnvironmentKind::Uv => "uv",
-        PythonEnvironmentKind::UvWorkspace => "uv (Workspace)",
+        PythonEnvironmentKind::UvWorkspace => "uv（工作区）",
     }
 }
 
@@ -1393,9 +1393,9 @@ impl ToolchainLister for PythonToolchainProvider {
     }
     fn meta(&self) -> ToolchainMetadata {
         ToolchainMetadata {
-            term: SharedString::new_static("Virtual Environment"),
+            term: SharedString::new_static("虚拟环境"),
             new_toolchain_placeholder: SharedString::new_static(
-                "A path to the python3 executable within a virtual environment, or path to virtual environment itself",
+                "虚拟环境中的 python3 可执行文件路径，或虚拟环境本身的路径",
             ),
             manifest_name: ManifestName::from(SharedString::new_static("pyproject.toml")),
         }
@@ -1415,11 +1415,11 @@ impl ToolchainLister for PythonToolchainProvider {
             &environment,
         );
         let toolchain = pet::resolve::resolve_environment(&path, &locators, &environment)
-            .context("Could not find a virtual environment in provided path")?;
+            .context("在提供的路径中找不到虚拟环境")?;
         let venv = toolchain.resolved.unwrap_or(toolchain.discovered);
         venv_to_toolchain(venv, fs)
             .await
-            .context("Could not convert a venv into a toolchain")
+            .context("无法将 venv 转换为工具链")
     }
 
     fn activation_script(
@@ -1698,9 +1698,9 @@ impl PyLspAdapter {
         let python_path = Self::find_base_python(delegate)
             .await
             .with_context(|| {
-                let mut message = "Could not find Python installation for PyLSP".to_owned();
+                let mut message = "找不到供 PyLSP 使用的 Python 安装".to_owned();
                 if cfg!(windows){
-                    message.push_str(". Install Python from the Microsoft Store, or manually from https://www.python.org/downloads/windows.")
+                    message.push_str("。请从 Microsoft Store 安装 Python，或从 https://www.python.org/downloads/windows 手动安装。")
                 }
                 message
             })?;

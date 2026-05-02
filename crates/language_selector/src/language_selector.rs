@@ -199,7 +199,7 @@ impl PickerDelegate for LanguageSelectorDelegate {
     type ListItem = ListItem;
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Select a language…".into()
+        "选择语言…".into()
     }
 
     fn match_count(&self) -> usize {

@@ -497,7 +497,7 @@ impl PickerDelegate for ConfigOptionPickerDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Select an option…".into()
+        "选择一个选项…".into()
     }
 
     fn update_matches(
@@ -783,7 +783,7 @@ fn options_to_picker_entries(
     }
 
     if !favorite_options.is_empty() {
-        entries.push(ConfigOptionPickerEntry::Separator("Favorites".into()));
+        entries.push(ConfigOptionPickerEntry::Separator("收藏".into()));
         for option in favorite_options {
             entries.push(ConfigOptionPickerEntry::Option(option));
         }
@@ -793,7 +793,7 @@ fn options_to_picker_entries(
         if let Some(option) = options.first()
             && option.group.is_none()
         {
-            entries.push(ConfigOptionPickerEntry::Separator("All Options".into()));
+            entries.push(ConfigOptionPickerEntry::Separator("所有选项".into()));
         }
     }
 

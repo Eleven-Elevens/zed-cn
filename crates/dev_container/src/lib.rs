@@ -656,7 +656,7 @@ impl DevContainerModal {
                 .child(
                     div().track_focus(&self.focus_handle).child(
                         ModalHeader::new().child(
-                            Headline::new("Create Dev Container").size(HeadlineSize::XSmall),
+                            Headline::new("创建开发容器").size(HeadlineSize::XSmall),
                         ),
                     ),
                 )
@@ -751,7 +751,7 @@ impl DevContainerModal {
                         .child(
                             ModalHeader::new()
                                 .child(
-                                    Headline::new("Template Option: ").size(HeadlineSize::XSmall),
+                                    Headline::new("模板选项：").size(HeadlineSize::XSmall),
                                 )
                                 .child(
                                     Headline::new(&next_option_entries.option_name)
@@ -873,7 +873,7 @@ impl DevContainerModal {
                         ModalHeader::new()
                             .icon(Icon::new(IconName::Warning).color(Color::Warning))
                             .child(
-                                Headline::new("Overwrite Existing Configuration?")
+                                Headline::new("要覆盖现有配置吗？")
                                     .size(HeadlineSize::XSmall),
                             ),
                     ),
@@ -947,7 +947,7 @@ impl DevContainerModal {
                 .child(
                     div().track_focus(&self.focus_handle).child(
                         ModalHeader::new().child(
-                            Headline::new("Create Dev Container").size(HeadlineSize::XSmall),
+                            Headline::new("创建开发容器").size(HeadlineSize::XSmall),
                         ),
                     ),
                 )
@@ -999,7 +999,7 @@ impl DevContainerModal {
                 .child(
                     div().track_focus(&self.focus_handle).child(
                         ModalHeader::new().child(
-                            Headline::new("Create Dev Container").size(HeadlineSize::XSmall),
+                            Headline::new("创建开发容器").size(HeadlineSize::XSmall),
                         ),
                     ),
                 )
@@ -1158,7 +1158,7 @@ impl StatefulModal for DevContainerModal {
                     .collect::<Vec<TemplateEntry>>();
                 if self.state == DevContainerState::QueryingTemplates {
                     let delegate = TemplatePickerDelegate::new(
-                        "Select a template".to_string(),
+                        "选择模板".to_string(),
                         cx.weak_entity(),
                         items.clone(),
                         Box::new(|entry, this, window, cx| {
@@ -1289,7 +1289,7 @@ impl StatefulModal for DevContainerModal {
                         })
                         .collect::<Vec<FeatureEntry>>();
                     let delegate = FeaturePickerDelegate::new(
-                        "Select features to add".to_string(),
+                        "选择要添加的功能".to_string(),
                         cx.weak_entity(),
                         features,
                         template_entry.clone(),

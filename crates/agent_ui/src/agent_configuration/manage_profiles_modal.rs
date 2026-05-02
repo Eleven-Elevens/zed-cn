@@ -184,7 +184,7 @@ impl ManageProfilesModal {
     ) {
         let name_editor = cx.new(|cx| Editor::single_line(window, cx));
         name_editor.update(cx, |editor, cx| {
-            editor.set_placeholder_text("Profile name", window, cx);
+            editor.set_placeholder_text("配置档案名称", window, cx);
         });
 
         self.mode = Mode::NewProfile(NewProfileMode {
@@ -628,7 +628,7 @@ impl ManageProfilesModal {
                 .profiles
                 .get(base_profile_id)
                 .map(|profile| profile.name.clone())
-                .unwrap_or_else(|| "Unknown".into())
+                .unwrap_or_else(|| "未知".into())
         });
 
         v_flex()
@@ -636,8 +636,8 @@ impl ManageProfilesModal {
             .track_focus(&self.focus_handle(cx))
             .child(ProfileModalHeader::new(
                 match &base_profile_name {
-                    Some(base_profile) => format!("Fork {base_profile}"),
-                    None => "New Profile".into(),
+                    Some(base_profile) => format!("复制 {base_profile}"),
+                    None => "新建配置档案".into(),
                 },
                 match base_profile_name {
                     Some(_) => Some(IconName::Scissors),
@@ -660,7 +660,7 @@ impl ManageProfilesModal {
             .profiles
             .get(&mode.profile_id)
             .map(|profile| profile.name.clone())
-            .unwrap_or_else(|| "Unknown".into());
+            .unwrap_or_else(|| "未知".into());
 
         let icon = match mode.profile_id.as_str() {
             "write" => IconName::Pencil,
@@ -986,12 +986,12 @@ impl Render for ManageProfilesModal {
                         .profiles
                         .get(profile_id)
                         .map(|profile| profile.name.clone())
-                        .unwrap_or_else(|| "Unknown".into());
+                        .unwrap_or_else(|| "未知".into());
 
                     v_flex()
                         .pb_1()
                         .child(ProfileModalHeader::new(
-                            format!("{profile_name} — Configure Built-in Tools"),
+                            format!("{profile_name} — 配置内置工具"),
                             Some(IconName::Settings),
                         ))
                         .child(ListSeparator)
@@ -1009,12 +1009,12 @@ impl Render for ManageProfilesModal {
                         .profiles
                         .get(profile_id)
                         .map(|profile| profile.name.clone())
-                        .unwrap_or_else(|| "Unknown".into());
+                        .unwrap_or_else(|| "未知".into());
 
                     v_flex()
                         .pb_1()
                         .child(ProfileModalHeader::new(
-                            format!("{profile_name} — Configure Default Model"),
+                            format!("{profile_name} — 配置默认模型"),
                             Some(IconName::ZedAgent),
                         ))
                         .child(ListSeparator)
@@ -1032,12 +1032,12 @@ impl Render for ManageProfilesModal {
                         .profiles
                         .get(profile_id)
                         .map(|profile| profile.name.clone())
-                        .unwrap_or_else(|| "Unknown".into());
+                        .unwrap_or_else(|| "未知".into());
 
                     v_flex()
                         .pb_1()
                         .child(ProfileModalHeader::new(
-                            format!("{profile_name} — Configure MCP Tools"),
+                            format!("{profile_name} — 配置 MCP 工具"),
                             Some(IconName::ToolHammer),
                         ))
                         .child(ListSeparator)

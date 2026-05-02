@@ -70,33 +70,33 @@ impl Component for ConfiguredApiCard {
 
         let examples = vec![
             single_example(
-                "Default",
+                "默认",
                 container()
-                    .child(ConfiguredApiCard::new("API key is configured"))
+                    .child(ConfiguredApiCard::new("已配置 API 密钥"))
                     .into_any_element(),
             ),
             single_example(
-                "Custom Button Label",
+                "自定义按钮标签",
                 container()
                     .child(
-                        ConfiguredApiCard::new("OpenAI API key configured")
-                            .button_label("Remove Key"),
+                        ConfiguredApiCard::new("已配置 OpenAI API 密钥")
+                            .button_label("移除密钥"),
                     )
                     .into_any_element(),
             ),
             single_example(
-                "With Tooltip",
+                "带工具提示",
                 container()
                     .child(
-                        ConfiguredApiCard::new("Anthropic API key configured")
-                            .tooltip_label("Click to reset your API key"),
+                        ConfiguredApiCard::new("已配置 Anthropic API 密钥")
+                            .tooltip_label("点击重置 API 密钥"),
                     )
                     .into_any_element(),
             ),
             single_example(
-                "Disabled",
+                "禁用",
                 container()
-                    .child(ConfiguredApiCard::new("API key is configured").disabled(true))
+                    .child(ConfiguredApiCard::new("已配置 API 密钥").disabled(true))
                     .into_any_element(),
             ),
         ];
@@ -107,7 +107,7 @@ impl Component for ConfiguredApiCard {
 
 impl RenderOnce for ConfiguredApiCard {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
-        let button_label = self.button_label.unwrap_or("Reset Key".into());
+        let button_label = self.button_label.unwrap_or("重置密钥".into());
         let button_id = SharedString::new(format!("id-{}", button_label));
 
         h_flex()

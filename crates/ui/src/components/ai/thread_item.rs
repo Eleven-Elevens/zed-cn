@@ -609,7 +609,7 @@ impl Component for ThreadItem {
 
         let thread_item_examples = vec![
             single_example(
-                "Default",
+                "默认",
                 container()
                     .child(
                         ThreadItem::new("ti-1", "Linking to the Agent Panel Depending on Settings")
@@ -629,7 +629,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "Error",
+                "错误",
                 container()
                     .child(
                         ThreadItem::new("ti-2c", "Failed to connect to language server")
@@ -639,7 +639,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "Running Agent",
+                "运行代理",
                 container()
                     .child(
                         ThreadItem::new("ti-3", "Add line numbers option to FileEditBlock")
@@ -650,7 +650,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "In Worktree",
+                "在工作树中",
                 container()
                     .child(
                         ThreadItem::new("ti-4", "Add line numbers option to FileEditBlock")
@@ -667,7 +667,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "With Changes",
+                "有变化",
                 container()
                     .child(
                         ThreadItem::new("ti-5", "Managing user and project settings interactions")
@@ -679,7 +679,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "Worktree + Changes + Timestamp",
+                "工作树 + 更改 + 时间戳",
                 container()
                     .child(
                         ThreadItem::new("ti-5b", "Full metadata example")
@@ -698,7 +698,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "Worktree + Branch + Changes + Timestamp",
+                "工作树+分支+更改+时间戳",
                 container()
                     .child(
                         ThreadItem::new("ti-5c", "Full metadata with branch")
@@ -717,7 +717,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "Long Branch + Changes (truncation)",
+                "长分支+更改（截断）",
                 container()
                     .child(
                         ThreadItem::new("ti-5d", "Metadata overflow with long branch name")
@@ -736,7 +736,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "Main Worktree (hidden) + Changes + Timestamp",
+                "主工作树（隐藏）+更改+时间戳",
                 container()
                     .child(
                         ThreadItem::new("ti-5e", "Main worktree branch with diff stats")
@@ -755,7 +755,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "Long Worktree Name (truncation)",
+                "长工作树名称（截断）",
                 container()
                     .child(
                         ThreadItem::new("ti-5f", "Thread with a very long worktree name")
@@ -774,7 +774,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "Worktree with Search Highlights",
+                "具有搜索突出显示的工作树",
                 container()
                     .child(
                         ThreadItem::new("ti-5g", "Filtered thread with highlighted worktree")
@@ -791,7 +791,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "Multiple Worktrees (no branches)",
+                "多个工作树（无分支）",
                 container()
                     .child(
                         ThreadItem::new("ti-5h", "Thread spanning multiple worktrees")
@@ -817,7 +817,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "Multiple Worktrees with Branches",
+                "具有分支的多个工作树",
                 container()
                     .child(
                         ThreadItem::new("ti-5i", "Multi-root with per-worktree branches")
@@ -843,7 +843,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "Project Name + Worktree + Branch",
+                "项目名称+工作树+分支",
                 container()
                     .child(
                         ThreadItem::new("ti-5j", "Thread with project context")
@@ -861,7 +861,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "Project Paths + Worktree (archive view)",
+                "项目路径+工作树（存档视图）",
                 container()
                     .child(
                         ThreadItem::new("ti-5k", "Archived thread with folder paths")
@@ -882,7 +882,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "All Metadata",
+                "所有元数据",
                 container()
                     .child(
                         ThreadItem::new("ti-5l", "Thread with every metadata field populated")
@@ -902,7 +902,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "Focused Item (Keyboard Selection)",
+                "焦点项目（键盘选择）",
                 container()
                     .child(
                         ThreadItem::new("ti-7", "Implement keyboard navigation")
@@ -913,7 +913,7 @@ impl Component for ThreadItem {
                     .into_any_element(),
             ),
             single_example(
-                "Action Slot",
+                "动作槽",
                 container()
                     .child(
                         ThreadItem::new("ti-9", "Hover to see action button")

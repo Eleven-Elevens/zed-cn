@@ -744,7 +744,7 @@ impl Item for LspLogView {
     }
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        "LSP Logs".into()
+        "LSP 日志".into()
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {
@@ -973,7 +973,7 @@ impl Render for LspLogToolbarItemView {
                                 row.server_name.0, row.worktree_root_name,
                             ))
                         })
-                        .unwrap_or_else(|| "No server selected".into()),
+                        .unwrap_or_else(|| "未选择服务器".into()),
                 )
                 .end_icon(
                     Icon::new(IconName::ChevronDown)
@@ -1132,7 +1132,7 @@ impl Render for LspLogToolbarItemView {
                                         .trigger(
                                             Button::new(
                                                 "language_server_trace_level_selector",
-                                                "Trace level",
+                                                "跟踪级别",
                                             )
                                             .end_icon(
                                                 Icon::new(IconName::ChevronDown)
@@ -1202,7 +1202,7 @@ impl Render for LspLogToolbarItemView {
                                         .trigger(
                                             Button::new(
                                                 "language_server_log_level_selector",
-                                                "Log level",
+                                                "日志级别",
                                             )
                                             .end_icon(
                                                 Icon::new(IconName::ChevronDown)
@@ -1311,10 +1311,10 @@ fn initialize_new_editor(
     })
 }
 
-const RPC_MESSAGES: &str = "RPC Messages";
-const SERVER_LOGS: &str = "Server Logs";
-const SERVER_TRACE: &str = "Server Trace";
-const SERVER_INFO: &str = "Server Info";
+const RPC_MESSAGES: &str = "RPC 消息";
+const SERVER_LOGS: &str = "服务器日志";
+const SERVER_TRACE: &str = "服务器跟踪";
+const SERVER_INFO: &str = "服务器信息";
 
 impl LspLogToolbarItemView {
     pub fn new() -> Self {

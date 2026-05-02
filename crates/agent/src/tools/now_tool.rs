@@ -45,7 +45,7 @@ impl AgentTool for NowTool {
         _input: Result<Self::Input, serde_json::Value>,
         _cx: &mut App,
     ) -> SharedString {
-        "Get current time".into()
+        "获取当前时间".into()
     }
 
     fn run(

@@ -720,7 +720,7 @@ impl StackFrameList {
                     .truncate()
                     .text_color(cx.theme().colors().text_muted)
                     .child(format!(
-                        "Show {} more{}",
+                        "再显示 {} 个{}",
                         stack_frames.len(),
                         first_stack_frame
                             .source

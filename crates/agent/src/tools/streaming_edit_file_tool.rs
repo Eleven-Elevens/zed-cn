@@ -447,7 +447,7 @@ impl StreamingEditFileTool {
                 }
                 _ = event_stream.cancelled_by_user().fuse() => {
                     return EditSessionResult::Failed {
-                        error: "Edit cancelled by user".to_string(),
+                        error: "编辑已被用户取消".to_string(),
                         session,
                     };
                 }

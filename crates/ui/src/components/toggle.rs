@@ -697,7 +697,7 @@ impl Component for SwitchField {
     }
 
     fn description() -> Option<&'static str> {
-        Some("A field component that combines a label, description, and switch")
+        Some("结合了标签、描述和开关的字段组件")
     }
 
     fn preview(_window: &mut Window, _cx: &mut App) -> Option<AnyElement> {
@@ -706,25 +706,25 @@ impl Component for SwitchField {
                 .gap_6()
                 .children(vec![
                     example_group_with_title(
-                        "States",
+                        "状态",
                         vec![
                             single_example(
-                                "Unselected",
+                                "未选择",
                                 SwitchField::new(
                                     "switch_field_unselected",
                                     Some("Enable notifications"),
-                                    Some("Receive notifications when new messages arrive.".into()),
+                                    Some("收到新消息时接收通知。".into()),
                                     ToggleState::Unselected,
                                     |_, _, _| {},
                                 )
                                 .into_any_element(),
                             ),
                             single_example(
-                                "Selected",
+                                "已选择",
                                 SwitchField::new(
                                     "switch_field_selected",
                                     Some("Enable notifications"),
-                                    Some("Receive notifications when new messages arrive.".into()),
+                                    Some("收到新消息时接收通知。".into()),
                                     ToggleState::Selected,
                                     |_, _, _| {},
                                 )
@@ -733,25 +733,25 @@ impl Component for SwitchField {
                         ],
                     ),
                     example_group_with_title(
-                        "Colors",
+                        "颜色",
                         vec![
                             single_example(
-                                "Default",
+                                "默认",
                                 SwitchField::new(
                                     "switch_field_default",
                                     Some("Default color"),
-                                    Some("This uses the default switch color.".into()),
+                                    Some("这会使用默认开关颜色。".into()),
                                     ToggleState::Selected,
                                     |_, _, _| {},
                                 )
                                 .into_any_element(),
                             ),
                             single_example(
-                                "Accent",
+                                "强调",
                                 SwitchField::new(
                                     "switch_field_accent",
                                     Some("Accent color"),
-                                    Some("This uses the accent color scheme.".into()),
+                                    Some("这会使用强调色方案。".into()),
                                     ToggleState::Selected,
                                     |_, _, _| {},
                                 )
@@ -761,13 +761,13 @@ impl Component for SwitchField {
                         ],
                     ),
                     example_group_with_title(
-                        "Disabled",
+                        "禁用",
                         vec![single_example(
-                            "Disabled",
+                            "禁用",
                             SwitchField::new(
                                 "switch_field_disabled",
                                 Some("Disabled field"),
-                                Some("This field is disabled and cannot be toggled.".into()),
+                                Some("此字段已禁用，无法切换。".into()),
                                 ToggleState::Selected,
                                 |_, _, _| {},
                             )
@@ -776,9 +776,9 @@ impl Component for SwitchField {
                         )],
                     ),
                     example_group_with_title(
-                        "No Description",
+                        "无描述",
                         vec![single_example(
-                            "No Description",
+                            "无描述",
                             SwitchField::new(
                                 "switch_field_disabled",
                                 Some("Disabled field"),
@@ -790,14 +790,14 @@ impl Component for SwitchField {
                         )],
                     ),
                     example_group_with_title(
-                        "With Tooltip",
+                        "带工具提示",
                         vec![
                             single_example(
-                                "Tooltip with Description",
+                                "带描述的工具提示",
                                 SwitchField::new(
                                     "switch_field_tooltip_with_desc",
                                     Some("Nice Feature"),
-                                    Some("Enable advanced configuration options.".into()),
+                                    Some("启用高级配置选项。".into()),
                                     ToggleState::Unselected,
                                     |_, _, _| {},
                                 )
@@ -805,7 +805,7 @@ impl Component for SwitchField {
                                 .into_any_element(),
                             ),
                             single_example(
-                                "Tooltip without Description",
+                                "没有说明的工具提示",
                                 SwitchField::new(
                                     "switch_field_tooltip_no_desc",
                                     Some("Nice Feature"),
@@ -830,7 +830,7 @@ impl Component for Checkbox {
     }
 
     fn description() -> Option<&'static str> {
-        Some("A checkbox component that can be used for multiple choice selections")
+        Some("一个复选框组件，可用于多项选择")
     }
 
     fn preview(_window: &mut Window, _cx: &mut App) -> Option<AnyElement> {
@@ -839,47 +839,47 @@ impl Component for Checkbox {
                 .gap_6()
                 .children(vec![
                     example_group_with_title(
-                        "States",
+                        "状态",
                         vec![
                             single_example(
-                                "Unselected",
+                                "未选择",
                                 Checkbox::new("checkbox_unselected", ToggleState::Unselected)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Placeholder",
+                                "占位符",
                                 Checkbox::new("checkbox_indeterminate", ToggleState::Selected)
                                     .placeholder(true)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Indeterminate",
+                                "不定",
                                 Checkbox::new("checkbox_indeterminate", ToggleState::Indeterminate)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Selected",
+                                "已选择",
                                 Checkbox::new("checkbox_selected", ToggleState::Selected)
                                     .into_any_element(),
                             ),
                         ],
                     ),
                     example_group_with_title(
-                        "Styles",
+                        "风格",
                         vec![
                             single_example(
-                                "Default",
+                                "默认",
                                 Checkbox::new("checkbox_default", ToggleState::Selected)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Filled",
+                                "填充",
                                 Checkbox::new("checkbox_filled", ToggleState::Selected)
                                     .fill()
                                     .into_any_element(),
                             ),
                             single_example(
-                                "ElevationBased",
+                                "随层级变化",
                                 Checkbox::new("checkbox_elevation", ToggleState::Selected)
                                     .style(ToggleStyle::ElevationBased(
                                         ElevationIndex::EditorSurface,
@@ -887,7 +887,7 @@ impl Component for Checkbox {
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Custom Color",
+                                "自定义颜色",
                                 Checkbox::new("checkbox_custom", ToggleState::Selected)
                                     .style(ToggleStyle::Custom(hsla(142.0 / 360., 0.68, 0.45, 0.7)))
                                     .into_any_element(),
@@ -895,10 +895,10 @@ impl Component for Checkbox {
                         ],
                     ),
                     example_group_with_title(
-                        "Disabled",
+                        "禁用",
                         vec![
                             single_example(
-                                "Unselected",
+                                "未选择",
                                 Checkbox::new(
                                     "checkbox_disabled_unselected",
                                     ToggleState::Unselected,
@@ -907,7 +907,7 @@ impl Component for Checkbox {
                                 .into_any_element(),
                             ),
                             single_example(
-                                "Selected",
+                                "已选择",
                                 Checkbox::new("checkbox_disabled_selected", ToggleState::Selected)
                                     .disabled(true)
                                     .into_any_element(),
@@ -915,18 +915,18 @@ impl Component for Checkbox {
                         ],
                     ),
                     example_group_with_title(
-                        "With Label",
+                        "带标签",
                         vec![single_example(
-                            "Default",
+                            "默认",
                             Checkbox::new("checkbox_with_label", ToggleState::Selected)
-                                .label("Always save on quit")
+                                .label("退出时始终保存")
                                 .into_any_element(),
                         )],
                     ),
                     example_group_with_title(
-                        "Extra",
+                        "额外的",
                         vec![single_example(
-                            "Visualization-Only",
+                            "仅可视化",
                             Checkbox::new("viz_only", ToggleState::Selected)
                                 .visualization_only(true)
                                 .into_any_element(),
@@ -944,7 +944,7 @@ impl Component for Switch {
     }
 
     fn description() -> Option<&'static str> {
-        Some("A switch component that represents binary states like on/off")
+        Some("表示开/关等二进制状态的开关组件")
     }
 
     fn preview(_window: &mut Window, _cx: &mut App) -> Option<AnyElement> {
@@ -953,16 +953,16 @@ impl Component for Switch {
                 .gap_6()
                 .children(vec![
                     example_group_with_title(
-                        "States",
+                        "状态",
                         vec![
                             single_example(
-                                "Off",
+                                "关闭",
                                 Switch::new("switch_off", ToggleState::Unselected)
                                     .on_click(|_, _, _cx| {})
                                     .into_any_element(),
                             ),
                             single_example(
-                                "On",
+                                "开启",
                                 Switch::new("switch_on", ToggleState::Selected)
                                     .on_click(|_, _, _cx| {})
                                     .into_any_element(),
@@ -970,16 +970,16 @@ impl Component for Switch {
                         ],
                     ),
                     example_group_with_title(
-                        "Colors",
+                        "颜色",
                         vec![
                             single_example(
-                                "Accent (Default)",
+                                "重音（默认）",
                                 Switch::new("switch_accent_style", ToggleState::Selected)
                                     .on_click(|_, _, _cx| {})
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Custom",
+                                "自定义",
                                 Switch::new("switch_custom_style", ToggleState::Selected)
                                     .color(SwitchColor::Custom(hsla(300.0 / 360.0, 0.6, 0.6, 1.0)))
                                     .on_click(|_, _, _cx| {})
@@ -988,16 +988,16 @@ impl Component for Switch {
                         ],
                     ),
                     example_group_with_title(
-                        "Disabled",
+                        "禁用",
                         vec![
                             single_example(
-                                "Off",
+                                "关闭",
                                 Switch::new("switch_disabled_off", ToggleState::Unselected)
                                     .disabled(true)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "On",
+                                "开启",
                                 Switch::new("switch_disabled_on", ToggleState::Selected)
                                     .disabled(true)
                                     .into_any_element(),
@@ -1005,45 +1005,45 @@ impl Component for Switch {
                         ],
                     ),
                     example_group_with_title(
-                        "With Label",
+                        "带标签",
                         vec![
                             single_example(
-                                "Start Label",
+                                "起始标签",
                                 Switch::new("switch_with_label_start", ToggleState::Selected)
-                                    .label("Always save on quit")
+                                    .label("退出时始终保存")
                                     .label_position(SwitchLabelPosition::Start)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "End Label",
+                                "结束标签",
                                 Switch::new("switch_with_label_end", ToggleState::Selected)
-                                    .label("Always save on quit")
+                                    .label("退出时始终保存")
                                     .label_position(SwitchLabelPosition::End)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Default Size Label",
+                                "默认尺寸标签",
                                 Switch::new(
                                     "switch_with_label_default_size",
                                     ToggleState::Selected,
                                 )
-                                .label("Always save on quit")
+                                .label("退出时始终保存")
                                 .label_size(LabelSize::Default)
                                 .into_any_element(),
                             ),
                             single_example(
-                                "Small Size Label",
+                                "小尺寸标签",
                                 Switch::new("switch_with_label_small_size", ToggleState::Selected)
-                                    .label("Always save on quit")
+                                    .label("退出时始终保存")
                                     .label_size(LabelSize::Small)
                                     .into_any_element(),
                             ),
                         ],
                     ),
                     example_group_with_title(
-                        "With Keybinding",
+                        "带按键绑定",
                         vec![single_example(
-                            "Keybinding",
+                            "按键绑定",
                             Switch::new("switch_with_keybinding", ToggleState::Selected)
                                 .key_binding(Some(KeyBinding::from_keystrokes(
                                     vec![KeybindingKeystroke::from_keystroke(

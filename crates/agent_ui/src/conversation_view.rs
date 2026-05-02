@@ -450,7 +450,7 @@ fn resolve_outcome_from_selection(
         }
     }
 
-    // Use the selected granularity choice ("Always for terminal" or "Only this time").
+    // Use the selected granularity choice ("始终适用于 terminal" or "仅本次").
     let selected_index = selection
         .and_then(|s| s.choice_index())
         .unwrap_or_else(|| choices.len().saturating_sub(1));
@@ -1347,13 +1347,13 @@ impl ConversationView {
             ServerState::Loading { .. } => "Loading…".into(),
             ServerState::LoadError { error, .. } => match error {
                 LoadError::Unsupported { .. } => {
-                    format!("Upgrade {}", self.agent.agent_id()).into()
+                    format!("升级 {}", self.agent.agent_id()).into()
                 }
                 LoadError::FailedToInstall(_) => {
-                    format!("Failed to Install {}", self.agent.agent_id()).into()
+                    format!("安装 {} 失败", self.agent.agent_id()).into()
                 }
-                LoadError::Exited { .. } => format!("{} Exited", self.agent.agent_id()).into(),
-                LoadError::Other(_) => format!("Error Loading {}", self.agent.agent_id()).into(),
+                LoadError::Exited { .. } => format!("{} 已退出", self.agent.agent_id()).into(),
+                LoadError::Other(_) => format!("加载 {} 时出错", self.agent.agent_id()).into(),
             },
         }
     }
@@ -1476,7 +1476,7 @@ impl ConversationView {
                 self.load_subagent_session(subagent_session_id.clone(), session_id, window, cx)
             }
             AcpThreadEvent::ToolAuthorizationRequested(_) => {
-                self.notify_with_sound("Waiting for tool confirmation", IconName::Info, window, cx);
+                self.notify_with_sound("正在等待工具确认", IconName::Info, window, cx);
             }
             AcpThreadEvent::ToolAuthorizationReceived(_) => {}
             AcpThreadEvent::Retry(retry) => {
@@ -1513,9 +1513,9 @@ impl ConversationView {
                 let used_tools = thread.read(cx).used_tools_since_last_user_message();
                 self.notify_with_sound(
                     if used_tools {
-                        "Finished running tools"
+                        "工具运行完成"
                     } else {
-                        "New message"
+                        "新消息"
                     },
                     IconName::ZedAssistant,
                     window,
@@ -2078,7 +2078,7 @@ impl ConversationView {
         if pending_auth_method.is_some() {
             return Callout::new()
                 .icon(IconName::Info)
-                .title(format!("Authenticating to {}…", agent_display_name))
+                .title(format!("正在认证到 {}…", agent_display_name))
                 .actions_slot(
                     Icon::new(IconName::ArrowCircle)
                         .size(IconSize::Small)
@@ -2091,7 +2091,7 @@ impl ConversationView {
 
         Callout::new()
             .icon(IconName::Info)
-            .title(format!("Authenticate to {}", agent_display_name))
+            .title(format!("认证到 {}", agent_display_name))
             .when(auth_methods.len() == 1, |this| {
                 this.actions_slot(auth_buttons())
             })
@@ -2159,17 +2159,17 @@ impl ConversationView {
                 return self.render_unsupported(path, current_version, minimum_version, window, cx);
             }
             LoadError::FailedToInstall(msg) => (
-                "Failed to Install",
+                "安装失败",
                 msg.into(),
                 Some(self.create_copy_button(msg.to_string()).into_any_element()),
             ),
             LoadError::Exited { status } => (
-                "Failed to Launch",
-                format!("Server exited with status {status}").into(),
+                "启动失败",
+                format!("服务器退出，状态为 {status}").into(),
                 None,
             ),
             LoadError::Other(msg) => (
-                "Failed to Launch",
+                "启动失败",
                 msg.into(),
                 Some(self.create_copy_button(msg.to_string()).into_any_element()),
             ),
@@ -2193,15 +2193,15 @@ impl ConversationView {
         cx: &mut Context<Self>,
     ) -> AnyElement {
         let (heading_label, description_label) = (
-            format!("Upgrade {} to work with Zed", self.agent.agent_id()),
+            format!("升级 {} 以配合 Zed 使用", self.agent.agent_id()),
             if version.is_empty() {
                 format!(
-                    "Currently using {}, which does not report a valid --version",
+                    "当前正在使用 {}，它没有报告有效的 --version",
                     path,
                 )
             } else {
                 format!(
-                    "Currently using {}, which is only version {} (need at least {minimum_version})",
+                    "当前正在使用 {}，版本只有 {}（至少需要 {minimum_version}）",
                     path, version
                 )
             },
@@ -2775,7 +2775,7 @@ impl ConversationView {
                 .and_then(|active| active.read(cx).model_selector.clone())
                 .and_then(|selector| selector.read(cx).active_model(cx))
                 .map(|model| model.name.clone())
-                .unwrap_or_else(|| SharedString::from("The model"))
+                .unwrap_or_else(|| SharedString::from("模型"))
         } else {
             // ACP agent - use the agent name (e.g., "Claude Agent", "Gemini CLI")
             self.agent.agent_id().0
@@ -2785,7 +2785,7 @@ impl ConversationView {
     fn create_copy_button(&self, message: impl Into<String>) -> impl IntoElement {
         let message = message.into();
 
-        CopyButton::new("copy-error-message", message).tooltip_label("Copy Error Message")
+        CopyButton::new("copy-error-message", message).tooltip_label("复制错误消息")
     }
 
     pub(crate) fn reauthenticate(&mut self, window: &mut Window, cx: &mut Context<Self>) {
@@ -2814,14 +2814,14 @@ fn loading_contents_spinner(size: IconSize) -> AnyElement {
 
 fn placeholder_text(agent_name: &str, has_commands: bool) -> String {
     if agent_name == agent::ZED_AGENT_ID.as_ref() {
-        format!("Message the {} — @ to include context", agent_name)
+        format!("给 {} 发送消息 — 输入 @ 添加上下文", agent_name)
     } else if has_commands {
         format!(
-            "Message {} — @ to include context, / for commands",
+            "给 {} 发送消息 — 输入 @ 添加上下文，输入 / 使用命令",
             agent_name
         )
     } else {
-        format!("Message {} — @ to include context", agent_name)
+        format!("给 {} 发送消息 — 输入 @ 添加上下文", agent_name)
     }
 }
 
@@ -3416,7 +3416,7 @@ pub(crate) mod tests {
             let title = view.title(cx);
             assert_eq!(
                 title.as_ref(),
-                "Error Loading Codex CLI",
+                "加载 Codex CLI 时出错",
                 "Tab title should show the agent name with an error prefix"
             );
             match &view.server_state {
@@ -6069,16 +6069,16 @@ pub(crate) mod tests {
                     .map(|choice| choice.allow.name.as_ref())
                     .collect();
                 assert!(
-                    labels.contains(&"Always for terminal"),
-                    "Missing 'Always for terminal' option"
+                    labels.contains(&"始终适用于 terminal"),
+                    "Missing '始终适用于 terminal' option"
                 );
                 assert!(
-                    labels.contains(&"Always for `cargo build` commands"),
+                    labels.contains(&"始终适用于 `cargo build` 命令"),
                     "Missing pattern option"
                 );
                 assert!(
-                    labels.contains(&"Only this time"),
-                    "Missing 'Only this time' option"
+                    labels.contains(&"仅本次"),
+                    "Missing '仅本次' option"
                 );
             }
         });
@@ -6161,11 +6161,11 @@ pub(crate) mod tests {
                     .map(|choice| choice.allow.name.as_ref())
                     .collect();
                 assert!(
-                    labels.contains(&"Always for edit file"),
-                    "Missing 'Always for edit file' option"
+                    labels.contains(&"始终适用于 edit file"),
+                    "Missing '始终适用于 edit file' option"
                 );
                 assert!(
-                    labels.contains(&"Always for `src/`"),
+                    labels.contains(&"始终适用于 `src/`"),
                     "Missing path pattern option"
                 );
             } else {
@@ -6251,11 +6251,11 @@ pub(crate) mod tests {
                     .map(|choice| choice.allow.name.as_ref())
                     .collect();
                 assert!(
-                    labels.contains(&"Always for fetch"),
-                    "Missing 'Always for fetch' option"
+                    labels.contains(&"始终适用于 fetch"),
+                    "Missing '始终适用于 fetch' option"
                 );
                 assert!(
-                    labels.contains(&"Always for `docs.rs`"),
+                    labels.contains(&"始终适用于 `docs.rs`"),
                     "Missing domain pattern option"
                 );
             } else {
@@ -6350,12 +6350,12 @@ pub(crate) mod tests {
                     .map(|choice| choice.allow.name.as_ref())
                     .collect();
                 assert!(
-                    labels.contains(&"Always for terminal"),
-                    "Missing 'Always for terminal' option"
+                    labels.contains(&"始终适用于 terminal"),
+                    "Missing '始终适用于 terminal' option"
                 );
                 assert!(
-                    labels.contains(&"Only this time"),
-                    "Missing 'Only this time' option"
+                    labels.contains(&"仅本次"),
+                    "Missing '仅本次' option"
                 );
                 // Should NOT contain a pattern option
                 assert!(
@@ -6567,7 +6567,7 @@ pub(crate) mod tests {
 
         cx.run_until_parked();
 
-        // Verify default granularity is the last option (index 2 = "Only this time")
+        // Verify default granularity is the last option (index 2 = "仅本次")
         thread_view.read_with(cx, |thread_view, cx| {
             let state = thread_view.active_thread().unwrap();
             let selected = state.read(cx).permission_selections.get(&tool_call_id);
@@ -6577,7 +6577,7 @@ pub(crate) mod tests {
             );
         });
 
-        // Select the first option (index 0 = "Always for terminal")
+        // Select the first option (index 0 = "始终适用于 terminal")
         thread_view.update_in(cx, |_, window, cx| {
             window.dispatch_action(
                 crate::SelectPermissionGranularity {
@@ -6668,7 +6668,7 @@ pub(crate) mod tests {
 
         cx.run_until_parked();
 
-        // Select the pattern option (index 1 = "Always for `npm` commands")
+        // Select the pattern option (index 1 = "始终适用于 `npm` 命令")
         thread_view.update_in(cx, |_, window, cx| {
             window.dispatch_action(
                 crate::SelectPermissionGranularity {
@@ -6744,7 +6744,7 @@ pub(crate) mod tests {
 
         cx.run_until_parked();
 
-        // Use default granularity (last option = "Only this time")
+        // Use default granularity (last option = "仅本次")
         // Simulate clicking the Deny button
         active_thread(&conversation_view, cx).update_in(cx, |view, window, cx| {
             view.reject_once(&RejectOnce, window, cx)
@@ -6822,12 +6822,12 @@ pub(crate) mod tests {
         PermissionOptions::Flat(vec![
             acp::PermissionOption::new(
                 acp::PermissionOptionId::new("allow"),
-                "Yes",
+                "是",
                 acp::PermissionOptionKind::AllowOnce,
             ),
             acp::PermissionOption::new(
                 acp::PermissionOptionId::new("deny"),
-                "No",
+                "否",
                 acp::PermissionOptionKind::RejectOnce,
             ),
         ])
@@ -6873,7 +6873,7 @@ pub(crate) mod tests {
 
         let outcome = super::resolve_outcome_from_selection(&options, None, true).unwrap();
 
-        // Last choice is "Only this time" → option_id "allow".
+        // Last choice is "仅本次" → option_id "allow".
         assert_eq!(outcome.option_id.0.as_ref(), "allow");
         assert_eq!(outcome.option_kind, acp::PermissionOptionKind::AllowOnce);
     }
@@ -6888,7 +6888,7 @@ pub(crate) mod tests {
         let outcome =
             super::resolve_outcome_from_selection(&options, Some(&selection), true).unwrap();
 
-        // Choice 0 = "Always for terminal".
+        // Choice 0 = "始终适用于 terminal".
         assert!(outcome.option_id.0.contains("always_allow:terminal"));
         assert_eq!(outcome.option_kind, acp::PermissionOptionKind::AllowAlways);
     }
@@ -6903,7 +6903,7 @@ pub(crate) mod tests {
         let outcome =
             super::resolve_outcome_from_selection(&options, Some(&selection), true).unwrap();
 
-        // choices.get(999) is None, falls back to choices.last() → "Only this time".
+        // choices.get(999) is None, falls back to choices.last() → "仅本次".
         assert_eq!(outcome.option_id.0.as_ref(), "allow");
     }
 

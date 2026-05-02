@@ -824,7 +824,7 @@ impl Component for ButtonLike {
                                 .into_any_element(),
                         ),
                         single_example(
-                            "Tinted",
+                            "有色",
                             ButtonLike::new("tinted_accent_style")
                                 .style(ButtonStyle::Tinted(TintColor::Accent))
                                 .child(Label::new("Accent"))
@@ -839,7 +839,7 @@ impl Component for ButtonLike {
                         ),
                     ]),
                     example_group_with_title(
-                        "Button Group Constructors",
+                        "按钮组构造函数",
                         vec![
                             single_example(
                                 "Left Rounded",
@@ -856,7 +856,7 @@ impl Component for ButtonLike {
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Button Group",
+                                "按钮组",
                                 h_flex()
                                     .gap_px()
                                     .child(

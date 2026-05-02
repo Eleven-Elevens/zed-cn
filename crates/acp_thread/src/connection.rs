@@ -70,7 +70,7 @@ pub trait AgentConnection {
         _title: Option<SharedString>,
         _cx: &mut App,
     ) -> Task<Result<Entity<AcpThread>>> {
-        Task::ready(Err(anyhow::Error::msg("Loading sessions is not supported")))
+        Task::ready(Err(anyhow::Error::msg("不支持加载会话")))
     }
 
     /// Whether this agent supports closing existing sessions.
@@ -84,7 +84,7 @@ pub trait AgentConnection {
         _session_id: &acp::SessionId,
         _cx: &mut App,
     ) -> Task<Result<()>> {
-        Task::ready(Err(anyhow::Error::msg("Closing sessions is not supported")))
+        Task::ready(Err(anyhow::Error::msg("不支持关闭会话")))
     }
 
     /// Whether this agent supports resuming existing sessions without loading history.
@@ -858,7 +858,7 @@ mod test_support {
             cx: &mut App,
         ) -> Task<Result<Entity<AcpThread>>> {
             if !self.supports_load_session {
-                return Task::ready(Err(anyhow::Error::msg("Loading sessions is not supported")));
+                return Task::ready(Err(anyhow::Error::msg("不支持加载会话")));
             }
 
             let thread = self.create_session(session_id, project, work_dirs, title, cx);

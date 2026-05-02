@@ -565,7 +565,7 @@ impl Component for KeyBinding {
 
     fn description() -> Option<&'static str> {
         Some(
-            "A component that displays a key binding, supporting different platform styles and vim mode.",
+            "显示按键绑定的组件，支持不同平台风格和vim模式。",
         )
     }
 

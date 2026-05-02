@@ -223,7 +223,7 @@ impl PickerDelegate for ModelPickerDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Select a model…".into()
+        "选择模型…".into()
     }
 
     fn update_matches(
@@ -450,7 +450,7 @@ fn info_list_to_picker_entries(
     match model_list {
         AgentModelList::Flat(list) => {
             if has_favorites {
-                entries.push(ModelPickerEntry::Separator("All".into()));
+                entries.push(ModelPickerEntry::Separator("全部".into()));
             }
             for model in list {
                 let is_favorite = favorites.contains(&model.id);
@@ -784,7 +784,7 @@ mod tests {
 
         assert!(entries.iter().any(|e| matches!(
             e,
-            ModelPickerEntry::Separator(s) if s == "All"
+            ModelPickerEntry::Separator(s) if s == "全部"
         )));
     }
 

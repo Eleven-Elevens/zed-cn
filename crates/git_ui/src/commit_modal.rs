@@ -291,7 +291,7 @@ impl CommitModal {
                             })
                             .when(has_previous_commit, |this| {
                                 this.toggleable_entry(
-                                    "Amend",
+                                    "修正提交",
                                     amend_enabled,
                                     IconPosition::Start,
                                     Some(Box::new(Amend)),
@@ -308,7 +308,7 @@ impl CommitModal {
                                 )
                             })
                             .toggleable_entry(
-                                "Signoff",
+                                "签署提交",
                                 signoff_enabled,
                                 IconPosition::Start,
                                 Some(Box::new(Signoff)),
@@ -629,7 +629,7 @@ impl Render for CommitModal {
                                 )
                                 .child(
                                     Label::new(format!(
-                                        "Commit message title exceeds {max_title_length}-character limit."
+                                        "提交消息标题超过 {max_title_length} 个字符限制。"
                                     ))
                                     .size(LabelSize::Small),
                                 ),

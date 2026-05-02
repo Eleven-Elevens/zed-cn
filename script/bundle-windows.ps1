@@ -39,8 +39,53 @@ function Get-VSArch {
     }
 }
 
+function Resolve-FirstExistingPath {
+    param(
+        [string[]]$Paths,
+        [string]$Description
+    )
+
+    foreach ($path in $Paths) {
+        if ($path -and (Test-Path $path)) {
+            return $path
+        }
+    }
+
+    throw "$Description not found. Checked: $($Paths -join ', ')"
+}
+
+function Invoke-NativeChecked {
+    param(
+        [Parameter(Mandatory = $true)][string]$FilePath,
+        [Parameter()][string[]]$Arguments = @()
+    )
+
+    $errorActionPreference = $ErrorActionPreference
+    $nativeCommandErrorPreference = $PSNativeCommandUseErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    $PSNativeCommandUseErrorActionPreference = $false
+    try {
+        & $FilePath @Arguments
+        $exitCode = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $errorActionPreference
+        $PSNativeCommandUseErrorActionPreference = $nativeCommandErrorPreference
+    }
+
+    if ($exitCode -ne 0) {
+        throw "$FilePath $($Arguments -join ' ') failed with exit code $exitCode"
+    }
+}
+
 Push-Location
-& "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\Launch-VsDevShell.ps1" -Arch (Get-VSArch -Arch $Architecture) -HostArch (Get-VSArch -Arch $OSArchitecture)
+$vsDevShellPath = Resolve-FirstExistingPath -Description "Visual Studio DevShell" -Paths @(
+    $env:ZED_VS_DEV_SHELL,
+    "D:\zed-build-tools\VS2022BuildTools\Common7\Tools\Launch-VsDevShell.ps1",
+    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\Launch-VsDevShell.ps1",
+    "C:\Program Files\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\Launch-VsDevShell.ps1",
+    "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\Launch-VsDevShell.ps1"
+)
+& $vsDevShellPath -Arch (Get-VSArch -Arch $Architecture) -HostArch (Get-VSArch -Arch $OSArchitecture)
 Pop-Location
 
 $target = "$Architecture-pc-windows-msvc"
@@ -92,7 +137,14 @@ function PrepareForBundle {
     New-Item -Path "$innoDir\bin" -ItemType Directory -Force
     New-Item -Path "$innoDir\tools" -ItemType Directory -Force
 
-    rustup target add $target
+    $installedTargets = @(rustup target list --installed)
+    if ($LASTEXITCODE -ne 0) {
+        throw "rustup target list --installed failed with exit code $LASTEXITCODE"
+    }
+
+    if ($installedTargets -notcontains $target) {
+        Invoke-NativeChecked -FilePath "rustup" -Arguments @("target", "add", $target)
+    }
 }
 
 function GenerateLicenses {
@@ -102,20 +154,20 @@ function GenerateLicenses {
 function BuildZedAndItsFriends {
     Write-Output "Building Zed and its friends, for channel: $channel"
     # Build zed.exe, cli.exe and auto_update_helper.exe
-    cargo build --release --package zed --package cli --package auto_update_helper --target $target
+    Invoke-NativeChecked -FilePath "cargo" -Arguments @("build", "--release", "--package", "zed", "--package", "cli", "--package", "auto_update_helper", "--target", $target)
     Copy-Item -Path ".\$CargoOutDir\zed.exe" -Destination "$innoDir\Zed.exe" -Force
     Copy-Item -Path ".\$CargoOutDir\cli.exe" -Destination "$innoDir\cli.exe" -Force
     Copy-Item -Path ".\$CargoOutDir\auto_update_helper.exe" -Destination "$innoDir\auto_update_helper.exe" -Force
     # Build explorer_command_injector.dll
     switch ($channel) {
         "stable" {
-            cargo build --release --features stable --no-default-features --package explorer_command_injector --target $target
+            Invoke-NativeChecked -FilePath "cargo" -Arguments @("build", "--release", "--features", "stable", "--no-default-features", "--package", "explorer_command_injector", "--target", $target)
         }
         "preview" {
-            cargo build --release --features preview --no-default-features --package explorer_command_injector --target $target
+            Invoke-NativeChecked -FilePath "cargo" -Arguments @("build", "--release", "--features", "preview", "--no-default-features", "--package", "explorer_command_injector", "--target", $target)
         }
         default {
-            cargo build --release --package explorer_command_injector --target $target
+            Invoke-NativeChecked -FilePath "cargo" -Arguments @("build", "--release", "--package", "explorer_command_injector", "--target", $target)
         }
     }
     Copy-Item -Path ".\$CargoOutDir\explorer_command_injector.dll" -Destination "$innoDir\zed_explorer_command_injector.dll" -Force
@@ -123,7 +175,7 @@ function BuildZedAndItsFriends {
 
 function BuildRemoteServer {
     Write-Output "Building remote_server for $target"
-    cargo build --release --package remote_server --target $target
+    Invoke-NativeChecked -FilePath "cargo" -Arguments @("build", "--release", "--package", "remote_server", "--target", $target)
 
     # Create zipped remote server binary
     $remoteServerSrc = (Resolve-Path ".\$CargoOutDir\remote_server.exe").Path
@@ -196,7 +248,7 @@ function MakeAppx {
     # Add makeAppx.exe to Path
     $sdk = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64"
     $env:Path += ';' + $sdk
-    makeAppx.exe pack /d "$innoDir\make_appx" /p "$innoDir\zed_explorer_command_injector.appx" /nv
+    Invoke-NativeChecked -FilePath "makeAppx.exe" -Arguments @("pack", "/d", "$innoDir\make_appx", "/p", "$innoDir\zed_explorer_command_injector.appx", "/nv")
 }
 
 function SignZedAndItsFriends {
@@ -220,9 +272,11 @@ function DownloadAMDGpuServices {
 
 function DownloadConpty {
     $url = "https://github.com/microsoft/terminal/releases/download/v1.23.13503.0/Microsoft.Windows.Console.ConPTY.1.23.251216003.nupkg"
-    $zipPath = ".\Microsoft.Windows.Console.ConPTY.1.23.251216003.nupkg"
-    Invoke-WebRequest -Uri $url -OutFile $zipPath
-    Expand-Archive -Path $zipPath -DestinationPath ".\conpty" -Force
+    $packagePath = ".\Microsoft.Windows.Console.ConPTY.1.23.251216003.nupkg"
+    $archivePath = ".\Microsoft.Windows.Console.ConPTY.1.23.251216003.zip"
+    Invoke-WebRequest -Uri $url -OutFile $packagePath
+    Copy-Item -Path $packagePath -Destination $archivePath -Force
+    Expand-Archive -Path $archivePath -DestinationPath ".\conpty" -Force
 }
 
 function CollectFiles {
@@ -314,7 +368,11 @@ function BuildInstaller {
     # Windows runner 2022 default has iscc in PATH, https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
     # Currently, we are using Windows 2022 runner.
     # Windows runner 2025 doesn't have iscc in PATH for now, https://github.com/actions/runner-images/issues/11228
-    $innoSetupPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+    $innoSetupPath = Resolve-FirstExistingPath -Description "Inno Setup ISCC.exe" -Paths @(
+        $env:ZED_INNO_SETUP,
+        "D:\zed-build-tools\InnoSetup\ISCC.exe",
+        "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+    )
 
     $definitions = @{
         "AppId"          = $appId

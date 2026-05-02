@@ -103,7 +103,7 @@ impl Component for ProgressBar {
 
         Some(
             example_group(vec![single_example(
-                "Examples",
+                "示例",
                 v_flex()
                     .w_full()
                     .gap_2()

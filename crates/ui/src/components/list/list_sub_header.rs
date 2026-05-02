@@ -93,7 +93,7 @@ impl Component for ListSubHeader {
 
     fn description() -> Option<&'static str> {
         Some(
-            "A sub-header component for organizing list content into subsections with optional icons and end slots.",
+            "子标题组件，用于将列表内容组织成具有可选图标和结束槽的子部分。",
         )
     }
 
@@ -103,20 +103,20 @@ impl Component for ListSubHeader {
                 .gap_6()
                 .children(vec![
                     example_group_with_title(
-                        "Basic Sub-headers",
+                        "基本副标题",
                         vec![
                             single_example(
-                                "Simple",
+                                "简单的",
                                 ListSubHeader::new("Subsection").into_any_element(),
                             ),
                             single_example(
-                                "With Icon",
+                                "带图标",
                                 ListSubHeader::new("Documents")
                                     .left_icon(Some(IconName::File))
                                     .into_any_element(),
                             ),
                             single_example(
-                                "With End Slot",
+                                "带端槽",
                                 ListSubHeader::new("Recent")
                                     .end_slot(
                                         Label::new("3").color(Color::Muted).into_any_element(),
@@ -126,16 +126,16 @@ impl Component for ListSubHeader {
                         ],
                     ),
                     example_group_with_title(
-                        "States",
+                        "状态",
                         vec![
                             single_example(
-                                "Selected",
-                                ListSubHeader::new("Selected")
+                                "已选择",
+                                ListSubHeader::new("已选择")
                                     .toggle_state(true)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Inset",
+                                "插图",
                                 ListSubHeader::new("Inset Sub-header")
                                     .inset(true)
                                     .into_any_element(),

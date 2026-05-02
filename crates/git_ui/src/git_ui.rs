@@ -365,7 +365,7 @@ impl RenameBranchModal {
                 Err(_) => Err(anyhow!("Operation was canceled")),
             }
         })
-        .detach_and_prompt_err("Failed to rename branch", window, cx, |_, _, _| None);
+        .detach_and_prompt_err("重命名分支失败", window, cx, |_, _, _| None);
         cx.emit(DismissEvent);
     }
 }
@@ -395,7 +395,7 @@ impl Render for RenameBranchModal {
                     .gap_1p5()
                     .child(Icon::new(IconName::GitBranch).size(IconSize::XSmall))
                     .child(
-                        Headline::new(format!("Rename Branch ({})", self.current_branch))
+                        Headline::new(format!("重命名分支（{}）", self.current_branch))
                             .size(HeadlineSize::XSmall),
                     ),
             )
@@ -463,7 +463,7 @@ impl RefPickerModal {
     ) -> Self {
         let editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Enter git ref...", window, cx);
+            editor.set_placeholder_text("输入 Git ref...", window, cx);
             editor
         });
 
@@ -648,7 +648,7 @@ impl Render for RefPickerModal {
                     .w_full()
                     .gap_1p5()
                     .child(Icon::new(IconName::Hash).size(IconSize::XSmall))
-                    .child(Headline::new("View Commit").size(HeadlineSize::XSmall)),
+                    .child(Headline::new("查看提交").size(HeadlineSize::XSmall)),
             )
             .child(div().px_3().w_full().child(self.editor.clone()))
             .when_some(commit_preview, |el, preview| {
@@ -728,7 +728,7 @@ mod remote_button {
     ) -> SplitButton {
         split_button(
             id,
-            "Fetch",
+            "获取",
             0,
             0,
             Some(IconName::ArrowCircle),
@@ -755,7 +755,7 @@ mod remote_button {
     ) -> SplitButton {
         split_button(
             id,
-            "Push",
+            "推送",
             ahead as usize,
             0,
             None,
@@ -783,7 +783,7 @@ mod remote_button {
     ) -> SplitButton {
         split_button(
             id,
-            "Pull",
+            "拉取",
             ahead as usize,
             behind as usize,
             None,
@@ -793,7 +793,7 @@ mod remote_button {
             },
             move |_window, cx| {
                 git_action_tooltip(
-                    "Pull",
+                    "拉取",
                     &git::Pull,
                     "git pull",
                     keybinding_target.clone(),
@@ -893,14 +893,14 @@ mod remote_button {
                         .when_some(keybinding_target.clone(), |el, keybinding_target| {
                             el.context(keybinding_target)
                         })
-                        .action("Fetch", git::Fetch.boxed_clone())
-                        .action("Fetch From", git::FetchFrom.boxed_clone())
-                        .action("Pull", git::Pull.boxed_clone())
-                        .action("Pull (Rebase)", git::PullRebase.boxed_clone())
+                        .action("获取", git::Fetch.boxed_clone())
+                        .action("从远端获取", git::FetchFrom.boxed_clone())
+                        .action("拉取", git::Pull.boxed_clone())
+                        .action("拉取（变基）", git::PullRebase.boxed_clone())
                         .separator()
-                        .action("Push", git::Push.boxed_clone())
-                        .action("Push To", git::PushTo.boxed_clone())
-                        .action("Force Push", git::ForcePush.boxed_clone())
+                        .action("推送", git::Push.boxed_clone())
+                        .action("推送到", git::PushTo.boxed_clone())
+                        .action("强制推送", git::ForcePush.boxed_clone())
                 }))
             })
             .anchor(Anchor::TopRight)
@@ -1069,7 +1069,7 @@ impl GitCloneModal {
     pub fn show(panel: Entity<GitPanel>, window: &mut Window, cx: &mut Context<Self>) -> Self {
         let repo_input = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Enter repository URL…", window, cx);
+            editor.set_placeholder_text("输入仓库 URL…", window, cx);
             editor
         });
         let focus_handle = repo_input.focus_handle(cx);

@@ -266,7 +266,7 @@ impl TelemetryLogView {
         struct TelemetryLogReadError;
         cx.emit(TelemetryLogEvent::ShowToast(Toast::new(
             NotificationId::unique::<TelemetryLogReadError>(),
-            format!("Failed to read telemetry log: {}", error),
+            format!("读取遥测日志失败：{}", error),
         )));
     }
 
@@ -397,7 +397,7 @@ impl TelemetryLogView {
                     .when(signed_in, |this| {
                         this.child(
                             div()
-                                .child(ui::Chip::new("signed in"))
+                                .child(ui::Chip::new("已登录"))
                                 .visible_on_hover("telemetry-entry"),
                         )
                     }),
@@ -480,7 +480,7 @@ impl Item for TelemetryLogView {
     type Event = TelemetryLogEvent;
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        "Telemetry Log".into()
+        "遥测日志".into()
     }
 
     fn tab_icon(&self, _window: &Window, _cx: &App) -> Option<Icon> {
@@ -506,9 +506,9 @@ impl Render for TelemetryLogView {
                     .justify_center()
                     .items_center()
                     .child(if self.events.is_empty() {
-                        "No telemetry events recorded yet"
+                        "尚未记录遥测事件"
                     } else {
-                        "No events match the current filter"
+                        "没有事件匹配当前筛选条件"
                     })
                     .into_any()
             } else {
@@ -535,7 +535,7 @@ impl TelemetryLogToolbarItemView {
     pub fn new(window: &mut Window, cx: &mut Context<Self>) -> Self {
         let search_editor = cx.new(|cx| {
             let mut editor = editor::Editor::single_line(window, cx);
-            editor.set_placeholder_text("Filter events...", window, cx);
+            editor.set_placeholder_text("筛选事件...", window, cx);
             editor
         });
 

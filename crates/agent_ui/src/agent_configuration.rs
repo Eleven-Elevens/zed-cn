@@ -326,14 +326,14 @@ impl AgentConfiguration {
                     .when(is_expanded, |parent| match configuration_view {
                         Some(configuration_view) => parent.child(configuration_view),
                         None => parent.child(Label::new(format!(
-                            "No configuration view for {provider_name}",
+                            "没有 {provider_name} 的配置视图",
                         ))),
                     })
                     .when(is_expanded && provider.is_authenticated(cx), |parent| {
                         parent.child(
                             Button::new(
                                 SharedString::from(format!("new-thread-{provider_id}")),
-                                "Start New Thread",
+                                "新建线程",
                             )
                             .full_width()
                             .style(ButtonStyle::Outlined)
@@ -360,7 +360,7 @@ impl AgentConfiguration {
                             this.child(
                                 Button::new(
                                     SharedString::from(format!("delete-provider-{provider_id}")),
-                                    "Remove Provider",
+                                    "移除提供商",
                                 )
                                 .full_width()
                                 .style(ButtonStyle::Outlined)
@@ -507,11 +507,11 @@ impl AgentConfiguration {
                 .blend(cx.theme().colors().text_accent.opacity(0.2));
 
             let (plan_name, label_color, bg_color) = match plan {
-                Plan::ZedFree => ("Free", Color::Default, free_chip_bg),
-                Plan::ZedProTrial => ("Pro Trial", Color::Accent, pro_chip_bg),
+                Plan::ZedFree => ("免费版", Color::Default, free_chip_bg),
+                Plan::ZedProTrial => ("Pro 试用", Color::Accent, pro_chip_bg),
                 Plan::ZedPro => ("Pro", Color::Accent, pro_chip_bg),
-                Plan::ZedBusiness => ("Business", Color::Accent, pro_chip_bg),
-                Plan::ZedStudent => ("Student", Color::Accent, pro_chip_bg),
+                Plan::ZedBusiness => ("企业版", Color::Accent, pro_chip_bg),
+                Plan::ZedStudent => ("学生版", Color::Accent, pro_chip_bg),
             };
 
             Chip::new(plan_name.to_string())
@@ -922,9 +922,9 @@ impl AgentConfiguration {
 
         let tool_label = if is_running {
             Some(if tool_count == 1 {
-                SharedString::from("1 tool")
+                SharedString::from("1 个工具")
             } else {
-                SharedString::from(format!("{} tools", tool_count))
+                SharedString::from(format!("{} 个工具", tool_count))
             })
         } else {
             None
@@ -1041,7 +1041,7 @@ impl AgentConfiguration {
                         .separator()
                         .header("Learn More")
                         .item(
-                            ContextMenuEntry::new("ACP Docs")
+                            ContextMenuEntry::new("ACP 文档")
                                 .icon(IconName::ArrowUpRight)
                                 .icon_color(Color::Muted)
                                 .icon_position(IconPosition::End)
@@ -1323,7 +1323,7 @@ fn show_unable_to_uninstall_extension_with_context_server(
 
     let status_toast = StatusToast::new(
         format!(
-            "The {} extension provides more than just the MCP server. Proceed to uninstall anyway?",
+            "{} 扩展不仅提供 MCP 服务器。仍要卸载吗？",
             id.0
         ),
         cx,

@@ -656,13 +656,13 @@ impl Render for ConfigurationView {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let env_var_set = self.state.read(cx).api_key_state.is_from_env_var();
         let configured_card_label = if env_var_set {
-            format!("API key set in {API_KEY_ENV_VAR_NAME} environment variable")
+            format!("API 密钥已在 {API_KEY_ENV_VAR_NAME} 环境变量中设置")
         } else {
             let api_url = VercelAiGatewayLanguageModelProvider::api_url(cx);
             if api_url == API_URL {
-                "API key configured".to_string()
+                "已配置 API 密钥".to_string()
             } else {
-                format!("API key configured for {}", api_url)
+                format!("已为 {} 配置 API 密钥", api_url)
             }
         };
 
@@ -681,18 +681,18 @@ impl Render for ConfigurationView {
                             ListBulletItem::new("")
                                 .child(Label::new("Create an API key in"))
                                 .child(ButtonLink::new(
-                                    "Vercel AI Gateway's console",
+                                    "Vercel AI Gateway 控制台",
                                     "https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%2Fapi-keys&title=Go+to+AI+Gateway",
                                 )),
                         )
                         .child(ListBulletItem::new(
-                            "Paste your API key below and hit enter to start using the assistant",
+                            "将您的 API 密钥粘贴到下面，然后按 Enter 键开始使用助手",
                         )),
                 )
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(format!(
-                        "You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Zed.",
+                        "你也可以设置 {API_KEY_ENV_VAR_NAME} 环境变量，然后重启 Zed。",
                     ))
                     .size(LabelSize::Small)
                     .color(Color::Muted),

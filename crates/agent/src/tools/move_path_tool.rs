@@ -86,7 +86,7 @@ impl AgentTool for MovePathTool {
                     let filename = MarkdownInlineCode(&filename);
                     format!("Rename {src} to {filename}").into()
                 }
-                _ => format!("Move {src} to {dest}").into(),
+                _ => format!("将 {src} 移动到 {dest}").into(),
             }
         } else {
             "Move path".into()
@@ -154,7 +154,7 @@ impl AgentTool for MovePathTool {
                         Self::NAME,
                         vec![input.source_path.clone(), input.destination_path.clone()],
                     );
-                    let title = format!("Move {src} to {dest}");
+                    let title = format!("将 {src} 移动到 {dest}");
                     authorize_with_sensitive_settings(
                         sensitive_kind,
                         context,

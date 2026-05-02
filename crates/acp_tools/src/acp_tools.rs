@@ -290,7 +290,7 @@ impl AcpTools {
         self.selected_connection
             .as_ref()
             .map(|agent_id| agent_id.0.clone())
-            .unwrap_or_else(|| SharedString::from("No connection selected"))
+            .unwrap_or_else(|| SharedString::from("未选择连接"))
     }
 
     fn connection_menu(&self, window: &mut Window, cx: &mut Context<Self>) -> Entity<ContextMenu> {
@@ -300,7 +300,7 @@ impl AcpTools {
 
         ContextMenu::build(window, cx, move |mut menu, _window, _cx| {
             if entries.is_empty() {
-                return menu.entry("No active connections", None, |_, _| {});
+                return menu.entry("没有活动连接", None, |_, _| {});
             }
 
             for entry in &entries {
@@ -551,7 +551,7 @@ fn push_stream_message_for_connection(
             } else {
                 (
                     Some(id),
-                    "[unrecognized response]".into(),
+                    "[无法识别的响应]".into(),
                     MessageType::Response,
                     result,
                 )
@@ -674,9 +674,9 @@ impl Item for AcpTools {
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> ui::SharedString {
         format!(
-            "ACP: {}",
+            "ACP：{}",
             self.selected_watched_connection()
-                .map_or("Disconnected", |connection| connection.agent_id.0.as_ref())
+                .map_or("已断开连接", |connection| connection.agent_id.0.as_ref())
         )
         .into()
     }
@@ -740,7 +740,7 @@ impl Render for AcpTools {
                             )
                             .child(
                                 CopyButton::new("copy-all-messages", copied_messages)
-                                    .tooltip_label("Copy All Messages")
+                                    .tooltip_label("复制所有消息")
                                     .disabled(!has_messages),
                             )
                             .child(
@@ -785,7 +785,7 @@ impl Render for AcpTools {
                         .justify_center()
                         .items_center()
                         .child(format!(
-                            "Reconnecting to {}",
+                            "正在重新连接到 {}",
                             self.selected_connection_label()
                         ))
                         .into_any(),

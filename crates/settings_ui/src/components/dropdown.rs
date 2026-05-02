@@ -70,11 +70,7 @@ where
                     let on_change = self.on_change.clone();
                     let current_value = self.current_value;
                     menu = menu.toggleable_entry(
-                        if self.should_do_title_case {
-                            label.to_title_case()
-                        } else {
-                            label.to_string()
-                        },
+                        localized_dropdown_label(label, self.should_do_title_case),
                         value == current_value,
                         IconPosition::End,
                         None,
@@ -89,11 +85,7 @@ where
 
         DropdownMenu::new(
             self.id,
-            if self.should_do_title_case {
-                current_value_label.to_title_case()
-            } else {
-                current_value_label.to_string()
-            },
+            localized_dropdown_label(current_value_label, self.should_do_title_case),
             context_menu,
         )
         .when_some(self.tab_index, |elem, tab_index| elem.tab_index(tab_index))
@@ -104,5 +96,40 @@ where
             y: px(2.0),
         })
         .into_any_element()
+    }
+}
+
+fn localized_dropdown_label(label: &str, should_do_title_case: bool) -> String {
+    let display_label = if should_do_title_case {
+        label.to_title_case()
+    } else {
+        label.to_string()
+    };
+
+    match display_label.as_str() {
+        "Platform Default" => "平台默认".to_string(),
+        "Add to Existing Window" | "Add To Existing Window" => "添加到现有窗口".to_string(),
+        "Open a New Window" | "Open A New Window" => "打开新窗口".to_string(),
+        "Close Window" => "关闭窗口".to_string(),
+        "Keep Window Open" => "保持窗口打开".to_string(),
+        "Quit App" => "退出应用".to_string(),
+        "Light" => "浅色".to_string(),
+        "Dark" => "深色".to_string(),
+        "System" => "跟随系统".to_string(),
+        "Enabled" => "已启用".to_string(),
+        "Disabled" => "已禁用".to_string(),
+        "Always" => "始终".to_string(),
+        "Never" => "从不".to_string(),
+        "On" => "开启".to_string(),
+        "Off" => "关闭".to_string(),
+        "Left" => "左侧".to_string(),
+        "Right" => "右侧".to_string(),
+        "Bottom" => "底部".to_string(),
+        "Center" => "居中".to_string(),
+        "None" => "无".to_string(),
+        "Auto" => "自动".to_string(),
+        "Subpixel" => "亚像素".to_string(),
+        "Grayscale" => "灰度".to_string(),
+        _ => display_label,
     }
 }

@@ -57,9 +57,9 @@ impl AgentTool for SaveFileTool {
         _cx: &mut App,
     ) -> SharedString {
         match input {
-            Ok(input) if input.paths.len() == 1 => "Save file".into(),
-            Ok(input) => format!("Save {} files", input.paths.len()).into(),
-            Err(_) => "Save files".into(),
+            Ok(input) if input.paths.len() == 1 => "保存文件".into(),
+            Ok(input) => format!("保存 {} 个文件", input.paths.len()).into(),
+            Err(_) => "保存文件".into(),
         }
     }
 
@@ -130,7 +130,7 @@ impl AgentTool for SaveFileTool {
 
             if !confirmation_paths.is_empty() {
                 let title = if confirmation_paths.len() == 1 {
-                    format!("Save {}", MarkdownInlineCode(&confirmation_paths[0]))
+                    format!("保存 {}", MarkdownInlineCode(&confirmation_paths[0]))
                 } else {
                     let paths: Vec<_> = confirmation_paths
                         .iter()
@@ -139,12 +139,12 @@ impl AgentTool for SaveFileTool {
                         .collect();
                     if confirmation_paths.len() > 3 {
                         format!(
-                            "Save {}, and {} more",
+                            "保存 {} 以及另外 {} 项",
                             paths.join(", "),
                             confirmation_paths.len() - 3
                         )
                     } else {
-                        format!("Save {}", paths.join(", "))
+                        format!("保存 {}", paths.join(", "))
                     }
                 };
 
@@ -284,14 +284,14 @@ impl AgentTool for SaveFileTool {
                 }
             }
             if !open_errors.is_empty() {
-                lines.push(format!("Open failed ({}):", open_errors.len()));
+                lines.push(format!("打开失败（{}）：", open_errors.len()));
                 for (path, error) in &open_errors {
                     lines.push(format!("- {}: {}", path.display(), error));
                 }
             }
             if !authorization_errors.is_empty() {
                 lines.push(format!(
-                    "Authorization failed ({}):",
+                    "授权失败（{}）：",
                     authorization_errors.len()
                 ));
                 for (path, error) in &authorization_errors {
@@ -299,7 +299,7 @@ impl AgentTool for SaveFileTool {
                 }
             }
             if !save_errors.is_empty() {
-                lines.push(format!("Save failed ({}):", save_errors.len()));
+                lines.push(format!("保存失败（{}）：", save_errors.len()));
                 for (path, error) in &save_errors {
                     lines.push(format!("- {}: {}", path, error));
                 }

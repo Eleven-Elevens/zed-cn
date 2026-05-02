@@ -385,9 +385,9 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
                     else {
                         let _ = window.prompt(
                             gpui::PromptLevel::Warning,
-                            "No file name",
-                            Some("Partial buffer write requires file name."),
-                            &["Cancel"],
+                            "没有文件名",
+                            Some("部分缓冲区写入需要文件名。"),
+                            &["取消"],
                             cx,
                         );
                         return;
@@ -407,7 +407,7 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
                                         window,
                                         cx,
                                     )
-                                    .detach_and_prompt_err("Failed to save", window, cx, |_, _, _| None);
+                                    .detach_and_prompt_err("保存失败", window, cx, |_, _, _| None);
                             });
                         }
                         return;
@@ -415,9 +415,9 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
                     if Some(SaveIntent::Overwrite) != action.save_intent {
                         let _ = window.prompt(
                             gpui::PromptLevel::Warning,
-                            "Use ! to write partial buffer",
-                            Some("Overwriting the current file with selected buffer content requires '!'."),
-                            &["Cancel"],
+                            "使用 ! 写入部分缓冲区",
+                            Some("用所选缓冲区内容覆盖当前文件需要使用 “!”。"),
+                            &["取消"],
                             cx,
                         );
                         return;
@@ -441,11 +441,11 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
                         let rx = (worktree.entry_for_path(&path).is_some() && Some(SaveIntent::Overwrite) != action.save_intent).then(|| {
                             window.prompt(
                                 gpui::PromptLevel::Warning,
-                                &format!("{path:?} already exists. Do you want to replace it?"),
+                                &format!("{path:?} 已存在。是否替换？"),
                                 Some(
-                                    "A file or folder with the same name already exists. Replacing it will overwrite its current contents.",
+                                    "已存在同名文件或文件夹。替换将覆盖其当前内容。",
                                 ),
-                                &["Replace", "Cancel"],
+                                &["替换", "取消"],
                                 cx
                             )
                         });
@@ -463,7 +463,7 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
                                 };
                                 worktree
                                     .write_file(path.into_arc(), text.clone(), line_ending, encoding, has_bom, cx)
-                                    .detach_and_prompt_err("Failed to write lines", window, cx, |_, _, _| None);
+                                    .detach_and_prompt_err("写入行失败", window, cx, |_, _, _| None);
                             });
                         })
                         .detach();
@@ -481,7 +481,7 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
                             window,
                             cx,
                         )
-                        .detach_and_prompt_err("Failed to save", window, cx, |_, _, _| None);
+                        .detach_and_prompt_err("保存失败", window, cx, |_, _, _| None);
                 });
             }
             return;
@@ -505,7 +505,7 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
                     "Cannot save buffer with absolute path"
                 )))
                 .detach_and_prompt_err(
-                    "Failed to save",
+                    "保存失败",
                     window,
                     cx,
                     |_, _, _| None,
@@ -519,14 +519,14 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
                 let answer = window.prompt(
                     gpui::PromptLevel::Critical,
                     &format!(
-                        "{} already exists. Do you want to replace it?",
+                        "{} 已存在。是否替换？",
                         project_path.path.display(path_style)
                     ),
                     Some(
-                        "A file or folder with the same name already exists. \
-                        Replacing it will overwrite its current contents.",
+                        "已存在同名文件或文件夹。\
+                        替换将覆盖其当前内容。",
                     ),
-                    &["Replace", "Cancel"],
+                    &["替换", "取消"],
                     cx,
                 );
                 cx.spawn_in(window, async move |editor, cx| {
@@ -537,14 +537,14 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
                     let _ = editor.update_in(cx, |editor, window, cx| {
                         editor
                             .save_as(project, project_path, window, cx)
-                            .detach_and_prompt_err("Failed to :w", window, cx, |_, _, _| None);
+                            .detach_and_prompt_err(":w 失败", window, cx, |_, _, _| None);
                     });
                 })
                 .detach();
             } else {
                 editor
                     .save_as(project, project_path, window, cx)
-                    .detach_and_prompt_err("Failed to :w", window, cx, |_, _, _| None);
+                    .detach_and_prompt_err(":w 失败", window, cx, |_, _, _| None);
             }
         });
     });
@@ -584,9 +584,9 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
         fn err(s: String, window: &mut Window, cx: &mut Context<Editor>) {
             let _ = window.prompt(
                 gpui::PromptLevel::Critical,
-                &format!("Invalid argument: {}", s),
+                &format!("无效参数：{}", s),
                 None,
-                &["Cancel"],
+                &["取消"],
                 cx,
             );
         }

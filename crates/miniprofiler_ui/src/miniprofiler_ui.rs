@@ -42,10 +42,10 @@ enum ProfileSource {
 impl ProfileSource {
     fn label(&self) -> &'static str {
         match self {
-            ProfileSource::Foreground => "Foreground",
-            ProfileSource::AllThreads => "All threads",
-            ProfileSource::RemoteForeground => "Remote: Foreground",
-            ProfileSource::RemoteAllThreads => "Remote: All threads",
+            ProfileSource::Foreground => "前台",
+            ProfileSource::AllThreads => "所有线程",
+            ProfileSource::RemoteForeground => "远程：前台",
+            ProfileSource::RemoteAllThreads => "远程：所有线程",
         }
     }
 
@@ -155,7 +155,7 @@ fn open_performance_profiler(
         cx.open_window(
             WindowOptions {
                 titlebar: Some(TitlebarOptions {
-                    title: Some("Profiler Window".into()),
+                    title: Some("性能分析窗口".into()),
                     appears_transparent: false,
                     traffic_light_position: None,
                 }),
@@ -620,7 +620,7 @@ impl Render for ProfilerWindow {
                     )
                     .child(
                         Checkbox::new("include-self", self.include_self_timings)
-                            .label("Include profiler timings")
+                            .label("包含性能分析计时")
                             .on_click(cx.listener(|this, checked, _window, cx| {
                                 this.include_self_timings = *checked;
                                 cx.notify();

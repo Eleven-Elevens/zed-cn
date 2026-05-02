@@ -80,7 +80,7 @@ impl PromptContextAction {
 
     pub fn label(&self) -> &'static str {
         match self {
-            Self::AddSelections => "Selection",
+            Self::AddSelections => "选区",
         }
     }
 
@@ -123,13 +123,13 @@ impl PromptContextType {
 
     pub fn label(&self) -> &'static str {
         match self {
-            Self::File => "Files & Directories",
-            Self::Symbol => "Symbols",
-            Self::Fetch => "Fetch",
-            Self::Thread => "Threads",
-            Self::Rules => "Rules",
-            Self::Diagnostics => "Diagnostics",
-            Self::BranchDiff => "Branch Diff",
+            Self::File => "文件和目录",
+            Self::Symbol => "符号",
+            Self::Fetch => "获取",
+            Self::Thread => "线程",
+            Self::Rules => "规则",
+            Self::Diagnostics => "诊断",
+            Self::BranchDiff => "分支差异",
         }
     }
 
@@ -800,7 +800,7 @@ impl<T: PromptCompletionProviderDelegate> PromptCompletionProvider<T> {
         let uri = MentionUri::GitDiff {
             base_ref: base_ref.to_string(),
         };
-        let crease_text: SharedString = format!("Branch Diff (vs {})", base_ref).into();
+        let crease_text: SharedString = format!("分支差异（对比 {}）", base_ref).into();
         let display_text = format!("@{}", crease_text);
         let new_text = format!("[{}]({}) ", display_text, uri.to_uri());
         let new_text_len = new_text.len();
@@ -1752,34 +1752,26 @@ fn diagnostics_label(
     let mut parts = Vec::new();
 
     if include_errors && summary.error_count > 0 {
-        parts.push(format!(
-            "{} {}",
-            summary.error_count,
-            pluralize("error", summary.error_count)
-        ));
+        parts.push(format!("{} 个错误", summary.error_count));
     }
 
     if include_warnings && summary.warning_count > 0 {
-        parts.push(format!(
-            "{} {}",
-            summary.warning_count,
-            pluralize("warning", summary.warning_count)
-        ));
+        parts.push(format!("{} 个警告", summary.warning_count));
     }
 
     if parts.is_empty() {
-        return "Diagnostics".into();
+        return "诊断".into();
     }
 
     let body = if parts.len() == 2 {
-        format!("{} and {}", parts[0], parts[1])
+        format!("{} 和 {}", parts[0], parts[1])
     } else {
         parts
             .pop()
             .expect("at least one part present after non-empty check")
     };
 
-    format!("Diagnostics: {body}")
+    format!("诊断：{body}")
 }
 
 fn diagnostics_submenu_label(
@@ -1789,23 +1781,12 @@ fn diagnostics_submenu_label(
 ) -> String {
     match (include_errors, include_warnings) {
         (true, true) => format!(
-            "{} {} & {} {}",
-            summary.error_count,
-            pluralize("error", summary.error_count),
-            summary.warning_count,
-            pluralize("warning", summary.warning_count)
+            "{} 个错误 & {} 个警告",
+            summary.error_count, summary.warning_count
         ),
-        (true, _) => format!(
-            "{} {}",
-            summary.error_count,
-            pluralize("error", summary.error_count)
-        ),
-        (_, true) => format!(
-            "{} {}",
-            summary.warning_count,
-            pluralize("warning", summary.warning_count)
-        ),
-        _ => "Diagnostics".into(),
+        (true, _) => format!("{} 个错误", summary.error_count),
+        (_, true) => format!("{} 个警告", summary.warning_count),
+        _ => "诊断".into(),
     }
 }
 
@@ -1815,14 +1796,6 @@ fn diagnostics_crease_label(
     include_warnings: bool,
 ) -> SharedString {
     diagnostics_label(summary, include_errors, include_warnings).into()
-}
-
-fn pluralize(noun: &str, count: usize) -> String {
-    if count == 1 {
-        noun.to_string()
-    } else {
-        format!("{noun}s")
-    }
 }
 
 pub(crate) fn search_files(

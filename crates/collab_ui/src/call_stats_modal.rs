@@ -79,55 +79,55 @@ fn active_room(cx: &App) -> Option<Entity<Room>> {
 
 fn quality_label(quality: Option<ConnectionQuality>) -> (&'static str, Color) {
     match quality {
-        Some(ConnectionQuality::Excellent) => ("Excellent", Color::Success),
-        Some(ConnectionQuality::Good) => ("Good", Color::Success),
-        Some(ConnectionQuality::Poor) => ("Poor", Color::Warning),
-        Some(ConnectionQuality::Lost) => ("Lost", Color::Error),
+        Some(ConnectionQuality::Excellent) => ("优秀", Color::Success),
+        Some(ConnectionQuality::Good) => ("良好", Color::Success),
+        Some(ConnectionQuality::Poor) => ("较差", Color::Warning),
+        Some(ConnectionQuality::Lost) => ("丢失", Color::Error),
         None => ("—", Color::Muted),
     }
 }
 
 fn metric_rating(label: &str, value_ms: f64) -> (&'static str, Color) {
     match label {
-        "Latency" => {
+        "延迟" => {
             if value_ms < 100.0 {
-                ("Normal", Color::Success)
+                ("正常", Color::Success)
             } else if value_ms < 300.0 {
-                ("High", Color::Warning)
+                ("较高", Color::Warning)
             } else {
-                ("Poor", Color::Error)
+                ("较差", Color::Error)
             }
         }
-        "Jitter" => {
+        "抖动" => {
             if value_ms < 30.0 {
-                ("Normal", Color::Success)
+                ("正常", Color::Success)
             } else if value_ms < 75.0 {
-                ("High", Color::Warning)
+                ("较高", Color::Warning)
             } else {
-                ("Poor", Color::Error)
+                ("较差", Color::Error)
             }
         }
-        _ => ("Normal", Color::Success),
+        _ => ("正常", Color::Success),
     }
 }
 
 fn input_lag_rating(value_ms: f64) -> (&'static str, Color) {
     if value_ms < 20.0 {
-        ("Normal", Color::Success)
+        ("正常", Color::Success)
     } else if value_ms < 50.0 {
-        ("High", Color::Warning)
+        ("较高", Color::Warning)
     } else {
-        ("Poor", Color::Error)
+        ("较差", Color::Error)
     }
 }
 
 fn packet_loss_rating(loss_pct: f64) -> (&'static str, Color) {
     if loss_pct < 1.0 {
-        ("Normal", Color::Success)
+        ("正常", Color::Success)
     } else if loss_pct < 5.0 {
-        ("High", Color::Warning)
+        ("较高", Color::Warning)
     } else {
-        ("Poor", Color::Error)
+        ("较差", Color::Error)
     }
 }
 
@@ -189,29 +189,29 @@ impl Render for CallStatsModal {
                                 .child(Label::new("Network").weight(FontWeight::SEMIBOLD)),
                         )
                         .child(self.render_metric_row(
-                            "Latency",
-                            "Time for data to travel to the server",
+                            "延迟",
+                            "数据传输到服务器所需时间",
                             stats.latency_ms,
                             |v| format!("{:.0}ms", v),
-                            |v| metric_rating("Latency", v),
+                            |v| metric_rating("延迟", v),
                         ))
                         .child(self.render_metric_row(
-                            "Jitter",
-                            "Variance or fluctuation in latency",
+                            "抖动",
+                            "延迟的变化或波动",
                             stats.jitter_ms,
                             |v| format!("{:.0}ms", v),
-                            |v| metric_rating("Jitter", v),
+                            |v| metric_rating("抖动", v),
                         ))
                         .child(self.render_metric_row(
-                            "Packet loss",
-                            "Amount of data lost during transfer",
+                            "丢包",
+                            "传输过程中丢失的数据量",
                             stats.packet_loss_pct,
                             |v| format!("{:.1}%", v),
                             |v| packet_loss_rating(v),
                         ))
                         .child(self.render_metric_row(
-                            "Input lag",
-                            "Delay from audio capture to WebRTC",
+                            "输入延迟",
+                            "从音频采集到 WebRTC 的延迟",
                             stats.input_lag.map(|d| d.as_secs_f64() * 1000.0),
                             |v| format!("{:.1}ms", v),
                             |v| input_lag_rating(v),

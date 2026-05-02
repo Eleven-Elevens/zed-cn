@@ -610,9 +610,9 @@ fn initialize_file_watcher(window: &mut Window, cx: &mut Context<Workspace>) {
         );
         let prompt = window.prompt(
             PromptLevel::Critical,
-            "Could not start inotify",
+            "无法启动 inotify",
             Some(&message),
-            &["Troubleshoot and Quit"],
+            &["排查问题并退出"],
             cx,
         );
         cx.spawn(async move |_, cx| {
@@ -641,9 +641,9 @@ fn initialize_file_watcher(window: &mut Window, cx: &mut Context<Workspace>) {
         );
         let prompt = window.prompt(
             PromptLevel::Critical,
-            "Could not start ReadDirectoryChangesW",
+            "无法启动 ReadDirectoryChangesW",
             Some(&message),
-            &["Troubleshoot and Quit"],
+            &["排查问题并退出"],
             cx,
         );
         cx.spawn(async move |_, cx| {
@@ -691,9 +691,9 @@ fn show_software_emulation_warning_if_needed(
         );
         let prompt = window.prompt(
             PromptLevel::Critical,
-            "Unsupported GPU",
+            "不支持的 GPU",
             Some(&message),
-            &["Skip", "Troubleshoot and Quit"],
+            &["跳过", "排查问题并退出"],
             cx,
         );
         cx.spawn(async move |_, cx| {
@@ -1089,7 +1089,7 @@ fn register_actions(
                         Toast::new(
                             NotificationId::unique::<RegisterZedScheme>(),
                             format!(
-                                "zed:// links will now open in {}.",
+                                "`zed://` 链接现在会在 {} 中打开。",
                                 ReleaseChannel::global(cx).display_name()
                             ),
                         ),
@@ -1533,7 +1533,7 @@ fn open_about_window(cx: &mut App) {
     cx.open_window(
         WindowOptions {
             titlebar: Some(TitlebarOptions {
-                title: Some("About Zed".into()),
+                title: Some("关于 Zed".into()),
                 appears_transparent: true,
                 traffic_light_position: Some(point(px(12.), px(12.))),
             }),
@@ -1591,9 +1591,9 @@ fn quit(_: &Quit, cx: &mut App) {
                 .update(cx, |_, window, cx| {
                     window.prompt(
                         PromptLevel::Info,
-                        "Are you sure you want to quit?",
+                        "确定要退出吗？",
                         None,
-                        &["Quit", "Cancel"],
+                        &["退出", "取消"],
                         cx,
                     )
                 })
@@ -1714,8 +1714,8 @@ fn open_log_file(workspace: &mut Workspace, window: &mut Window, cx: &mut Contex
                                 cx.new(|cx| {
                                     MessageNotification::new(
                                         format!(
-                                            "Unable to access/open log file at path \
-                                                    {}: {e:#}",
+                                            "无法访问或打开日志文件 \
+                                                    {}：{e:#}",
                                             paths::log_file().display()
                                         ),
                                         cx,
@@ -1743,7 +1743,7 @@ fn open_log_file(workspace: &mut Workspace, window: &mut Window, cx: &mut Contex
                 buffer.set_text(log, cx);
             });
 
-            let buffer = cx.new(|cx| MultiBuffer::singleton(buffer, cx).with_title("Log".into()));
+            let buffer = cx.new(|cx| MultiBuffer::singleton(buffer, cx).with_title("日志".into()));
 
             let editor = cx
                 .new_window_entity(|window, cx| {
@@ -1796,8 +1796,8 @@ fn notify_settings_errors(result: settings::SettingsParseResult, is_user: bool, 
             } else {
                 show_app_notification(id, cx, move |cx| {
                     cx.new(|cx| {
-                        MessageNotification::new(format!("Invalid user settings file\n{error}"), cx)
-                            .primary_message("Open Settings File")
+                        MessageNotification::new(format!("用户设置文件无效\n{error}"), cx)
+                            .primary_message("打开设置文件")
                             .primary_icon(IconName::Settings)
                             .primary_on_click(|window, cx| {
                                 window.dispatch_action(
@@ -1828,12 +1828,12 @@ fn notify_settings_errors(result: settings::SettingsParseResult, is_user: bool, 
                     cx.new(|cx| {
                         MessageNotification::new(
                             format!(
-                                "Failed to migrate settings\n\
+                                "迁移设置失败\n\
                                 {err}"
                             ),
                             cx,
                         )
-                        .primary_message("Open Settings File")
+                        .primary_message("打开设置文件")
                         .primary_icon(IconName::Settings)
                         .primary_on_click(|window, cx| {
                             window.dispatch_action(zed_actions::OpenSettingsFile.boxed_clone(), cx);
@@ -1987,11 +1987,11 @@ fn show_keymap_file_json_error(
     cx: &mut App,
 ) {
     let message: SharedString =
-        format!("JSON parse error in keymap file. Bindings not reloaded.\n\n{error}").into();
+        format!("键位映射文件 JSON 解析错误。绑定未重新加载。\n\n{error}").into();
     show_app_notification(notification_id, cx, move |cx| {
         cx.new(|cx| {
             MessageNotification::new(message.clone(), cx)
-                .primary_message("Open Keymap File")
+                .primary_message("打开键位映射文件")
                 .primary_icon(IconName::Settings)
                 .primary_on_click(|window, cx| {
                     window.dispatch_action(zed_actions::OpenKeymapFile.boxed_clone(), cx);
@@ -2009,7 +2009,7 @@ fn show_keymap_file_load_error(
     show_markdown_app_notification(
         notification_id,
         error_message,
-        "Open Keymap File".into(),
+        "打开键位映射文件".into(),
         |window, cx| {
             window.dispatch_action(zed_actions::OpenKeymapFile.boxed_clone(), cx);
             cx.emit(DismissEvent);
@@ -2247,7 +2247,7 @@ fn open_local_file(
         struct NoOpenFolders;
 
         workspace.show_notification(NotificationId::unique::<NoOpenFolders>(), cx, |cx| {
-            cx.new(|cx| MessageNotification::new("This project has no folders open.", cx))
+            cx.new(|cx| MessageNotification::new("此项目没有打开的文件夹。", cx))
         })
     }
 }
@@ -6004,7 +6004,7 @@ mod tests {
             "Case 1: Should prompt to save dirty item in active workspace"
         );
 
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.run_until_parked();
 
         assert_eq!(
@@ -6081,7 +6081,7 @@ mod tests {
             "Case 2: Should prompt to save dirty item in non-active workspace"
         );
 
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.run_until_parked();
 
         assert_eq!(
@@ -6165,7 +6165,7 @@ mod tests {
             "Case 3: Should prompt to save dirty item in non-active window"
         );
 
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.run_until_parked();
 
         assert_eq!(

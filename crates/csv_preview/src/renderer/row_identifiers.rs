@@ -113,8 +113,8 @@ impl CsvPreviewView {
     ) -> AnyElement {
         // First column: row identifier (clickable to toggle between Lines and Rows)
         let row_identifier_text = match self.settings.numbering_type {
-            RowIdentifiers::SrcLines => "Lines",
-            RowIdentifiers::RowNum => "Rows",
+            RowIdentifiers::SrcLines => "行",
+            RowIdentifiers::RowNum => "行号",
         };
 
         let view = cx.entity();

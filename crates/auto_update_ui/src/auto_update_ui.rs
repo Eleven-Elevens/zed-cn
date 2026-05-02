@@ -71,9 +71,9 @@ fn notify_release_notes_failed_to_show(
         |cx| {
             cx.new(move |cx| {
                 let url = release_notes_url(cx);
-                let mut prompt = ErrorMessagePrompt::new("Couldn't load release notes", cx);
+                let mut prompt = ErrorMessagePrompt::new("无法加载发行说明", cx);
                 if let Some(url) = url {
-                    prompt = prompt.with_link_button("View in Browser".to_string(), url);
+                    prompt = prompt.with_link_button("在浏览器中查看".to_string(), url);
                 }
                 prompt
             })
@@ -211,14 +211,14 @@ fn announcement_for_version(version: &Version, cx: &App) -> Option<AnnouncementC
     {
         let fs = <dyn Fs>::global(cx);
         Some(AnnouncementContent {
-            heading: "Introducing Parallel Agents".into(),
-            description: "Run multiple threads of your favorite agents simultaneously across projects in a new workspace layout, tailored for agentic workflows.".into(),
+            heading: "介绍并行 Agent".into(),
+            description: "在新的工作区布局中跨项目同时运行多个常用 Agent 线程，专为 Agent 工作流设计。".into(),
             bullet_items: vec![
-                "Use your favorite agents in parallel".into(),
-                "Optionally isolate agents using worktrees".into(),
-                "Combine multiple projects in one window".into(),
+                "并行使用常用 Agent".into(),
+                "可选择使用 worktree 隔离 Agent".into(),
+                "在一个窗口中组合多个项目".into(),
             ],
-            primary_action_label: "Try Agentic Layout".into(),
+            primary_action_label: "试用 Agent 布局".into(),
             primary_action_url: None,
             primary_action_callback: Some(Arc::new(move |window, cx| {
                 let get_layout = AgentSettings::get_layout(cx);
@@ -246,7 +246,7 @@ fn announcement_for_version(version: &Version, cx: &App) -> Option<AnnouncementC
                             if !already_agent_layout {
                                 if let Some(workspace) = Workspace::for_window(window, cx) {
                                     let toast = StatusToast::new(
-                                        "You are in the new agentic layout!",
+                                        "你已进入新的 Agent 布局！",
                                         cx,
                                         move |this, _cx| {
                                             this.icon(
@@ -254,7 +254,7 @@ fn announcement_for_version(version: &Version, cx: &App) -> Option<AnnouncementC
                                                     .size(IconSize::Small)
                                                     .color(Color::Success),
                                             )
-                                            .action("Revert", move |_window, cx| {
+                                            .action("还原", move |_window, cx| {
                                                 let _ = AgentSettings::set_layout(
                                                     get_layout.clone(),
                                                     revert_fs.clone(),
@@ -387,8 +387,8 @@ fn show_update_notification(cx: &mut App) {
             move |cx| {
                 let workspace_handle = cx.entity().downgrade();
                 cx.new(|cx| {
-                    MessageNotification::new(format!("Updated to {app_name} {}", version), cx)
-                        .primary_message("View Release Notes")
+                    MessageNotification::new(format!("已更新到 {app_name} {}", version), cx)
+                        .primary_message("查看发行说明")
                         .primary_on_click(move |window, cx| {
                             if let Some(workspace) = workspace_handle.upgrade() {
                                 workspace.update(cx, |workspace, cx| {

@@ -114,7 +114,7 @@ impl ListDirectoryTool {
         }
 
         if output.is_empty() {
-            writeln!(output, "{input_path} is empty.").unwrap();
+            writeln!(output, "{input_path} 为空。").unwrap();
         }
 
         Ok(output)
@@ -138,9 +138,9 @@ impl AgentTool for ListDirectoryTool {
     ) -> SharedString {
         if let Ok(input) = input {
             let path = MarkdownInlineCode(&input.path);
-            format!("List the {path} directory's contents").into()
+            format!("列出 {path} 目录的内容").into()
         } else {
-            "List directory".into()
+            "列出目录".into()
         }
     }
 
@@ -205,14 +205,14 @@ impl AgentTool for ListDirectoryTool {
                 let global_settings = WorktreeSettings::get_global(cx);
                 if global_settings.is_path_excluded(&project_path.path) {
                     anyhow::bail!(
-                        "Cannot list directory because its path matches the user's global `file_scan_exclusions` setting: {}",
+                        "无法列出目录，因为路径匹配用户全局 `file_scan_exclusions` 设置：{}",
                         &input.path
                     );
                 }
 
                 if global_settings.is_path_private(&project_path.path) {
                     anyhow::bail!(
-                        "Cannot list directory because its path matches the user's global `private_files` setting: {}",
+                        "无法列出目录，因为路径匹配用户全局 `private_files` 设置：{}",
                         &input.path
                     );
                 }
@@ -220,14 +220,14 @@ impl AgentTool for ListDirectoryTool {
                 let worktree_settings = WorktreeSettings::get(Some((&project_path).into()), cx);
                 if worktree_settings.is_path_excluded(&project_path.path) {
                     anyhow::bail!(
-                        "Cannot list directory because its path matches the user's worktree `file_scan_exclusions` setting: {}",
+                        "无法列出目录，因为路径匹配用户工作树 `file_scan_exclusions` 设置：{}",
                         &input.path
                     );
                 }
 
                 if worktree_settings.is_path_private(&project_path.path) {
                     anyhow::bail!(
-                        "Cannot list directory because its path matches the user's worktree `private_paths` setting: {}",
+                        "无法列出目录，因为路径匹配用户工作树 `private_paths` 设置：{}",
                         &input.path
                     );
                 }

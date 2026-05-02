@@ -79,9 +79,9 @@ impl AgentTool for DiagnosticsTool {
             Some(path) if !path.is_empty() => Some(path),
             _ => None,
         }) {
-            format!("Check diagnostics for {}", MarkdownInlineCode(&path)).into()
+            format!("检查 {} 的诊断", MarkdownInlineCode(&path)).into()
         } else {
-            "Check project diagnostics".into()
+            "检查项目诊断".into()
         }
     }
 
@@ -96,13 +96,13 @@ impl AgentTool for DiagnosticsTool {
             let input = input
                 .recv()
                 .await
-                .map_err(|e| format!("Failed to receive tool input: {e}"))?;
+                .map_err(|e| format!("接收工具输入失败：{e}"))?;
 
             match input.path {
                 Some(path) if !path.is_empty() => {
                     let (_project_path, open_buffer_task) = project.update(cx, |project, cx| {
                         let Some(project_path) = project.find_project_path(&path, cx) else {
-                            return Err(format!("Could not find path {path} in project"));
+                            return Err(format!("在项目中找不到路径 {path}"));
                         };
                         let task = project.open_buffer(project_path.clone(), cx);
                         Ok((project_path, task))
@@ -111,7 +111,7 @@ impl AgentTool for DiagnosticsTool {
                     let buffer = futures::select! {
                         result = open_buffer_task.fuse() => result.map_err(|e| e.to_string())?,
                         _ = event_stream.cancelled_by_user().fuse() => {
-                            return Err("Diagnostics cancelled by user".to_string());
+                            return Err("诊断已被用户取消".to_string());
                         }
                     };
                     let mut output = String::new();
@@ -121,14 +121,14 @@ impl AgentTool for DiagnosticsTool {
                         let entry = &group.entries[group.primary_ix];
                         let range = entry.range.to_point(&snapshot);
                         let severity = match entry.diagnostic.severity {
-                            DiagnosticSeverity::ERROR => "error",
-                            DiagnosticSeverity::WARNING => "warning",
+                            DiagnosticSeverity::ERROR => "错误",
+                            DiagnosticSeverity::WARNING => "警告",
                             _ => continue,
                         };
 
                         writeln!(
                             output,
-                            "{} at line {}: {}",
+                            "{} 在第 {} 行：{}",
                             severity,
                             range.start.row + 1,
                             entry.diagnostic.message
@@ -137,7 +137,7 @@ impl AgentTool for DiagnosticsTool {
                     }
 
                     if output.is_empty() {
-                        Ok("File doesn't have errors or warnings!".to_string())
+                        Ok("文件没有错误或警告！".to_string())
                     } else {
                         Ok(output)
                     }
@@ -157,7 +157,7 @@ impl AgentTool for DiagnosticsTool {
 
                                 has_diagnostics = true;
                                 output.push_str(&format!(
-                                    "{}: {} error(s), {} warning(s)\n",
+                                    "{}：{} 个错误，{} 个警告\n",
                                     worktree.read(cx).absolutize(&project_path.path).display(),
                                     summary.error_count,
                                     summary.warning_count
@@ -171,7 +171,7 @@ impl AgentTool for DiagnosticsTool {
                     if has_diagnostics {
                         Ok(output)
                     } else {
-                        Ok("No errors or warnings found in the project.".into())
+                        Ok("项目中未发现错误或警告。".into())
                     }
                 }
             }

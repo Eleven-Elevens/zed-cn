@@ -299,12 +299,12 @@ impl Render for BufferSearchBar {
 
         self.query_editor.update(cx, |query_editor, cx| {
             if query_editor.placeholder_text(cx).is_none() {
-                query_editor.set_placeholder_text("Search…", window, cx);
+                query_editor.set_placeholder_text("搜索…", window, cx);
             }
         });
 
         self.replacement_editor.update(cx, |editor, cx| {
-            editor.set_placeholder_text("Replace with…", window, cx);
+            editor.set_placeholder_text("替换为…", window, cx);
         });
 
         let mut color_override = None;
@@ -416,7 +416,7 @@ impl Render for BufferSearchBar {
                         let focus_handle = focus_handle.clone();
                         move |_window, cx| {
                             Tooltip::for_action_in(
-                                "Toggle Search Selection",
+                                "切换选区搜索",
                                 &ToggleSelection,
                                 &focus_handle,
                                 cx,

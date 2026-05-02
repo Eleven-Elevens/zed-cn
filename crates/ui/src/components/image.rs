@@ -107,7 +107,7 @@ impl Component for Vector {
     }
 
     fn description() -> Option<&'static str> {
-        Some("A vector image component that can be displayed at specific sizes.")
+        Some("可以以特定尺寸显示的矢量图像组件。")
     }
 
     fn preview(_window: &mut Window, _cx: &mut App) -> Option<AnyElement> {
@@ -118,14 +118,14 @@ impl Component for Vector {
                 .gap_6()
                 .children(vec![
                     example_group_with_title(
-                        "Basic Usage",
+                        "基本用法",
                         vec![
                             single_example(
-                                "Default",
+                                "默认",
                                 Vector::square(VectorName::ZedLogo, size).into_any_element(),
                             ),
                             single_example(
-                                "Custom Size",
+                                "自定义尺寸",
                                 h_flex()
                                     .h(rems_from_px(120.))
                                     .justify_center()
@@ -139,16 +139,16 @@ impl Component for Vector {
                         ],
                     ),
                     example_group_with_title(
-                        "Colored",
+                        "有色",
                         vec![
                             single_example(
-                                "Accent Color",
+                                "强调色",
                                 Vector::square(VectorName::ZedLogo, size)
                                     .color(Color::Accent)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Error Color",
+                                "错误颜色",
                                 Vector::square(VectorName::ZedLogo, size)
                                     .color(Color::Error)
                                     .into_any_element(),
@@ -156,9 +156,9 @@ impl Component for Vector {
                         ],
                     ),
                     example_group_with_title(
-                        "Different Vectors",
+                        "不同的载体",
                         vec![single_example(
-                            "Zed X Copilot",
+                            "Zed X 副驾驶",
                             Vector::square(VectorName::ZedXCopilot, rems_from_px(100.))
                                 .into_any_element(),
                         )],

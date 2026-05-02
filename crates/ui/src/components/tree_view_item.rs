@@ -225,7 +225,7 @@ impl Component for TreeViewItem {
 
     fn description() -> Option<&'static str> {
         Some(
-            "A hierarchical list of items that may have a parent-child relationship where children can be toggled into view by expanding or collapsing their parent item.",
+            "可能具有父子关系的项目的分层列表，其中可以通过展开或折叠其父项目将子项目切换到视图中。",
         )
     }
 
@@ -242,7 +242,7 @@ impl Component for TreeViewItem {
         Some(
             example_group(vec![
                 single_example(
-                    "Basic Tree View",
+                    "基本树视图",
                     container()
                         .child(
                             TreeViewItem::new("index-1", "Tree Item Root #1")
@@ -257,7 +257,7 @@ impl Component for TreeViewItem {
                         .into_any_element(),
                 ),
                 single_example(
-                    "Active Child",
+                    "活跃的孩子",
                     container()
                         .child(TreeViewItem::new("index-1", "Tree Item Root #1").root_item(true))
                         .child(TreeViewItem::new("index-2", "Tree Item #2").toggle_state(true))
@@ -265,7 +265,7 @@ impl Component for TreeViewItem {
                         .into_any_element(),
                 ),
                 single_example(
-                    "Focused Parent",
+                    "专注的家长",
                     container()
                         .child(
                             TreeViewItem::new("index-1", "Tree Item Root #1")
@@ -278,7 +278,7 @@ impl Component for TreeViewItem {
                         .into_any_element(),
                 ),
                 single_example(
-                    "Focused Child",
+                    "专注的孩子",
                     container()
                         .child(
                             TreeViewItem::new("index-1", "Tree Item Root #1")

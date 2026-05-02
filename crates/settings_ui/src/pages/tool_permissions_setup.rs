@@ -15,70 +15,70 @@ use util::shell::ShellKind;
 use crate::{SettingsWindow, components::SettingsInputField};
 
 const HARDCODED_RULES_DESCRIPTION: &str =
-    "`rm -rf` commands are always blocked when run on `$HOME`, `~`, `.`, `..`, or `/`";
-const SETTINGS_DISCLAIMER: &str = "Note: custom tool permissions only apply to the Zed native agent and don’t extend to external agents connected through the Agent Client Protocol (ACP).";
+    "在 `$HOME`、`~`、`.`、`..` 或 `/` 上运行的 `rm -rf` 命令始终会被阻止";
+const SETTINGS_DISCLAIMER: &str = "注意：自定义工具权限仅适用于 Zed 原生 Agent，不会扩展到通过 Agent Client Protocol (ACP) 连接的外部 Agent。";
 
 /// Tools that support permission rules
 const TOOLS: &[ToolInfo] = &[
     ToolInfo {
         id: "terminal",
-        name: "Terminal",
-        description: "Commands executed in the terminal",
-        regex_explanation: "Patterns are matched against each command in the input. Commands chained with &&, ||, ;, or pipes are split and checked individually.",
+        name: "终端",
+        description: "在终端中执行的命令",
+        regex_explanation: "规则会匹配输入中的每条命令。使用 &&、||、; 或管道串联的命令会被拆分并逐一检查。",
     },
     ToolInfo {
         id: "edit_file",
-        name: "Edit File",
-        description: "File editing operations",
-        regex_explanation: "Patterns are matched against the file path being edited.",
+        name: "编辑文件",
+        description: "文件编辑操作",
+        regex_explanation: "规则会匹配正在编辑的文件路径。",
     },
     ToolInfo {
         id: "delete_path",
-        name: "Delete Path",
-        description: "File and directory deletion",
-        regex_explanation: "Patterns are matched against the path being deleted.",
+        name: "删除路径",
+        description: "文件和目录删除",
+        regex_explanation: "规则会匹配正在删除的路径。",
     },
     ToolInfo {
         id: "copy_path",
-        name: "Copy Path",
-        description: "File and directory copying",
-        regex_explanation: "Patterns are matched independently against the source path and the destination path. Enter either path below to test.",
+        name: "复制路径",
+        description: "文件和目录复制",
+        regex_explanation: "规则会分别匹配源路径和目标路径。可在下方输入任一路径进行测试。",
     },
     ToolInfo {
         id: "move_path",
-        name: "Move Path",
-        description: "File and directory moves/renames",
-        regex_explanation: "Patterns are matched independently against the source path and the destination path. Enter either path below to test.",
+        name: "移动路径",
+        description: "文件和目录移动/重命名",
+        regex_explanation: "规则会分别匹配源路径和目标路径。可在下方输入任一路径进行测试。",
     },
     ToolInfo {
         id: "create_directory",
-        name: "Create Directory",
-        description: "Directory creation",
-        regex_explanation: "Patterns are matched against the directory path being created.",
+        name: "创建目录",
+        description: "目录创建",
+        regex_explanation: "规则会匹配正在创建的目录路径。",
     },
     ToolInfo {
         id: "save_file",
-        name: "Save File",
-        description: "File saving operations",
-        regex_explanation: "Patterns are matched against the file path being saved.",
+        name: "保存文件",
+        description: "文件保存操作",
+        regex_explanation: "规则会匹配正在保存的文件路径。",
     },
     ToolInfo {
         id: "fetch",
-        name: "Fetch",
-        description: "HTTP requests to URLs",
-        regex_explanation: "Patterns are matched against the URL being fetched.",
+        name: "获取",
+        description: "对 URL 的 HTTP 请求",
+        regex_explanation: "规则会匹配正在获取的 URL。",
     },
     ToolInfo {
         id: "search_web",
-        name: "Web Search",
-        description: "Web search queries",
-        regex_explanation: "Patterns are matched against the search query.",
+        name: "网页搜索",
+        description: "网络搜索查询",
+        regex_explanation: "规则会匹配搜索查询。",
     },
     ToolInfo {
         id: "restore_file_from_disk",
-        name: "Restore File from Disk",
-        description: "Discards unsaved changes by reloading from disk",
-        regex_explanation: "Patterns are matched against the file path being restored.",
+        name: "从磁盘恢复文件",
+        description: "通过从磁盘重新加载来放弃未保存的更改",
+        regex_explanation: "规则会匹配正在恢复的文件路径。",
     },
 ];
 
@@ -274,7 +274,7 @@ fn render_tool_list_item(
         )
         .child({
             let tool_name = tool.name;
-            Button::new(format!("configure-{}", tool.id), "Configure")
+            Button::new(format!("configure-{}", tool.id), "配置")
                 .tab_index(tool_index as isize)
                 .style(ButtonStyle::OutlinedGhost)
                 .size(ButtonSize::Medium)
@@ -324,7 +324,7 @@ pub(crate) fn render_tool_config_page(
     cx: &mut Context<SettingsWindow>,
 ) -> AnyElement {
     let rules = get_tool_rules(tool.id, cx);
-    let page_title = format!("{} Tool", tool.name);
+    let page_title = format!("{} 工具", tool.name);
     let scroll_step = px(80.);
 
     v_flex()
@@ -394,8 +394,8 @@ pub(crate) fn render_tool_config_page(
                 .child(Divider::horizontal().color(ui::DividerColor::BorderFaded))
                 .child(render_rule_section(
                     tool.id,
-                    "Always Deny",
-                    "If any of these regexes match, the tool action will be denied.",
+                    "始终拒绝",
+                    "如果匹配任一正则表达式，将拒绝该工具操作。",
                     ToolPermissionMode::Deny,
                     &rules.always_deny,
                     cx,
@@ -403,8 +403,8 @@ pub(crate) fn render_tool_config_page(
                 .child(Divider::horizontal().color(ui::DividerColor::BorderFaded))
                 .child(render_rule_section(
                     tool.id,
-                    "Always Allow",
-                    "If any of these regexes match, the action will be approved—unless an Always Confirm or Always Deny matches.",
+                    "始终允许",
+                    "如果匹配任一正则表达式，将批准该操作，除非同时匹配“始终确认”或“始终拒绝”。",
                     ToolPermissionMode::Allow,
                     &rules.always_allow,
                     cx,
@@ -412,8 +412,8 @@ pub(crate) fn render_tool_config_page(
                 .child(Divider::horizontal().color(ui::DividerColor::BorderFaded))
                 .child(render_rule_section(
                     tool.id,
-                    "Always Confirm",
-                    "If any of these regexes match, a confirmation will be shown unless an Always Deny regex matches.",
+                    "始终确认",
+                    "如果匹配任一正则表达式，将显示确认，除非同时匹配“始终拒绝”。",
                     ToolPermissionMode::Confirm,
                     &rules.always_confirm,
                     cx,
@@ -460,7 +460,7 @@ fn render_verification_section(
 
     let editor = window.use_keyed_state(input_id, cx, |window, cx| {
         let mut editor = editor::Editor::single_line(window, cx);
-        editor.set_placeholder_text("Enter a tool input to test your rules…", window, cx);
+        editor.set_placeholder_text("输入工具调用参数以测试规则…", window, cx);
 
         let global_settings = ThemeSettings::get_global(cx);
         editor.set_text_style_refinement(TextStyleRefinement {
@@ -568,7 +568,7 @@ fn render_verification_section(
                             this.child(render_hardcoded_rules(true, cx))
                         } else if let Some(reason) = &denial_reason {
                             this.child(
-                                Label::new(format!("Denied: {}", reason))
+                                Label::new(format!("已拒绝：{}", reason))
                                     .size(LabelSize::XSmall)
                                     .color(Color::Warning),
                             )
@@ -590,7 +590,7 @@ fn render_verification_section(
                         denial_reason.filter(|_| patterns_agree && !is_hardcoded_denial),
                         |this, reason| {
                             this.child(
-                                Label::new(format!("Reason: {}", reason))
+                                Label::new(format!("原因：{}", reason))
                                     .size(LabelSize::XSmall)
                                     .color(Color::Error),
                             )
@@ -684,9 +684,9 @@ fn render_matched_patterns(patterns: &[MatchedPattern], cx: &App) -> AnyElement 
         .gap_1()
         .children(patterns.iter().map(|pattern| {
             let (type_label, color) = match pattern.rule_type {
-                ToolPermissionMode::Deny => ("Always Deny", Color::Error),
-                ToolPermissionMode::Confirm => ("Always Confirm", Color::Warning),
-                ToolPermissionMode::Allow => ("Always Allow", Color::Success),
+                ToolPermissionMode::Deny => ("始终拒绝", Color::Error),
+                ToolPermissionMode::Confirm => ("始终确认", Color::Warning),
+                ToolPermissionMode::Allow => ("始终允许", Color::Success),
             };
 
             let type_color = if pattern.is_overridden {
@@ -769,9 +769,9 @@ fn implied_mode_from_patterns(
 
 fn mode_display_label(mode: ToolPermissionMode) -> &'static str {
     match mode {
-        ToolPermissionMode::Allow => "Allow",
-        ToolPermissionMode::Deny => "Deny",
-        ToolPermissionMode::Confirm => "Confirm",
+        ToolPermissionMode::Allow => "允许",
+        ToolPermissionMode::Deny => "拒绝",
+        ToolPermissionMode::Confirm => "确认",
     }
 }
 
@@ -834,9 +834,9 @@ fn render_invalid_patterns_section(
                 .gap_1p5()
                 .children(invalid_patterns.iter().map(|invalid| {
                     let rule_type_label = match invalid.rule_type.as_str() {
-                        "always_allow" => "Always Allow",
-                        "always_deny" => "Always Deny",
-                        "always_confirm" => "Always Confirm",
+                        "always_allow" => "始终允许",
+                        "always_deny" => "始终拒绝",
+                        "always_confirm" => "始终确认",
                         other => other,
                     };
 
@@ -892,7 +892,7 @@ fn render_invalid_patterns_section(
                                 ),
                         )
                         .child(
-                            Label::new(format!("Error: {}", invalid.error))
+                            Label::new(format!("错误：{}", invalid.error))
                                 .size(LabelSize::XSmall)
                                 .color(Color::Muted),
                         )
@@ -1040,7 +1040,7 @@ fn render_add_pattern_input(
 
     SettingsInputField::new()
         .with_id(input_id)
-        .with_placeholder("Add regex pattern…")
+        .with_placeholder("添加正则表达式模式…")
         .tab_index(0)
         .with_buffer_font()
         .display_clear_button()
@@ -1101,13 +1101,13 @@ fn render_global_default_mode_section(current_mode: ToolPermissionMode) -> AnyEl
                 )
                 .menu(move |window, cx| {
                     Some(ContextMenu::build(window, cx, move |menu, _, _| {
-                        menu.entry("Confirm", None, move |_, cx| {
+                        menu.entry("确认", None, move |_, cx| {
                             set_global_default_permission(ToolPermissionMode::Confirm, cx);
                         })
-                        .entry("Allow", None, move |_, cx| {
+                        .entry("允许", None, move |_, cx| {
                             set_global_default_permission(ToolPermissionMode::Allow, cx);
                         })
-                        .entry("Deny", None, move |_, cx| {
+                        .entry("拒绝", None, move |_, cx| {
                             set_global_default_permission(ToolPermissionMode::Deny, cx);
                         })
                     }))
@@ -1123,9 +1123,9 @@ fn render_default_mode_section(
     _cx: &mut Context<SettingsWindow>,
 ) -> AnyElement {
     let mode_label = match current_mode {
-        ToolPermissionMode::Allow => "Allow",
-        ToolPermissionMode::Deny => "Deny",
-        ToolPermissionMode::Confirm => "Confirm",
+        ToolPermissionMode::Allow => "允许",
+        ToolPermissionMode::Deny => "拒绝",
+        ToolPermissionMode::Confirm => "确认",
     };
 
     let tool_id_owned = tool_id.to_string();
@@ -1160,13 +1160,13 @@ fn render_default_mode_section(
                         let tool_id_allow = tool_id.clone();
                         let tool_id_deny = tool_id;
 
-                        menu.entry("Confirm", None, move |_, cx| {
+                        menu.entry("确认", None, move |_, cx| {
                             set_default_mode(&tool_id_confirm, ToolPermissionMode::Confirm, cx);
                         })
-                        .entry("Allow", None, move |_, cx| {
+                        .entry("允许", None, move |_, cx| {
                             set_default_mode(&tool_id_allow, ToolPermissionMode::Allow, cx);
                         })
-                        .entry("Deny", None, move |_, cx| {
+                        .entry("拒绝", None, move |_, cx| {
                             set_default_mode(&tool_id_deny, ToolPermissionMode::Deny, cx);
                         })
                     }))

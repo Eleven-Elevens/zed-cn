@@ -273,9 +273,9 @@ pub fn check(_: &Check, window: &mut Window, cx: &mut App) {
     {
         drop(window.prompt(
             gpui::PromptLevel::Info,
-            "Zed was installed via a package manager.",
+            "Zed 是通过包管理器安装的。",
             Some(&message),
-            &["Ok"],
+            &["确定"],
             cx,
         ));
         return;
@@ -293,9 +293,9 @@ pub fn check(_: &Check, window: &mut Window, cx: &mut App) {
     } else {
         drop(window.prompt(
             gpui::PromptLevel::Info,
-            "Could not check for updates",
-            Some("Auto-updates disabled for non-bundled app."),
-            &["Ok"],
+            "无法检查更新",
+            Some("非捆绑版应用已禁用自动更新。"),
+            &["确定"],
             cx,
         ));
     }
@@ -516,7 +516,7 @@ impl AutoUpdater {
                 .context("auto-update not initialized")
         })?;
 
-        set_status("Fetching remote server release", cx);
+        set_status("正在获取远程服务器版本", cx);
         let release = Self::get_release_asset(
             &this,
             release_channel,
@@ -541,7 +541,7 @@ impl AutoUpdater {
                 "downloading zed-remote-server {os} {arch} version {}",
                 release.version
             );
-            set_status("Downloading remote server", cx);
+            set_status("正在下载远程服务器", cx);
             download_remote_server_binary(&version_path, release, client).await?;
         }
 

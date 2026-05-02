@@ -250,7 +250,7 @@ fn render_telemetry_section(tab_index: &mut isize, cx: &App) -> impl IntoElement
             SwitchField::new(
                 "onboarding-telemetry-metrics",
                 None::<&str>,
-                Some("Help improve Zed by sending anonymous usage data".into()),
+                Some("发送匿名使用数据以帮助改进 Zed".into()),
                 if TelemetrySettings::get_global(cx).metrics {
                     ui::ToggleState::Selected
                 } else {
@@ -395,7 +395,7 @@ fn render_vim_mode_switch(tab_index: &mut isize, cx: &mut App) -> impl IntoEleme
     SwitchField::new(
         "onboarding-vim-mode",
         Some("Vim Mode"),
-        Some("Coming from Neovim? Use our first-class implementation of Vim Mode".into()),
+        Some("从 Neovim 迁移而来？试试我们一流的 Vim 模式实现".into()),
         toggle_state,
         {
             let fs = <dyn Fs>::global(cx);
@@ -431,12 +431,12 @@ fn render_worktree_auto_trust_switch(tab_index: &mut isize, cx: &mut App) -> imp
         ui::ToggleState::Unselected
     };
 
-    let tooltip_description = "Zed can only allow services like language servers, project settings, and MCP servers to run after you mark a new project as trusted.";
+    let tooltip_description = "只有在你将新项目标记为可信后，Zed 才能允许运行语言服务器、项目设置和 MCP 服务器等服务。";
 
     SwitchField::new(
         "onboarding-auto-trust-worktrees",
         Some("Trust All Projects By Default"),
-        Some("Automatically mark all new projects as trusted to unlock all Zed's features".into()),
+        Some("自动将所有新项目标记为受信任，以解锁 Zed 的全部功能".into()),
         toggle_state,
         {
             let fs = <dyn Fs>::global(cx);

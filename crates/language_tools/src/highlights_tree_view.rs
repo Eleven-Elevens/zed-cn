@@ -980,7 +980,7 @@ impl HighlightsTreeToolbarItemView {
 
                 let menu = ContextMenu::build(window, cx, move |menu, _, _| {
                     menu.toggleable_entry(
-                        "Text Highlights",
+                        "文本高亮",
                         show_text,
                         IconPosition::Start,
                         Some(ToggleTextHighlights.boxed_clone()),
@@ -1004,7 +1004,7 @@ impl HighlightsTreeToolbarItemView {
                         },
                     )
                     .toggleable_entry(
-                        "Syntax Tokens",
+                        "语法标记",
                         show_syntax,
                         IconPosition::Start,
                         Some(ToggleSyntaxTokens.boxed_clone()),
@@ -1028,7 +1028,7 @@ impl HighlightsTreeToolbarItemView {
                         },
                     )
                     .toggleable_entry(
-                        "Semantic Tokens",
+                        "语义标记",
                         show_semantic,
                         IconPosition::Start,
                         Some(ToggleSemanticTokens.boxed_clone()),

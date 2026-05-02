@@ -119,7 +119,7 @@ pub fn open_rules_library(
             cx.open_window(
                 WindowOptions {
                     titlebar: Some(TitlebarOptions {
-                        title: Some("Rules Library".into()),
+                        title: Some("规则库".into()),
                         appears_transparent: true,
                         traffic_light_position: Some(point(px(12.0), px(12.0))),
                     }),
@@ -197,7 +197,7 @@ impl PickerDelegate for RulePickerDelegate {
     }
 
     fn no_matches_text(&self, _window: &mut Window, _cx: &mut App) -> Option<SharedString> {
-        Some("No rules found matching your search.".into())
+        Some("没有找到匹配搜索的规则。".into())
     }
 
     fn selected_index(&self) -> usize {
@@ -226,7 +226,7 @@ impl PickerDelegate for RulePickerDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Search…".into()
+        "搜索…".into()
     }
 
     fn update_matches(
@@ -262,7 +262,7 @@ impl PickerDelegate for RulePickerDelegate {
                     let mut filtered_entries = Vec::new();
 
                     if !built_in_rules.is_empty() {
-                        filtered_entries.push(RulePickerEntry::Header("Built-in Rules".into()));
+                        filtered_entries.push(RulePickerEntry::Header("内置规则".into()));
 
                         for rule in built_in_rules {
                             filtered_entries.push(RulePickerEntry::Rule(rule));
@@ -272,7 +272,7 @@ impl PickerDelegate for RulePickerDelegate {
                     }
 
                     if !default_rules.is_empty() {
-                        filtered_entries.push(RulePickerEntry::Header("Default Rules".into()));
+                        filtered_entries.push(RulePickerEntry::Header("默认规则".into()));
 
                         for rule in default_rules {
                             filtered_entries.push(RulePickerEntry::Rule(rule));
@@ -338,7 +338,7 @@ impl PickerDelegate for RulePickerDelegate {
     ) -> Option<Self::ListItem> {
         match self.filtered_entries.get(ix)? {
             RulePickerEntry::Header(title) => {
-                let tooltip_text = if title.as_ref() == "Built-in Rules" {
+                let tooltip_text = if title.as_ref() == "内置规则" {
                     "Built-in rules are those included out of the box with Zed."
                 } else {
                     "Default Rules are attached by default with every new thread."
@@ -374,7 +374,7 @@ impl PickerDelegate for RulePickerDelegate {
                         .spacing(ListItemSpacing::Sparse)
                         .toggle_state(selected)
                         .child(
-                            Label::new(rule.title.clone().unwrap_or("Untitled".into()))
+                            Label::new(rule.title.clone().unwrap_or("无标题".into()))
                                 .truncate()
                                 .mr_10(),
                         )
@@ -420,7 +420,7 @@ impl PickerDelegate for RulePickerDelegate {
                                                         Tooltip::with_meta(
                                                             "Add to Default Rules",
                                                             None,
-                                                            "Always included in every thread.",
+                                                            "始终包含在每个线程中。",
                                                             cx,
                                                         )
                                                     })
@@ -722,7 +722,7 @@ impl RulesLibrary {
                     Ok(rule) => {
                         let title_editor = cx.new(|cx| {
                             let mut editor = Editor::single_line(window, cx);
-                            editor.set_placeholder_text("Untitled", window, cx);
+                            editor.set_placeholder_text("无标题", window, cx);
                             editor.set_text(rule_metadata.title.unwrap_or_default(), window, cx);
                             if prompt_id.is_built_in() {
                                 editor.set_read_only(true);
@@ -843,11 +843,11 @@ impl RulesLibrary {
             let confirmation = window.prompt(
                 PromptLevel::Warning,
                 &format!(
-                    "Are you sure you want to delete {}",
-                    metadata.title.unwrap_or("Untitled".into())
+                    "确定要删除 {} 吗？",
+                    metadata.title.unwrap_or("无标题".into())
                 ),
                 None,
-                &["Delete", "Cancel"],
+                &["删除", "取消"],
                 cx,
             );
 
@@ -879,7 +879,7 @@ impl RulesLibrary {
         cx: &mut Context<Self>,
     ) {
         if let Some(rule) = self.rule_editors.get(&prompt_id) {
-            const DUPLICATE_SUFFIX: &str = " copy";
+            const DUPLICATE_SUFFIX: &str = " 副本";
             let title_to_duplicate = rule.title_editor.read(cx).text(cx);
             let existing_titles = self
                 .rule_editors
@@ -1199,7 +1199,7 @@ impl RulesLibrary {
                                 Tooltip::with_meta(
                                     "Add to Default Rules",
                                     None,
-                                    "Always included in every thread.",
+                                    "始终包含在每个线程中。",
                                     cx,
                                 )
                             })

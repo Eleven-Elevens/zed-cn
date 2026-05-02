@@ -500,26 +500,26 @@ impl TerminalView {
             .is_some_and(|terminal_panel| terminal_panel.read(cx).assistant_enabled());
         let context_menu = ContextMenu::build(window, cx, |menu, _, _| {
             menu.context(self.focus_handle.clone())
-                .action("New Terminal", Box::new(NewTerminal::default()))
+                .action("新建终端", Box::new(NewTerminal::default()))
                 .action(
-                    "New Center Terminal",
+                    "新建中心终端",
                     Box::new(NewCenterTerminal::default()),
                 )
                 .separator()
-                .action("Copy", Box::new(Copy))
-                .action("Paste", Box::new(Paste))
-                .action("Select All", Box::new(SelectAll))
-                .action("Clear", Box::new(Clear))
+                .action("复制", Box::new(Copy))
+                .action("粘贴", Box::new(Paste))
+                .action("全选", Box::new(SelectAll))
+                .action("清除", Box::new(Clear))
                 .when(assistant_enabled, |menu| {
                     menu.separator()
-                        .action("Inline Assist", Box::new(InlineAssist::default()))
+                        .action("行内辅助", Box::new(InlineAssist::default()))
                         .when(has_selection, |menu| {
-                            menu.action("Add to Agent Thread", Box::new(AddSelectionToThread))
+                            menu.action("添加到 Agent 线程", Box::new(AddSelectionToThread))
                         })
                 })
                 .separator()
                 .action(
-                    "Close Terminal Tab",
+                    "关闭终端标签页",
                     Box::new(CloseActiveItem {
                         save_intent: None,
                         close_pinned: true,
@@ -1320,7 +1320,7 @@ impl Item for TerminalView {
                     .child(Label::new(title.clone()))
                     .child(h_flex().flex_grow().child(Divider::horizontal()))
                     .child(
-                        Label::new(format!("Process ID (PID): {}", pid))
+                        Label::new(format!("进程 ID (PID)：{}", pid))
                             .color(Color::Muted)
                             .size(LabelSize::Small),
                     )

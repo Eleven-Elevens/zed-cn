@@ -170,7 +170,7 @@ impl Component for Divider {
 
     fn description() -> Option<&'static str> {
         Some(
-            "Visual separator used to create divisions between groups of content or sections in a layout.",
+            "视觉分隔符用于在布局中的内容组或部分之间创建划分。",
         )
     }
 
@@ -180,48 +180,48 @@ impl Component for Divider {
                 .gap_6()
                 .children(vec![
                     example_group_with_title(
-                        "Horizontal Dividers",
+                        "水平分隔线",
                         vec![
-                            single_example("Default", Divider::horizontal().into_any_element()),
+                            single_example("默认", Divider::horizontal().into_any_element()),
                             single_example(
-                                "Border Color",
+                                "边框颜色",
                                 Divider::horizontal()
                                     .color(DividerColor::Border)
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Inset",
+                                "插图",
                                 Divider::horizontal().inset().into_any_element(),
                             ),
                             single_example(
-                                "Dashed",
+                                "虚线",
                                 Divider::horizontal_dashed().into_any_element(),
                             ),
                         ],
                     ),
                     example_group_with_title(
-                        "Vertical Dividers",
+                        "垂直分隔线",
                         vec![
                             single_example(
-                                "Default",
+                                "默认",
                                 div().h_16().child(Divider::vertical()).into_any_element(),
                             ),
                             single_example(
-                                "Border Color",
+                                "边框颜色",
                                 div()
                                     .h_16()
                                     .child(Divider::vertical().color(DividerColor::Border))
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Inset",
+                                "插图",
                                 div()
                                     .h_16()
                                     .child(Divider::vertical().inset())
                                     .into_any_element(),
                             ),
                             single_example(
-                                "Dashed",
+                                "虚线",
                                 div()
                                     .h_16()
                                     .child(Divider::vertical_dashed())
@@ -230,9 +230,9 @@ impl Component for Divider {
                         ],
                     ),
                     example_group_with_title(
-                        "Example Usage",
+                        "用法示例",
                         vec![single_example(
-                            "Between Content",
+                            "内容之间",
                             v_flex()
                                 .w_full()
                                 .gap_4()

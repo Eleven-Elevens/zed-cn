@@ -74,9 +74,9 @@ impl AgentTool for CopyPathTool {
         if let Ok(input) = input {
             let src = MarkdownInlineCode(&input.source_path);
             let dest = MarkdownInlineCode(&input.destination_path);
-            format!("Copy {src} to {dest}").into()
+            format!("将 {src} 复制到 {dest}").into()
         } else {
-            "Copy path".into()
+            "复制路径".into()
         }
     }
 
@@ -141,7 +141,7 @@ impl AgentTool for CopyPathTool {
                         Self::NAME,
                         vec![input.source_path.clone(), input.destination_path.clone()],
                     );
-                    let title = format!("Copy {src} to {dest}");
+                    let title = format!("将 {src} 复制到 {dest}");
                     authorize_with_sensitive_settings(
                         sensitive_kind,
                         context,
@@ -180,12 +180,12 @@ impl AgentTool for CopyPathTool {
             let result = futures::select! {
                 result = copy_task.fuse() => result,
                 _ = event_stream.cancelled_by_user().fuse() => {
-                    return Err("Copy cancelled by user".to_string());
+                    return Err("用户已取消复制".to_string());
                 }
             };
             result.map_err(|e| {
                 format!(
-                    "Copying {} to {}: {e}",
+                    "将 {} 复制到 {} 时出错：{e}",
                     input.source_path, input.destination_path
                 )
             })?;

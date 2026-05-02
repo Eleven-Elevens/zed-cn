@@ -290,9 +290,9 @@ impl WorktreePickerDelegate {
     fn creation_blocked_reason(&self, cx: &App) -> Option<SharedString> {
         let project = self.project.read(cx);
         if project.is_via_collab() {
-            Some("Worktree creation is not supported in collaborative projects".into())
+            Some("协作项目不支持创建 worktree".into())
         } else if project.repositories(cx).is_empty() {
-            Some("Requires a Git repository in the project".into())
+            Some("项目中需要有 Git 仓库".into())
         } else {
             None
         }
@@ -387,7 +387,7 @@ impl PickerDelegate for WorktreePickerDelegate {
     type ListItem = AnyElement;
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Select a worktree…".into()
+        "选择 worktree…".into()
     }
 
     fn editor_position(&self) -> PickerEditorPosition {
@@ -433,9 +433,9 @@ impl PickerDelegate for WorktreePickerDelegate {
             worktree.directory_name(main_worktree_path.as_deref()) == normalized_query
         });
         let create_named_disabled_reason: Option<String> = if self.has_multiple_repositories {
-            Some("Cannot create a named worktree in a project with multiple repositories".into())
+            Some("无法在包含多个仓库的项目中创建命名 worktree".into())
         } else if has_named_worktree {
-            Some("A worktree with this name already exists".into())
+            Some("已存在同名 worktree".into())
         } else {
             None
         };
@@ -702,7 +702,7 @@ impl PickerDelegate for WorktreePickerDelegate {
                         .unwrap_or_else(|| "HEAD".to_string())
                 };
 
-                let label = format!("Create new worktree based on {branch_label}");
+                let label = format!("基于 {branch_label} 创建新工作树");
 
                 let item = create_new_list_item(
                     "create-from-current".to_string().into(),
@@ -716,7 +716,7 @@ impl PickerDelegate for WorktreePickerDelegate {
             WorktreeEntry::CreateFromDefaultBranch {
                 default_branch_name,
             } => {
-                let label = format!("Create new worktree based on {default_branch_name}");
+                let label = format!("基于 {default_branch_name} 创建新工作树");
 
                 let item = create_new_list_item(
                     "create-from-main".to_string().into(),
@@ -1066,7 +1066,7 @@ pub async fn open_remote_worktree(
             window,
             cx,
         )
-        .prompt_err("Failed to connect", window, cx, |_, _, _| None)
+        .prompt_err("连接失败", window, cx, |_, _, _| None)
     })?;
 
     let session = connect_task.await;

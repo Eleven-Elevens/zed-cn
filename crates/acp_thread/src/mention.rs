@@ -240,21 +240,21 @@ impl MentionUri {
             MentionUri::Symbol { name, .. } => name.clone(),
             MentionUri::Thread { name, .. } => name.clone(),
             MentionUri::Rule { name, .. } => name.clone(),
-            MentionUri::Diagnostics { .. } => "Diagnostics".to_string(),
+            MentionUri::Diagnostics { .. } => "诊断".to_string(),
             MentionUri::TerminalSelection { line_count } => {
                 if *line_count == 1 {
-                    "Terminal (1 line)".to_string()
+                    "终端（1 行）".to_string()
                 } else {
-                    format!("Terminal ({} lines)", line_count)
+                    format!("终端（{} 行）", line_count)
                 }
             }
-            MentionUri::GitDiff { base_ref } => format!("Branch Diff ({})", base_ref),
+            MentionUri::GitDiff { base_ref } => format!("分支差异（{}）", base_ref),
             MentionUri::MergeConflict { file_path } => {
                 let name = Path::new(file_path)
                     .file_name()
                     .unwrap_or_default()
                     .to_string_lossy();
-                format!("Merge Conflict ({name})")
+                format!("合并冲突（{name}）")
             }
             MentionUri::Selection {
                 abs_path: path,
@@ -803,6 +803,6 @@ mod tests {
         // Test single line
         let single_line_uri = "zed:///agent/terminal-selection?lines=1";
         let parsed_single = MentionUri::parse(single_line_uri, PathStyle::local()).unwrap();
-        assert_eq!(parsed_single.name(), "Terminal (1 line)");
+        assert_eq!(parsed_single.name(), "终端（1 行）");
     }
 }

@@ -154,7 +154,7 @@ pub fn init(cx: &mut App) {
                                         workspace.show_error(
                                             // NOTE: using `anyhow::context` here ends up not printing
                                             // the error
-                                            &format!("Failed to install dev extension: {}", err),
+                                            &format!("安装开发扩展失败：{}", err),
                                             cx,
                                         );
                                     })
@@ -179,17 +179,17 @@ pub fn init(cx: &mut App) {
 
 fn extension_provides_label(provides: ExtensionProvides) -> &'static str {
     match provides {
-        ExtensionProvides::Themes => "Themes",
-        ExtensionProvides::IconThemes => "Icon Themes",
-        ExtensionProvides::Languages => "Languages",
-        ExtensionProvides::Grammars => "Grammars",
-        ExtensionProvides::LanguageServers => "Language Servers",
-        ExtensionProvides::ContextServers => "MCP Servers",
-        ExtensionProvides::AgentServers => "Agent Servers",
-        ExtensionProvides::SlashCommands => "Slash Commands",
-        ExtensionProvides::IndexedDocsProviders => "Indexed Docs Providers",
-        ExtensionProvides::Snippets => "Snippets",
-        ExtensionProvides::DebugAdapters => "Debug Adapters",
+        ExtensionProvides::Themes => "主题",
+        ExtensionProvides::IconThemes => "图标主题",
+        ExtensionProvides::Languages => "语言",
+        ExtensionProvides::Grammars => "语法",
+        ExtensionProvides::LanguageServers => "语言服务器",
+        ExtensionProvides::ContextServers => "MCP 服务器",
+        ExtensionProvides::AgentServers => "Agent 服务器",
+        ExtensionProvides::SlashCommands => "斜杠命令",
+        ExtensionProvides::IndexedDocsProviders => "已索引文档提供商",
+        ExtensionProvides::Snippets => "代码片段",
+        ExtensionProvides::DebugAdapters => "调试适配器",
     }
 }
 
@@ -363,7 +363,7 @@ impl ExtensionsPage {
 
             let query_editor = cx.new(|cx| {
                 let mut input = Editor::single_line(window, cx);
-                input.set_placeholder_text("Search extensions...", window, cx);
+                input.set_placeholder_text("搜索扩展...", window, cx);
                 if let Some(id) = focus_extension_id {
                     input.set_text(format!("id:{id}"), window, cx);
                 }
@@ -667,7 +667,7 @@ impl ExtensionsPage {
                             .child(
                                 Button::new(
                                     SharedString::from(format!("rebuild-{}", extension.id)),
-                                    "Rebuild",
+                                    "重新构建",
                                 )
                                 .color(Color::Accent)
                                 .disabled(matches!(status, ExtensionStatus::Upgrading))
@@ -681,7 +681,7 @@ impl ExtensionsPage {
                                 }),
                             )
                             .child(
-                                Button::new(extension_button_id(&extension.id, ExtensionOperation::Remove), "Uninstall")
+                                Button::new(extension_button_id(&extension.id, ExtensionOperation::Remove), "卸载")
                                     .color(Color::Accent)
                                     .disabled(matches!(status, ExtensionStatus::Removing))
                                     .on_click({
@@ -697,7 +697,7 @@ impl ExtensionsPage {
                                 this.child(
                                     Button::new(
                                         SharedString::from(format!("configure-{}", extension.id)),
-                                        "Configure",
+                                        "配置",
                                     )
                                     .color(Color::Accent)
                                     .disabled(matches!(status, ExtensionStatus::Installing))
@@ -807,7 +807,7 @@ impl ExtensionsPage {
                                 installed_version
                                     .filter(|installed_version| *installed_version != version)
                                     .map(|installed_version| {
-                                        Headline::new(format!("(v{installed_version} installed)",))
+                                        Headline::new(format!("（已安装 v{installed_version}）",))
                                             .size(HeadlineSize::XSmall)
                                     }),
                             )
@@ -858,7 +858,7 @@ impl ExtensionsPage {
                     }))
                     .child(
                         Label::new(format!(
-                            "Downloads: {}",
+                            "下载量：{}",
                             extension.download_count.to_formatted_string(&Locale::en)
                         ))
                         .size(LabelSize::Small),
@@ -954,7 +954,7 @@ impl ExtensionsPage {
         ContextMenu::build(window, cx, |context_menu, window, _| {
             context_menu
                 .entry(
-                    "Install Another Version...",
+                    "安装其他版本...",
                     None,
                     window.handler_for(this, {
                         let extension_id = extension_id.clone();
@@ -963,13 +963,13 @@ impl ExtensionsPage {
                         }
                     }),
                 )
-                .entry("Copy Extension ID", None, {
+                .entry("复制扩展 ID", None, {
                     let extension_id = extension_id.clone();
                     move |_, cx| {
                         cx.write_to_clipboard(ClipboardItem::new_string(extension_id.to_string()));
                     }
                 })
-                .entry("Copy Author Info", None, {
+                .entry("复制作者信息", None, {
                     let authors = authors.clone();
                     move |_, cx| {
                         cx.write_to_clipboard(ClipboardItem::new_string(authors.join(", ")));
@@ -1033,7 +1033,7 @@ impl ExtensionsPage {
             return ExtensionCardButtons {
                 install_or_uninstall: Button::new(
                     extension_button_id(&extension.id, ExtensionOperation::Install),
-                    "Install",
+                    "安装",
                 ),
                 configure: None,
                 upgrade: None,
@@ -1049,7 +1049,7 @@ impl ExtensionsPage {
             ExtensionStatus::NotInstalled => ExtensionCardButtons {
                 install_or_uninstall: Button::new(
                     extension_button_id(&extension.id, ExtensionOperation::Install),
-                    "Install",
+                    "安装",
                 )
                 .style(ButtonStyle::Tinted(ui::TintColor::Accent))
                 .start_icon(
@@ -1072,7 +1072,7 @@ impl ExtensionsPage {
             ExtensionStatus::Installing => ExtensionCardButtons {
                 install_or_uninstall: Button::new(
                     extension_button_id(&extension.id, ExtensionOperation::Install),
-                    "Install",
+                    "安装",
                 )
                 .style(ButtonStyle::Tinted(ui::TintColor::Accent))
                 .start_icon(
@@ -1087,21 +1087,21 @@ impl ExtensionsPage {
             ExtensionStatus::Upgrading => ExtensionCardButtons {
                 install_or_uninstall: Button::new(
                     extension_button_id(&extension.id, ExtensionOperation::Remove),
-                    "Uninstall",
+                    "卸载",
                 )
                 .style(ButtonStyle::OutlinedGhost)
                 .disabled(true),
                 configure: is_configurable.then(|| {
                     Button::new(
                         SharedString::from(format!("configure-{}", extension.id)),
-                        "Configure",
+                        "配置",
                     )
                     .disabled(true)
                 }),
                 upgrade: Some(
                     Button::new(
                         extension_button_id(&extension.id, ExtensionOperation::Upgrade),
-                        "Upgrade",
+                        "升级",
                     )
                     .disabled(true),
                 ),
@@ -1109,7 +1109,7 @@ impl ExtensionsPage {
             ExtensionStatus::Installed(installed_version) => ExtensionCardButtons {
                 install_or_uninstall: Button::new(
                     extension_button_id(&extension.id, ExtensionOperation::Remove),
-                    "Uninstall",
+                    "卸载",
                 )
                 .style(ButtonStyle::OutlinedGhost)
                 .on_click({
@@ -1126,7 +1126,7 @@ impl ExtensionsPage {
                 configure: is_configurable.then(|| {
                     Button::new(
                         SharedString::from(format!("configure-{}", extension.id)),
-                        "Configure",
+                        "配置",
                     )
                     .style(ButtonStyle::OutlinedGhost)
                     .on_click({
@@ -1152,7 +1152,7 @@ impl ExtensionsPage {
                     None
                 } else {
                     Some(
-                        Button::new(extension_button_id(&extension.id, ExtensionOperation::Upgrade), "Upgrade")
+                        Button::new(extension_button_id(&extension.id, ExtensionOperation::Upgrade), "升级")
                           .style(ButtonStyle::Tinted(ui::TintColor::Accent))
                             .when(!is_compatible, |upgrade_button| {
                                 upgrade_button.disabled(true).tooltip({
@@ -1160,7 +1160,7 @@ impl ExtensionsPage {
                                     move |_, cx| {
                                         Tooltip::simple(
                                             format!(
-                                                "v{version} is not compatible with this version of Zed.",
+                                                "v{version} 与当前版本的 Zed 不兼容。",
                                             ),
                                              cx,
                                         )
@@ -1190,14 +1190,14 @@ impl ExtensionsPage {
             ExtensionStatus::Removing => ExtensionCardButtons {
                 install_or_uninstall: Button::new(
                     extension_button_id(&extension.id, ExtensionOperation::Remove),
-                    "Uninstall",
+                    "卸载",
                 )
                 .style(ButtonStyle::OutlinedGhost)
                 .disabled(true),
                 configure: is_configurable.then(|| {
                     Button::new(
                         SharedString::from(format!("configure-{}", extension.id)),
-                        "Configure",
+                        "配置",
                     )
                     .disabled(true)
                 }),
@@ -1349,30 +1349,30 @@ impl ExtensionsPage {
         let has_search = self.search_query(cx).is_some();
 
         let message = if self.is_fetching_extensions {
-            "Loading extensions…"
+            "正在加载扩展…"
         } else if self.fetch_failed {
-            "Failed to load extensions. Please check your connection and try again."
+            "无法加载扩展。请检查网络连接后重试。"
         } else {
             match self.filter {
                 ExtensionFilter::All => {
                     if has_search {
-                        "No extensions that match your search."
+                        "没有符合搜索条件的扩展。"
                     } else {
-                        "No extensions."
+                        "暂无扩展。"
                     }
                 }
                 ExtensionFilter::Installed => {
                     if has_search {
-                        "No installed extensions that match your search."
+                        "没有符合搜索条件的已安装扩展。"
                     } else {
-                        "No installed extensions."
+                        "暂无已安装扩展。"
                     }
                 }
                 ExtensionFilter::NotInstalled => {
                     if has_search {
-                        "No not installed extensions that match your search."
+                        "没有符合搜索条件的未安装扩展。"
                     } else {
-                        "No not installed extensions."
+                        "暂无未安装扩展。"
                     }
                 }
             }
@@ -1591,43 +1591,43 @@ impl ExtensionsPage {
         for feature in &self.upsells {
             let banner = match feature {
                 Feature::AgentClaude => self.render_feature_upsell_banner(
-                    "Claude Agent support is built-in to Zed!".into(),
+                    "Zed 已内置 Claude Agent 支持！".into(),
                     "https://zed.dev/docs/ai/external-agents#claude-agent".into(),
                     false,
                     cx,
                 ),
                 Feature::AgentCodex => self.render_feature_upsell_banner(
-                    "Codex CLI support is built-in to Zed!".into(),
+                    "Zed 已内置 Codex CLI 支持！".into(),
                     "https://zed.dev/docs/ai/external-agents#codex-cli".into(),
                     false,
                     cx,
                 ),
                 Feature::AgentGemini => self.render_feature_upsell_banner(
-                    "Gemini CLI support is built-in to Zed!".into(),
+                    "Zed 已内置 Gemini CLI 支持！".into(),
                     "https://zed.dev/docs/ai/external-agents#gemini-cli".into(),
                     false,
                     cx,
                 ),
                 Feature::ExtensionBasedpyright => self.render_feature_upsell_banner(
-                    "Basedpyright (Python language server) support is built-in to Zed!".into(),
+                    "Zed 已内置 Basedpyright（Python 语言服务器）支持！".into(),
                     "https://zed.dev/docs/languages/python#basedpyright".into(),
                     false,
                     cx,
                 ),
                 Feature::ExtensionRuff => self.render_feature_upsell_banner(
-                    "Ruff (linter for Python) support is built-in to Zed!".into(),
+                    "Zed 已内置 Ruff（Python linter）支持！".into(),
                     "https://zed.dev/docs/languages/python#code-formatting--linting".into(),
                     false,
                     cx,
                 ),
                 Feature::ExtensionTailwind => self.render_feature_upsell_banner(
-                    "Tailwind CSS support is built-in to Zed!".into(),
+                    "Zed 已内置 Tailwind CSS 支持！".into(),
                     "https://zed.dev/docs/languages/tailwindcss".into(),
                     false,
                     cx,
                 ),
                 Feature::ExtensionTy => self.render_feature_upsell_banner(
-                    "Ty (Python language server) support is built-in to Zed!".into(),
+                    "Zed 已内置 Ty（Python 语言服务器）支持！".into(),
                     "https://zed.dev/docs/languages/python".into(),
                     false,
                     cx,
@@ -1640,61 +1640,61 @@ impl ExtensionsPage {
                     cx,
                 ),
                 Feature::LanguageBash => self.render_feature_upsell_banner(
-                    "Shell support is built-in to Zed!".into(),
+                    "Zed 已内置 Shell 支持！".into(),
                     "https://zed.dev/docs/languages/bash".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguageC => self.render_feature_upsell_banner(
-                    "C support is built-in to Zed!".into(),
+                    "Zed 已内置 C 支持！".into(),
                     "https://zed.dev/docs/languages/c".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguageCpp => self.render_feature_upsell_banner(
-                    "C++ support is built-in to Zed!".into(),
+                    "Zed 已内置 C++ 支持！".into(),
                     "https://zed.dev/docs/languages/cpp".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguageGo => self.render_feature_upsell_banner(
-                    "Go support is built-in to Zed!".into(),
+                    "Zed 已内置 Go 支持！".into(),
                     "https://zed.dev/docs/languages/go".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguagePython => self.render_feature_upsell_banner(
-                    "Python support is built-in to Zed!".into(),
+                    "Zed 已内置 Python 支持！".into(),
                     "https://zed.dev/docs/languages/python".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguageReact => self.render_feature_upsell_banner(
-                    "React support is built-in to Zed!".into(),
+                    "Zed 已内置 React 支持！".into(),
                     "https://zed.dev/docs/languages/typescript".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguageRust => self.render_feature_upsell_banner(
-                    "Rust support is built-in to Zed!".into(),
+                    "Zed 已内置 Rust 支持！".into(),
                     "https://zed.dev/docs/languages/rust".into(),
                     false,
                     cx,
                 ),
                 Feature::LanguageTypescript => self.render_feature_upsell_banner(
-                    "Typescript support is built-in to Zed!".into(),
+                    "Zed 已内置 Typescript 支持！".into(),
                     "https://zed.dev/docs/languages/typescript".into(),
                     false,
                     cx,
                 ),
                 Feature::OpenIn => self.render_feature_upsell_banner(
-                    "Zed supports linking to a source line on GitHub and others.".into(),
+                    "Zed 支持链接到 GitHub 等平台上的源码行。".into(),
                     "https://zed.dev/docs/git#git-integrations".into(),
                     false,
                     cx,
                 ),
                 Feature::Vim => self.render_feature_upsell_banner(
-                    "Vim support is built-in to Zed!".into(),
+                    "Zed 已内置 Vim 支持！".into(),
                     "https://zed.dev/docs/vim".into(),
                     true,
                     cx,
@@ -1723,7 +1723,7 @@ impl Render for ExtensionsPage {
                             .w_full()
                             .gap_1p5()
                             .justify_between()
-                            .child(Headline::new("Extensions").size(HeadlineSize::Large))
+                            .child(Headline::new("扩展").size(HeadlineSize::Large))
                             .child(
                                 Button::new("install-dev-extension", "Install Dev Extension")
                                     .style(ButtonStyle::Outlined)
@@ -1753,7 +1753,7 @@ impl Render for ExtensionsPage {
                                                 }),
                                             ),
                                             ToggleButtonSimple::new(
-                                                "Installed",
+                                                "已安装",
                                                 cx.listener(|this, _event, _, cx| {
                                                     this.filter = ExtensionFilter::Installed;
                                                     this.filter_extension_entries(cx);
@@ -1761,7 +1761,7 @@ impl Render for ExtensionsPage {
                                                 }),
                                             ),
                                             ToggleButtonSimple::new(
-                                                "Not Installed",
+                                                "未安装",
                                                 cx.listener(|this, _event, _, cx| {
                                                     this.filter = ExtensionFilter::NotInstalled;
                                                     this.filter_extension_entries(cx);
@@ -1873,7 +1873,7 @@ impl Item for ExtensionsPage {
     type Event = ItemEvent;
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        "Extensions".into()
+        "扩展".into()
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {

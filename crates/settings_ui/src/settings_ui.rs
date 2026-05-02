@@ -668,7 +668,7 @@ pub fn open_settings_editor(
         cx.open_window(
             WindowOptions {
                 titlebar: Some(TitlebarOptions {
-                    title: Some("Zed — Settings".into()),
+                    title: Some("Zed — 设置".into()),
                     appears_transparent: true,
                     traffic_light_position: Some(point(px(12.0), px(12.0))),
                 }),
@@ -994,7 +994,7 @@ impl SettingsPageItem {
                         .child(
                             Button::new(
                                 ("sub-page".into(), sub_page_link.title.clone()),
-                                "Configure",
+                                "配置",
                             )
                             .tab_index(0_isize)
                             .end_icon(
@@ -1205,7 +1205,7 @@ fn render_settings_item(
                             |this, file_set_in| {
                                 this.child(
                                     Label::new(format!(
-                                        "—  Modified in {}",
+                                        "—  修改于 {}",
                                         settings_window
                                             .display_name(&file_set_in)
                                             .expect("File name should exist")
@@ -1426,9 +1426,9 @@ enum SettingsUiFile {
 impl SettingsUiFile {
     fn setting_type(&self) -> &'static str {
         match self {
-            SettingsUiFile::User => "User",
-            SettingsUiFile::Project(_) => "Project",
-            SettingsUiFile::Server(_) => "Server",
+            SettingsUiFile::User => "用户",
+            SettingsUiFile::Project(_) => "项目",
+            SettingsUiFile::Server(_) => "服务器",
         }
     }
 
@@ -1490,7 +1490,7 @@ impl SettingsWindow {
         let current_file = SettingsUiFile::User;
         let search_bar = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Search settings…", window, cx);
+            editor.set_placeholder_text("搜索设置…", window, cx);
             editor
         });
         cx.subscribe(&search_bar, |this, _, event: &EditorEvent, cx| {
@@ -2501,7 +2501,7 @@ impl SettingsWindow {
 
     pub(crate) fn display_name(&self, file: &SettingsUiFile) -> Option<String> {
         match file {
-            SettingsUiFile::User => Some("User".to_string()),
+            SettingsUiFile::User => Some("用户".to_string()),
             SettingsUiFile::Project((worktree_id, path)) => self
                 .worktree_root_dirs
                 .get(&worktree_id)
@@ -2989,7 +2989,7 @@ impl SettingsWindow {
             .gap_1()
             .child(Label::new("No Results"))
             .child(
-                Label::new(format!("No settings match \"{}\"", search_query))
+                Label::new(format!("没有匹配“{}”的设置", search_query))
                     .size(LabelSize::Small)
                     .color(Color::Muted),
             )
@@ -3280,7 +3280,7 @@ impl SettingsWindow {
                 .gap_2()
                 .when_some(parse_error, |this, err| {
                     this.child(banner(
-                        "Failed to load your settings. Some values may be incorrect and changes may be lost.",
+                        "加载设置失败。部分值可能不正确，且更改可能会丢失。",
                         err,
                         &mut self.shown_errors,
                         cx,
@@ -3288,17 +3288,17 @@ impl SettingsWindow {
                 })
                 .map(|this| match &error.migration_status {
                     settings::MigrationStatus::Succeeded => this.child(banner(
-                        "Your settings are out of date, and need to be updated.",
+                        "你的设置已过期，需要更新。",
                         match &self.current_file {
-                            SettingsUiFile::User => "They can be automatically migrated to the latest version.",
-                            SettingsUiFile::Server(_) | SettingsUiFile::Project(_)  => "They must be manually migrated to the latest version."
+                            SettingsUiFile::User => "它们可以自动迁移到最新版本。",
+                            SettingsUiFile::Server(_) | SettingsUiFile::Project(_)  => "它们必须手动迁移到最新版本。"
                         }.to_string(),
                         &mut self.shown_errors,
                         cx,
                     )),
                     settings::MigrationStatus::Failed { error: err } if !parse_failed => this
                         .child(banner(
-                            "Your settings file is out of date, automatic migration failed",
+                            "你的设置文件已过期，自动迁移失败",
                             err.clone(),
                             &mut self.shown_errors,
                             cx,
@@ -4396,7 +4396,7 @@ pub mod test {
         pub fn test(window: &mut Window, cx: &mut Context<Self>) -> Self {
             let search_bar = cx.new(|cx| Editor::single_line(window, cx));
             let dummy_page = SettingsPage {
-                title: "Test",
+                title: "测试",
                 items: Box::new([]),
             };
             Self {
@@ -4672,7 +4672,7 @@ pub mod test {
         v Project
         - Project Settings*
         ",
-        toggle_page: "Project",
+        toggle_page: "项目",
         after: r"
         > General
         > Project*
@@ -4691,7 +4691,7 @@ pub mod test {
         - General
         > Appearance & Behavior
         ",
-        toggle_page: "Project",
+        toggle_page: "项目",
         after: r"
         v General Page
         - General

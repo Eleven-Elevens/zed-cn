@@ -305,7 +305,7 @@ impl ProjectDiff {
         window.spawn(cx, async move |cx| {
             let main_branch = main_branch
                 .await??
-                .context("Could not determine default branch")?;
+                .context("无法确定默认分支")?;
 
             let branch_diff = cx.new_window_entity(|window, cx| {
                 branch_diff::BranchDiff::new(
@@ -955,8 +955,8 @@ impl Item for ProjectDiff {
 
     fn tab_tooltip_text(&self, cx: &App) -> Option<SharedString> {
         match self.diff_base(cx) {
-            DiffBase::Head => Some("Project Diff".into()),
-            DiffBase::Merge { .. } => Some("Branch Diff".into()),
+            DiffBase::Head => Some("项目差异".into()),
+            DiffBase::Merge { .. } => Some("分支差异".into()),
         }
     }
 
@@ -972,8 +972,8 @@ impl Item for ProjectDiff {
 
     fn tab_content_text(&self, _detail: usize, cx: &App) -> SharedString {
         match self.branch_diff.read(cx).diff_base() {
-            DiffBase::Head => "Uncommitted Changes".into(),
-            DiffBase::Merge { base_ref } => format!("Changes since {}", base_ref).into(),
+            DiffBase::Head => "未提交的更改".into(),
+            DiffBase::Merge { base_ref } => format!("自 {} 以来的更改", base_ref).into(),
         }
     }
 
@@ -1570,7 +1570,7 @@ impl Render for ProjectDiffToolbar {
 fn render_send_review_to_agent_button(review_count: usize, focus_handle: &FocusHandle) -> Button {
     Button::new(
         "send-review",
-        format!("Send Review to Agent ({})", review_count),
+        format!("发送审查给 Agent（{}）", review_count),
     )
     .start_icon(
         Icon::new(IconName::ZedAssistant)
@@ -1578,7 +1578,7 @@ fn render_send_review_to_agent_button(review_count: usize, focus_handle: &FocusH
             .color(Color::Muted),
     )
     .tooltip(Tooltip::for_action_title_in(
-        "Send all review comments to the Agent panel",
+        "将所有审查评论发送到 Agent 面板",
         &SendReviewToAgent,
         focus_handle,
     ))

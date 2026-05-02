@@ -176,7 +176,7 @@ impl Render for ProfileSelector {
 
         let selected_profile = profile
             .map(|profile| profile.name.clone())
-            .unwrap_or_else(|| "Unknown".into());
+            .unwrap_or_else(|| "未知".into());
 
         let icon = if self.picker_handle.is_deployed() {
             IconName::ChevronUp
@@ -337,9 +337,9 @@ impl ProfilePickerDelegate {
 
     fn documentation(candidate: &ProfileCandidate) -> Option<&'static str> {
         match candidate.id.as_str() {
-            builtin_profiles::WRITE => Some("Get help to write anything."),
-            builtin_profiles::ASK => Some("Chat about your codebase."),
-            builtin_profiles::MINIMAL => Some("Chat about anything with no tools."),
+            builtin_profiles::WRITE => Some("获取写作帮助。"),
+            builtin_profiles::ASK => Some("围绕你的代码库聊天。"),
+            builtin_profiles::MINIMAL => Some("不使用工具，随意聊天。"),
             _ => None,
         }
     }
@@ -351,7 +351,7 @@ impl ProfilePickerDelegate {
         for (idx, candidate) in candidates.iter().enumerate() {
             if !candidate.is_builtin && !inserted_custom_header {
                 if !entries.is_empty() {
-                    entries.push(ProfilePickerEntry::Header("Custom Profiles".into()));
+                    entries.push(ProfilePickerEntry::Header("自定义配置档案".into()));
                 }
                 inserted_custom_header = true;
             }
@@ -426,14 +426,14 @@ impl PickerDelegate for ProfilePickerDelegate {
     type ListItem = AnyElement;
 
     fn placeholder_text(&self, _: &mut Window, _: &mut App) -> Arc<str> {
-        "Search profiles…".into()
+        "搜索配置档案…".into()
     }
 
     fn no_matches_text(&self, _window: &mut Window, _cx: &mut App) -> Option<SharedString> {
         let text = if self.candidates.is_empty() {
-            "No profiles.".into()
+            "没有配置档案。".into()
         } else {
-            "No profiles match your search.".into()
+            "没有匹配搜索的配置档案。".into()
         };
         Some(text)
     }
@@ -714,7 +714,7 @@ mod tests {
         )));
         assert!(entries.iter().any(|entry| matches!(
             entry,
-            ProfilePickerEntry::Header(label) if label.as_ref() == "Custom Profiles"
+            ProfilePickerEntry::Header(label) if label.as_ref() == "自定义配置档案"
         )));
     }
 

@@ -60,9 +60,9 @@ impl AgentTool for RestoreFileFromDiskTool {
         _cx: &mut App,
     ) -> SharedString {
         match input {
-            Ok(input) if input.paths.len() == 1 => "Restore file from disk".into(),
-            Ok(input) => format!("Restore {} files from disk", input.paths.len()).into(),
-            Err(_) => "Restore files from disk".into(),
+            Ok(input) if input.paths.len() == 1 => "从磁盘恢复文件".into(),
+            Ok(input) => format!("从磁盘恢复 {} 个文件", input.paths.len()).into(),
+            Err(_) => "从磁盘恢复文件".into(),
         }
     }
 
@@ -134,7 +134,7 @@ impl AgentTool for RestoreFileFromDiskTool {
             if !confirmation_paths.is_empty() {
                 let title = if confirmation_paths.len() == 1 {
                     format!(
-                        "Restore {} from disk",
+                        "从磁盘恢复 {}",
                         MarkdownInlineCode(&confirmation_paths[0])
                     )
                 } else {
@@ -145,12 +145,12 @@ impl AgentTool for RestoreFileFromDiskTool {
                         .collect();
                     if confirmation_paths.len() > 3 {
                         format!(
-                            "Restore {}, and {} more from disk",
+                            "从磁盘恢复 {} 以及另外 {} 项",
                             paths.join(", "),
                             confirmation_paths.len() - 3
                         )
                     } else {
-                        format!("Restore {} from disk", paths.join(", "))
+                        format!("从磁盘恢复 {}", paths.join(", "))
                     }
                 };
 
@@ -279,14 +279,14 @@ impl AgentTool for RestoreFileFromDiskTool {
                 }
             }
             if !open_errors.is_empty() {
-                lines.push(format!("Open failed ({}):", open_errors.len()));
+                lines.push(format!("打开失败（{}）：", open_errors.len()));
                 for (path, error) in &open_errors {
                     lines.push(format!("- {}: {}", path.display(), error));
                 }
             }
             if !dirty_check_errors.is_empty() {
                 lines.push(format!(
-                    "Dirty check failed ({}):",
+                    "脏检查失败（{}）：",
                     dirty_check_errors.len()
                 ));
                 for (path, error) in &dirty_check_errors {

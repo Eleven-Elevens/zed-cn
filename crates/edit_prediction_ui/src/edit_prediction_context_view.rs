@@ -217,7 +217,7 @@ impl EditPredictionContextView {
                 let blocks = excerpt_anchors_with_orders
                     .into_iter()
                     .map(|(anchor, order)| {
-                        let label = SharedString::from(format!("order: {order}"));
+                        let label = SharedString::from(format!("顺序：{order}"));
                         BlockProperties {
                             placement: BlockPlacement::Above(anchor),
                             height: Some(1),
@@ -369,7 +369,7 @@ impl Item for EditPredictionContextView {
     type Event = ();
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        "Edit Prediction Context".into()
+        "编辑预测上下文".into()
     }
 
     fn buffer_kind(&self, _cx: &App) -> workspace::item::ItemBufferKind {

@@ -3268,9 +3268,9 @@ impl Workspace {
                     let answer = cx.update(|window, cx| {
                         window.prompt(
                             PromptLevel::Warning,
-                            "Do you want to leave the current call?",
+                            "要离开当前通话吗？",
                             None,
-                            &["Close window and hang up", "Cancel"],
+                            &["关闭窗口并挂断", "取消"],
                             cx,
                         )
                     })?;
@@ -3489,9 +3489,9 @@ impl Workspace {
                         );
                         window.prompt(
                             PromptLevel::Warning,
-                            "Do you want to save all changes in the following files?",
+                            "要保存以下文件中的所有更改吗？",
                             Some(&detail),
-                            &["Save all", "Discard all", "Cancel"],
+                            &["全部保存", "全部放弃", "取消"],
                             cx,
                         )
                     })?;
@@ -5849,7 +5849,7 @@ impl Workspace {
             if let Some(project_id) = other_project_id {
                 let app_state = self.app_state.clone();
                 crate::join_in_room_project(project_id, remote_participant.user.id, app_state, cx)
-                    .detach_and_prompt_err("Failed to join project", window, cx, |error, _, _| {
+                    .detach_and_prompt_err("加入项目失败", window, cx, |error, _, _| {
                         Some(format!("{error:#}"))
                     });
             }
@@ -7203,22 +7203,22 @@ impl Workspace {
             .on_action(cx.listener(|workspace, action: &Save, window, cx| {
                 workspace
                     .save_active_item(action.save_intent.unwrap_or(SaveIntent::Save), window, cx)
-                    .detach_and_prompt_err("Failed to save", window, cx, |_, _, _| None);
+                    .detach_and_prompt_err("保存失败", window, cx, |_, _, _| None);
             }))
             .on_action(cx.listener(|workspace, _: &FormatAndSave, window, cx| {
                 workspace
                     .save_active_item(SaveIntent::FormatAndSave, window, cx)
-                    .detach_and_prompt_err("Failed to save", window, cx, |_, _, _| None);
+                    .detach_and_prompt_err("保存失败", window, cx, |_, _, _| None);
             }))
             .on_action(cx.listener(|workspace, _: &SaveWithoutFormat, window, cx| {
                 workspace
                     .save_active_item(SaveIntent::SaveWithoutFormat, window, cx)
-                    .detach_and_prompt_err("Failed to save", window, cx, |_, _, _| None);
+                    .detach_and_prompt_err("保存失败", window, cx, |_, _, _| None);
             }))
             .on_action(cx.listener(|workspace, _: &SaveAs, window, cx| {
                 workspace
                     .save_active_item(SaveIntent::SaveAs, window, cx)
-                    .detach_and_prompt_err("Failed to save", window, cx, |_, _, _| None);
+                    .detach_and_prompt_err("保存失败", window, cx, |_, _, _| None);
             }))
             .on_action(
                 cx.listener(|workspace, _: &ActivatePreviousPane, window, cx| {
@@ -8254,7 +8254,7 @@ fn notify_if_database_failed(window: WindowHandle<MultiWorkspace>, cx: &mut Asyn
                         cx,
                         |cx| {
                             cx.new(|cx| {
-                                MessageNotification::new("Failed to load the database file.", cx)
+                                MessageNotification::new("加载数据库文件失败。", cx)
                                     .primary_message("File an Issue")
                                     .primary_icon(IconName::Plus)
                                     .primary_on_click(|window, cx| {
@@ -9195,9 +9195,9 @@ async fn join_channel_internal(
                 .update(cx, |_, window, cx| {
                     window.prompt(
                         PromptLevel::Warning,
-                        "Do you want to switch channels?",
-                        Some("Leaving this call will unshare your current project."),
-                        &["Yes, Join Channel", "Cancel"],
+                        "要切换频道吗？",
+                        Some("离开此通话会取消共享当前项目。"),
+                        &["是，加入频道", "取消"],
                         cx,
                     )
                 })?
@@ -9369,7 +9369,7 @@ pub fn join_channel(
                             )
                             .into(),
                             ErrorCode::NoSuchChannel => concat!(
-                                "No matching channel was found. ",
+                                "未找到匹配的频道。",
                                 "Please check the link and try again."
                             )
                             .into(),
@@ -9385,9 +9385,9 @@ pub fn join_channel(
                         };
                         window.prompt(
                             PromptLevel::Critical,
-                            "Failed to join channel",
+                            "加入频道失败",
                             Some(&detail),
-                            &["Ok"],
+                            &["确定"],
                             cx,
                         )
                     })?
@@ -10366,9 +10366,9 @@ pub fn reload(cx: &mut App) {
             .update(cx, |_, window, cx| {
                 window.prompt(
                     PromptLevel::Info,
-                    "Are you sure you want to restart?",
+                    "确定要重启吗？",
                     None,
-                    &["Restart", "Cancel"],
+                    &["重启", "取消"],
                     cx,
                 )
             })
@@ -11270,7 +11270,7 @@ mod tests {
             w.prepare_to_close(CloseIntent::CloseWindow, window, cx)
         });
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Cancel"); // cancel save all
+        cx.simulate_prompt_answer("取消"); // cancel save all
         cx.executor().run_until_parked();
         assert!(!cx.has_pending_prompt());
         assert!(!task.await.unwrap());
@@ -11353,7 +11353,7 @@ mod tests {
             .unwrap();
 
         // User cancels the save prompt from workspace B
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.run_until_parked();
 
         // Window should still exist because workspace B's close was cancelled
@@ -11425,7 +11425,7 @@ mod tests {
             .unwrap();
 
         // Cancel the prompt — user stays on workspace B.
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.run_until_parked();
         let removed = remove_task.await.unwrap();
         assert!(!removed, "removal should have been cancelled");
@@ -11606,7 +11606,7 @@ mod tests {
         cx.executor().run_until_parked();
 
         assert!(cx.has_pending_prompt());
-        cx.simulate_prompt_answer("Save all");
+        cx.simulate_prompt_answer("全部保存");
 
         cx.executor().run_until_parked();
 
@@ -11763,7 +11763,7 @@ mod tests {
 
         // With best-effort close, cancelling item 1 keeps it open but items 4
         // and (3,4) still close since their entries exist in left pane.
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         close.await;
 
         right_pane.read_with(cx, |pane, _| {
@@ -11797,7 +11797,7 @@ mod tests {
         // But we can only save whole items, so saving (2,3) for entry 3 includes 2.
         // assert!(!details.contains("2.txt"));
 
-        cx.simulate_prompt_answer("Save all");
+        cx.simulate_prompt_answer("全部保存");
         cx.executor().run_until_parked();
         close.await;
 

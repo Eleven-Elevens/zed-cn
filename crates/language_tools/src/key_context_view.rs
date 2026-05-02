@@ -256,14 +256,14 @@ impl Render for KeyContextView {
             .when_some(self.pending_keystrokes.as_ref(), |el, keystrokes| {
                 el.child(
                     Label::new(format!(
-                        "Waiting for more input: {}",
+                        "等待更多输入：{}",
                         keystrokes.iter().map(|k| k.unparse()).join(" ")
                     ))
                     .ml(px(12.)),
                 )
             })
             .when_some(self.last_keystrokes.as_ref(), |el, keystrokes| {
-                el.child(Label::new(format!("Typed: {}", keystrokes)).ml_4())
+                el.child(Label::new(format!("已输入：{}", keystrokes)).ml_4())
                     .children(
                         self.last_possibilities
                             .iter()

@@ -265,23 +265,23 @@ impl Render for QuickActionBar {
                     let focus = focus.clone();
                     let menu = ContextMenu::build(window, cx, move |menu, _, _| {
                         menu.context(focus.clone())
-                            .action("Select All", Box::new(SelectAll))
+                            .action("全选", Box::new(SelectAll))
                             .action(
-                                "Select Next Occurrence",
+                                "选择下一个出现项",
                                 Box::new(SelectNext {
                                     replace_newest: false,
                                 }),
                             )
-                            .action("Expand Selection", Box::new(SelectLargerSyntaxNode))
-                            .action("Shrink Selection", Box::new(SelectSmallerSyntaxNode))
+                            .action("扩展选择", Box::new(SelectLargerSyntaxNode))
+                            .action("收缩选择", Box::new(SelectSmallerSyntaxNode))
                             .action(
-                                "Add Cursor Above",
+                                "在上方添加光标",
                                 Box::new(AddSelectionAbove {
                                     skip_soft_wrap: true,
                                 }),
                             )
                             .action(
-                                "Add Cursor Below",
+                                "在下方添加光标",
                                 Box::new(AddSelectionBelow {
                                     skip_soft_wrap: true,
                                 }),
@@ -289,30 +289,30 @@ impl Render for QuickActionBar {
                             .when(!disable_ai, |this| {
                                 this.separator().action_disabled_when(
                                     !has_selection,
-                                    "Add to Agent Thread",
+                                    "添加到 Agent 线程",
                                     Box::new(AddSelectionToThread),
                                 )
                             })
                             .separator()
-                            .action("Go to Symbol", Box::new(ToggleOutline))
-                            .action("Go to Line/Column", Box::new(ToggleGoToLine))
+                            .action("转到符号", Box::new(ToggleOutline))
+                            .action("转到行/列", Box::new(ToggleGoToLine))
                             .separator()
-                            .action("Next Problem", Box::new(GoToDiagnostic::default()))
+                            .action("下一个问题", Box::new(GoToDiagnostic::default()))
                             .action(
-                                "Previous Problem",
+                                "上一个问题",
                                 Box::new(GoToPreviousDiagnostic::default()),
                             )
                             .separator()
-                            .action_disabled_when(!has_diff_hunks, "Next Hunk", Box::new(GoToHunk))
+                            .action_disabled_when(!has_diff_hunks, "下一个差异块", Box::new(GoToHunk))
                             .action_disabled_when(
                                 !has_diff_hunks,
-                                "Previous Hunk",
+                                "上一个差异块",
                                 Box::new(GoToPreviousHunk),
                             )
                             .separator()
-                            .action("Move Line Up", Box::new(MoveLineUp))
-                            .action("Move Line Down", Box::new(MoveLineDown))
-                            .action("Duplicate Selection", Box::new(DuplicateLineDown))
+                            .action("上移行", Box::new(MoveLineUp))
+                            .action("下移行", Box::new(MoveLineDown))
+                            .action("复制选区", Box::new(DuplicateLineDown))
                     });
                     Some(menu)
                 })
@@ -342,7 +342,7 @@ impl Render for QuickActionBar {
 
                             if supports_inlay_hints {
                                 menu = menu.toggleable_entry(
-                                    "Inlay Hints",
+                                    "嵌入提示",
                                     inlay_hints_enabled,
                                     IconPosition::Start,
                                     Some(editor::actions::ToggleInlayHints.boxed_clone()),
@@ -363,7 +363,7 @@ impl Render for QuickActionBar {
                                 );
 
                                 menu = menu.toggleable_entry(
-                                    "Inline Values",
+                                    "行内值",
                                     inline_values_enabled,
                                     IconPosition::Start,
                                     Some(editor::actions::ToggleInlineValues.boxed_clone()),
@@ -386,7 +386,7 @@ impl Render for QuickActionBar {
 
                             if supports_semantic_tokens {
                                 menu = menu.toggleable_entry(
-                                    "Semantic Highlights",
+                                    "语义高亮",
                                     semantic_highlights_enabled,
                                     IconPosition::Start,
                                     Some(editor::actions::ToggleSemanticHighlights.boxed_clone()),
@@ -409,7 +409,7 @@ impl Render for QuickActionBar {
 
                             if supports_code_lens {
                                 menu = menu.toggleable_entry(
-                                    "Code Lens",
+                                    "代码透镜",
                                     code_lens_enabled,
                                     IconPosition::Start,
                                     Some(editor::actions::ToggleCodeLens.boxed_clone()),
@@ -431,7 +431,7 @@ impl Render for QuickActionBar {
                             }
 
                             if supports_minimap {
-                                menu = menu.toggleable_entry("Minimap", minimap_enabled, IconPosition::Start, Some(editor::actions::ToggleMinimap.boxed_clone()), {
+                                menu = menu.toggleable_entry("迷你地图", minimap_enabled, IconPosition::Start, Some(editor::actions::ToggleMinimap.boxed_clone()), {
                                     let editor = editor.clone();
                                     move |window, cx| {
                                         editor
@@ -448,7 +448,7 @@ impl Render for QuickActionBar {
                             }
 
                             if has_edit_prediction_provider {
-                                let mut edit_prediction_entry = ContextMenuEntry::new("Edit Predictions")
+                                let mut edit_prediction_entry = ContextMenuEntry::new("编辑预测")
                                     .toggleable(IconPosition::Start, edit_predictions_enabled_at_cursor && show_edit_predictions)
                                     .disabled(!edit_predictions_enabled_at_cursor)
                                     .action(
@@ -480,7 +480,7 @@ impl Render for QuickActionBar {
 
                             if is_full {
                                 menu = menu.toggleable_entry(
-                                    "Diagnostics",
+                                    "诊断",
                                     diagnostics_enabled,
                                     IconPosition::Start,
                                     Some(ToggleDiagnostics.boxed_clone()),
@@ -501,7 +501,7 @@ impl Render for QuickActionBar {
                                 );
 
                                 if supports_inline_diagnostics {
-                                    let mut inline_diagnostics_item = ContextMenuEntry::new("Inline Diagnostics")
+                                    let mut inline_diagnostics_item = ContextMenuEntry::new("行内诊断")
                                         .toggleable(IconPosition::Start, diagnostics_enabled && inline_diagnostics_enabled)
                                         .action(ToggleInlineDiagnostics.boxed_clone())
                                         .handler({
@@ -528,7 +528,7 @@ impl Render for QuickActionBar {
                             }
 
                             menu = menu.toggleable_entry(
-                                "Line Numbers",
+                                "行号",
                                 show_line_numbers,
                                 IconPosition::Start,
                                 Some(editor::actions::ToggleLineNumbers.boxed_clone()),
@@ -549,7 +549,7 @@ impl Render for QuickActionBar {
                             );
 
                             menu = menu.toggleable_entry(
-                                "Selection Menu",
+                                "选区菜单",
                                 selection_menu_enabled,
                                 IconPosition::Start,
                                 Some(editor::actions::ToggleSelectionMenu.boxed_clone()),
@@ -570,7 +570,7 @@ impl Render for QuickActionBar {
                             );
 
                             menu = menu.toggleable_entry(
-                                "Auto Signature Help",
+                                "自动签名帮助",
                                 auto_signature_help_enabled,
                                 IconPosition::Start,
                                 Some(editor::actions::ToggleAutoSignatureHelp.boxed_clone()),
@@ -593,7 +593,7 @@ impl Render for QuickActionBar {
                             menu = menu.separator();
 
                             menu = menu.toggleable_entry(
-                                "Inline Git Blame",
+                                "行内 Git 追溯",
                                 git_blame_inline_enabled,
                                 IconPosition::Start,
                                 Some(editor::actions::ToggleGitBlameInline.boxed_clone()),
@@ -614,7 +614,7 @@ impl Render for QuickActionBar {
                             );
 
                             menu = menu.toggleable_entry(
-                                "Column Git Blame",
+                                "列式 Git 追溯",
                                 show_git_blame_gutter,
                                 IconPosition::Start,
                                 Some(git::Blame.boxed_clone()),
@@ -637,7 +637,7 @@ impl Render for QuickActionBar {
                             menu = menu.separator();
 
                             menu = menu.toggleable_entry(
-                                "Vim Mode",
+                                "Vim 模式",
                                 vim_mode_enabled,
                                 IconPosition::Start,
                                 None,
@@ -651,7 +651,7 @@ impl Render for QuickActionBar {
                                 },
                             );
                             menu = menu.toggleable_entry(
-                                "Helix Mode",
+                                "Helix 模式",
                                 helix_mode_enabled,
                                 IconPosition::Start,
                                 None,

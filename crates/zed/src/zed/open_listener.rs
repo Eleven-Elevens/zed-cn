@@ -812,7 +812,7 @@ async fn open_local_workspace(
         Err(error) => {
             responses
                 .send(CliResponse::Stderr {
-                    message: format!("error opening {paths_with_position:?}: {error}"),
+                    message: format!("打开 {paths_with_position:?} 时出错：{error}"),
                 })
                 .log_err();
             return true;

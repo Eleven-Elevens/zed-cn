@@ -74,8 +74,8 @@ enum RatePredictionView {
 impl RatePredictionView {
     pub fn name(&self) -> &'static str {
         match self {
-            Self::SuggestedEdits => "Suggested Edits",
-            Self::RawInput => "Recorded Events & Input",
+            Self::SuggestedEdits => "建议编辑",
+            Self::RawInput => "已记录事件和输入",
         }
     }
 }
@@ -446,7 +446,7 @@ impl RatePredictionsModal {
                     editor.set_show_wrap_guides(false, cx);
                     editor.set_show_indent_guides(false, cx);
                     editor.set_show_edit_predictions(Some(false), window, cx);
-                    editor.set_placeholder_text("Add your feedback…", window, cx);
+                    editor.set_placeholder_text("添加反馈…", window, cx);
                     editor.set_completion_provider(Some(Rc::new(FeedbackCompletionProvider)));
                     if focus {
                         cx.focus_self(window);
@@ -685,7 +685,7 @@ impl RatePredictionsModal {
                             .child(
                                 DropdownMenu::new(
                                         "failure-mode-dropdown",
-                                        "Issue",
+                                        "问题",
                                         failure_mode_menu,
                                     )
                                     .handle(self.failure_mode_menu_handle.clone())
@@ -702,10 +702,9 @@ impl RatePredictionsModal {
                                     )
                                     .child(
                                         div().flex_wrap().child(
-                                            Label::new(concat!(
-                                                "Explain why this completion is good or bad. ",
-                                                "If it's negative, describe what you expected instead."
-                                            ))
+                                            Label::new(
+                                                "说明这个补全好在哪里或差在哪里。如果是负面反馈，请说明你期望的结果。",
+                                            )
                                             .size(LabelSize::Small)
                                             .color(Color::Muted),
                                         ),
@@ -927,11 +926,9 @@ impl Render for RatePredictionsModal {
                                         div()
                                             .p_2()
                                             .child(
-                                                Label::new(concat!(
-                                                    "No completions yet. ",
-                                                    "Use the editor to generate some, ",
-                                                    "and make sure to rate them!"
-                                                ))
+                                                Label::new(
+                                                    "还没有补全。请在编辑器中生成一些补全，并记得评分！",
+                                                )
                                                 .color(Color::Muted),
                                             )
                                             .into_any_element(),

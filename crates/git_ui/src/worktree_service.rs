@@ -231,7 +231,7 @@ pub async fn await_and_rollback_on_failure(
             }
         }
     }
-    let mut error_message = format!("Failed to create worktree: {err}");
+    let mut error_message = format!("创建工作树失败：{err}");
     if !rollback_failures.is_empty() {
         error_message.push_str("\n\nFailed to clean up: ");
         error_message.push_str(&rollback_failures.join(", "));
@@ -325,7 +325,7 @@ pub fn handle_create_worktree(
         show_error_toast(
             cx.entity(),
             "worktree create",
-            anyhow!("No git repositories found in the project"),
+            anyhow!("项目中未找到 Git 仓库"),
             cx,
         );
         return;
@@ -696,8 +696,8 @@ async fn open_worktree_workspace(
                     workspace.show_toast(
                         workspace::Toast::new(
                             toast_id,
-                            "Some project folders are not git repositories. \
-                             They were included as-is without creating a worktree.",
+                            "部分项目文件夹不是 Git 仓库。\
+                             它们已按原样包含，不会创建 worktree。",
                         ),
                         cx,
                     );
