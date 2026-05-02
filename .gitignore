@@ -39,6 +39,14 @@ Packages
 xcuserdata/
 crates/docs_preprocessor/actions.json
 
+# Local Windows packaging assets for zh-CN builds
+/AGS_SDK-6.3.0/
+/AGS_SDK_v6.3.0.zip
+/Microsoft.Windows.Console.ConPTY.1.23.251216003.nupkg
+/Microsoft.Windows.Console.ConPTY.1.23.251216003.zip
+/conpty/
+/inno/
+
 # Don't commit any secrets to the repo.
 .env
 .env.secret.toml
