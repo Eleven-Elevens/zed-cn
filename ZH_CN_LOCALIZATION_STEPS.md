@@ -1,16 +1,16 @@
 # Zed 简体中文本地化步骤
 
-本文档记录 `H:\zedCn` 当前采用的本地汉化流程。目标是把可见 UI 文案集中维护为 overlay，避免无范围的全仓库替换，同时保留语言名、品牌名、协议字段、路径、命令和代码示例。
+本文档记录 `K:\Project\zed-cn` 当前采用的本地汉化流程。目标是把可见 UI 文案集中维护为 overlay，避免无范围的全仓库替换，同时保留语言名、品牌名、协议字段、路径、命令和代码示例。
 
 ## 当前状态
 
 - 当前 overlay 位于 `zh-cn-overlay/`。
-- `zh-cn-overlay/translations.json` 当前包含 4141 条翻译项。
+- `zh-cn-overlay/translations.json` 当前包含 4145 条翻译项。
 - 已覆盖菜单栏、Settings、Agent / LLM Providers、Project Panel、Search、Git UI、Editor / Diagnostics / Quick Action Bar、Onboarding、Welcome、Recent Projects、Workspace 通知、Extensions、REPL / Jupyter、Copilot 登录说明、组件 preview 示例标题/说明等。
 - `zh-cn-overlay/scan-untranslated.ps1` 已修正大小写误判，并扩展到 `ListBulletItem`、Settings 数据字段、`action_disabled_when`、`single_line_input`、`InputField::new`、`SharedString`、通知、安装器和 DAP adapter schema description 等相关 UI 构造；当前扫描结果为 0 个候选，报告写入 `zh-cn-overlay/untranslated-report.json`。
 - 最近一轮已补齐截图中暴露的 Agent 欢迎卡片、Settings General 首屏、设置下拉选项、编辑器/Agent/项目面板/终端右键菜单、最近项目占位、Onboarding 标签标题、断点/书签提示、更新提示、通知和安装器文案，并继续覆盖 Settings 数据表、组件预览搜索、协作通话质量、Agent 工具消息、Diagnostics 标签、Keybinding context、调试器 schema 说明、自动更新状态、诊断工具栏、计划 chip 和编辑预测数据共享说明等候选。
 - `apply-zh-cn.ps1` 支持幂等套用，并支持 `previous_to`，可把早期已应用的旧译文迁移成更好的译文。
-- Rust / Visual Studio Build Tools / Inno Setup 已安装到 `D:\zed-build-tools`。`zed.exe`、`remote_server.exe` 和完整 Windows 安装包均已成功编出；安装包路径为 `H:\zedCn\target\Zed-x86_64.exe`。
+- Rust / Visual Studio Build Tools / Inno Setup 已安装到 `D:\zed-build-tools`。`zed.exe`、`remote_server.exe` 和完整 Windows 安装包均已成功编出；安装包路径为 `K:\Project\zed-cn\target\Zed-x86_64.exe`。
 - 当前仓库就是汉化仓库，直接在当前分支维护中文改动。
 - `origin` 指向你的汉化仓库，`upstream` 指向官方 Zed 仓库；后续只需要从 `upstream` 同步官方最新代码。
 
@@ -30,7 +30,7 @@ zh-cn-overlay/
 ## 第 1 步：扫描候选
 
 ```powershell
-cd H:\zedCn
+cd K:\Project\zed-cn
 powershell -NoProfile -ExecutionPolicy Bypass -File .\zh-cn-overlay\scan-untranslated.ps1 .
 ```
 
@@ -81,7 +81,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\zh-cn-overlay\apply-zh-cn.
 
 ```text
 Localization applied.
-  entries: 4141
+  entries: 4145
   replacements: 0
   already applied: 2398
   files changed: 0
@@ -103,7 +103,7 @@ node -e "const fs=require('fs'); const t=JSON.parse(fs.readFileSync('zh-cn-overl
 当前应满足：
 
 ```text
-entries: 4141
+entries: 4145
 duplicate_ids: 0
 candidates: 0
 ```
@@ -126,7 +126,7 @@ candidates: 0
 当前仓库远端约定：
 
 ```text
-origin   https://github.com/Eleven-Elevens/zedCn.git
+origin   https://github.com/Eleven-Elevens/zed-cn.git
 upstream https://github.com/zed-industries/zed.git
 ```
 
@@ -168,32 +168,32 @@ git push origin dev
 当前机器的构建工具安装在 `D:\zed-build-tools`。已完成完整 Windows 打包，并已编出主程序：
 
 ```powershell
-H:\zedCn\target\x86_64-pc-windows-msvc\release\zed.exe
+K:\Project\zed-cn\target\x86_64-pc-windows-msvc\release\zed.exe
 ```
 
 完整安装包和远端服务包：
 
 ```text
-H:\zedCn\target\Zed-x86_64.exe
-H:\zedCn\target\zed-remote-server-windows-x86_64.zip
+K:\Project\zed-cn\target\Zed-x86_64.exe
+K:\Project\zed-cn\target\zed-remote-server-windows-x86_64.zip
 ```
 
 最终打包相关日志：
 
 ```text
-H:\zedCn\target\bundle-full-zh-cn-rerun9.log
-H:\zedCn\target\remote-server-final-retry.log
-H:\zedCn\target\zed-incremental-deep-scan-final-rerun.log
-H:\zedCn\target\inno-final-zh-cn-deep-scan-rerun.log
+K:\Project\zed-cn\target\bundle-full-zh-cn-rerun9.log
+K:\Project\zed-cn\target\remote-server-final-retry.log
+K:\Project\zed-cn\target\zed-incremental-deep-scan-final-rerun.log
+K:\Project\zed-cn\target\inno-final-zh-cn-deep-scan-rerun.log
 ```
 
 本次产物信息：
 
 ```text
-H:\zedCn\target\Zed-x86_64.exe                                    81,812,408 bytes  2026-05-02 19:16:58
-H:\zedCn\target\zed-remote-server-windows-x86_64.zip              33,791,929 bytes  2026-05-01 11:45:04
-H:\zedCn\target\x86_64-pc-windows-msvc\release\zed.exe           364,347,392 bytes  2026-05-02 19:14:14
-H:\zedCn\target\x86_64-pc-windows-msvc\release\remote_server.exe  99,096,064 bytes  2026-05-01 11:44:58
+K:\Project\zed-cn\target\Zed-x86_64.exe                           以当前 target 目录中的最新构建产物为准
+K:\Project\zed-cn\target\zed-remote-server-windows-x86_64.zip     以当前 target 目录中的最新构建产物为准
+K:\Project\zed-cn\target\x86_64-pc-windows-msvc\release\zed.exe   以当前 target 目录中的最新构建产物为准
+K:\Project\zed-cn\target\x86_64-pc-windows-msvc\release\remote_server.exe 以当前 target 目录中的最新构建产物为准
 ```
 
 说明：`bundle-full-zh-cn-rerun9.log` 中主程序 release 构建已完成，随后 `remote_server` 构建遇到一次 `STATUS_HEAP_CORRUPTION` 编译器/内存崩溃；之后已通过 `remote-server-final-retry.log` 定向重试成功。最后一轮深度补扫新增自动更新状态、诊断工具栏、计划 chip、DAP schema label 和编辑预测数据共享说明等文案后，又通过 `zed-incremental-deep-scan-final-rerun.log` 重新编译主程序，并用 `inno-final-zh-cn-deep-scan-rerun.log` 完成最终安装包生成。
@@ -241,7 +241,7 @@ node -e "const fs=require('fs'); const t=JSON.parse(fs.readFileSync('zh-cn-overl
 结果：
 
 - `scan-untranslated.ps1`: `candidates: 0`
-- `translations.json`: `4141` 条，重复 id 为 `0`
+- `translations.json`: `4145` 条，重复 id 为 `0`
 - `git diff --check`: 仅 CRLF 提示，无空白错误
 - `rerun9` 主程序 release 构建通过；`remote_server` 的同轮构建遇到一次 `STATUS_HEAP_CORRUPTION`，已通过定向重试恢复
 - 完整打包：`rerun9` 主程序 release 构建通过；`remote-server-final-retry` 退出码 `0`；`zed-incremental-deep-scan-final-rerun` 退出码 `0`；`inno-final-zh-cn-deep-scan-rerun` 退出码 `0`

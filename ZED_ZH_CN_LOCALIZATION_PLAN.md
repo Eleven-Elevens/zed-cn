@@ -1,23 +1,23 @@
 # Zed 本地汉化方案
 
-## 当前落地状态（H:\zedCn）
+## 当前落地状态（K:\Project\zed-cn）
 
 本仓库已经采用本文建议的 overlay 思路落地到本地目录：
 
 ```text
-H:\zedCn\zh-cn-overlay\
+K:\Project\zed-cn\zh-cn-overlay\
 ```
 
 当前主流程和完成态以 `ZH_CN_LOCALIZATION_STEPS.md` 为准：
 
-- `translations.json` 已包含 4141 条翻译项。
+- `translations.json` 已包含 4145 条翻译项。
 - `apply-zh-cn.ps1` 可幂等套用汉化，支持旧译文迁移。
 - `scan-untranslated.ps1` 已修正大小写误判，并覆盖 `ListBulletItem`、Settings 数据字段、`action_disabled_when`、`single_line_input`、`InputField::new`、`SharedString`、通知、安装器和 DAP adapter schema description 等相关 UI 构造。
 - 额外复扫了欢迎页、远程连接弹窗、Git / stash 提示、REPL / Jupyter 空状态、Agent 队列与错误提示、Copilot 登录说明等扫描器外的 UI 字符串。
 - 使用 `D:\zed-build-tools` 工具链执行 `cargo check -p zed -p remote_server` 已通过。
 - 当前扫描候选为 0；截图中暴露的 Agent、Settings、右键菜单、最近项目、通知、断点/书签提示、更新提示和安装器文案已继续补齐。
-- 当前仓库就是汉化仓库，直接在 `dev` 分支维护；`origin` 是 `Eleven-Elevens/zedCn`，`upstream` 是官方 `zed-industries/zed`。
-- Rust / Visual Studio Build Tools / Inno Setup 已安装到 `D:\zed-build-tools`；完整 Windows 安装包已成功生成：`H:\zedCn\target\Zed-x86_64.exe`，最终安装器日志为 `H:\zedCn\target\inno-final-zh-cn-deep-scan-rerun.log`。
+- 当前仓库就是汉化仓库，直接在 `dev` 分支维护；`origin` 是 `Eleven-Elevens/zed-cn`，`upstream` 是官方 `zed-industries/zed`。
+- Rust / Visual Studio Build Tools / Inno Setup 已安装到 `D:\zed-build-tools`；完整 Windows 安装包已成功生成：`K:\Project\zed-cn\target\Zed-x86_64.exe`，最终安装器日志以当前 `target\` 目录中的最近一次打包结果为准。
 
 ## 目标
 
@@ -58,10 +58,10 @@ D:\OtherSoftware\Zed\Zed.exe
 ## 推荐目录结构
 
 ```text
-H:\zedCn\
+K:\Project\zed-cn\
   官方 Zed 源码 + 本地汉化改动
 
-H:\zedCn\zh-cn-overlay\
+K:\Project\zed-cn\zh-cn-overlay\
   translations.json
   apply-zh-cn.ps1
   scan-untranslated.ps1
@@ -71,7 +71,7 @@ H:\zedCn\zh-cn-overlay\
 
 其中：
 
-- `H:\zedCn`：当前汉化仓库，直接维护中文改动。
+- `K:\Project\zed-cn`：当前汉化仓库，直接维护中文改动。
 - `origin`：你的线上汉化仓库。
 - `upstream`：官方 Zed 仓库，用于拉取最新代码。
 - `zh-cn-overlay`：长期保留，存放汉化资产和维护脚本。
@@ -150,7 +150,7 @@ LSP 返回内容
 当前仓库直接维护汉化改动。每次 Zed 官方更新后，执行：
 
 ```powershell
-cd H:\zedCn
+cd K:\Project\zed-cn
 
 git switch dev
 git fetch upstream
@@ -200,7 +200,7 @@ zh-cn-overlay\translations.json
 当前已经是汉化仓库，不需要再单独拉一份官方源码。首次配置或检查远端：
 
 ```powershell
-cd H:\zedCn
+cd K:\Project\zed-cn
 git remote -v
 ```
 
@@ -399,7 +399,7 @@ apply-zh-cn.ps1 自动套汉化
 
 验证状态：
 
-- `translations.json`: `4141` 条，重复 id 为 `0`
+- `translations.json`: `4145` 条，重复 id 为 `0`
 - `scan-untranslated.ps1`: `candidates: 0`
 - `git diff --check`: 仅 CRLF 提示
 - `rerun9` 主程序 release 构建通过；随后 `remote_server` 在同轮构建里触发一次 `STATUS_HEAP_CORRUPTION` 编译器/内存崩溃，已用定向重试恢复
