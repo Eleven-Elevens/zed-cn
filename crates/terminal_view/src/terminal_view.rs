@@ -32,9 +32,9 @@ use std::{
 };
 use task::TaskId;
 use terminal::{
-    Clear, Copy, Event, HoveredWord, MaybeNavigationTarget, Paste, ScrollLineDown, ScrollLineUp,
-    ScrollPageDown, ScrollPageUp, ScrollToBottom, ScrollToTop, ShowCharacterPalette, TaskState,
-    TaskStatus, Terminal, TerminalBounds, ToggleViMode,
+    Clear, Copy, Event, HoveredWord, MaybeNavigationTarget, Paste, PasteText, ScrollLineDown,
+    ScrollLineUp, ScrollPageDown, ScrollPageUp, ScrollToBottom, ScrollToTop, ShowCharacterPalette,
+    TaskState, TaskStatus, Terminal, TerminalBounds, ToggleViMode,
     alacritty_terminal::{
         index::Point as AlacPoint,
         term::{TermMode, point_to_viewport, search::RegexSearch},
@@ -500,26 +500,27 @@ impl TerminalView {
             .is_some_and(|terminal_panel| terminal_panel.read(cx).assistant_enabled());
         let context_menu = ContextMenu::build(window, cx, |menu, _, _| {
             menu.context(self.focus_handle.clone())
-                .action("新建终端", Box::new(NewTerminal::default()))
+                .action("New Terminal", Box::new(NewTerminal::default()))
                 .action(
-                    "新建中心终端",
+                    "New Center Terminal",
                     Box::new(NewCenterTerminal::default()),
                 )
                 .separator()
-                .action("复制", Box::new(Copy))
-                .action("粘贴", Box::new(Paste))
-                .action("全选", Box::new(SelectAll))
-                .action("清除", Box::new(Clear))
+                .action("Copy", Box::new(Copy))
+                .action("Paste", Box::new(Paste))
+                .action("Paste Text", Box::new(PasteText))
+                .action("Select All", Box::new(SelectAll))
+                .action("Clear", Box::new(Clear))
                 .when(assistant_enabled, |menu| {
                     menu.separator()
-                        .action("行内辅助", Box::new(InlineAssist::default()))
+                        .action("Inline Assist", Box::new(InlineAssist::default()))
                         .when(has_selection, |menu| {
-                            menu.action("添加到 Agent 线程", Box::new(AddSelectionToThread))
+                            menu.action("Add to Agent Thread", Box::new(AddSelectionToThread))
                         })
                 })
                 .separator()
                 .action(
-                    "关闭终端标签页",
+                    "Close Terminal Tab",
                     Box::new(CloseActiveItem {
                         save_intent: None,
                         close_pinned: true,
@@ -811,7 +812,7 @@ impl TerminalView {
     }
 
     ///Attempt to paste the clipboard into the terminal
-    fn paste(&mut self, _: &Paste, _: &mut Window, cx: &mut Context<Self>) {
+    fn paste(&mut self, _: &Paste, window: &mut Window, cx: &mut Context<Self>) {
         let Some(clipboard) = cx.read_from_clipboard() else {
             return;
         };
@@ -820,12 +821,27 @@ impl TerminalView {
             Some(ClipboardEntry::Image(image)) if !image.bytes.is_empty() => {
                 self.forward_ctrl_v(cx);
             }
+            Some(ClipboardEntry::ExternalPaths(paths)) => {
+                self.add_paths_to_terminal(paths.paths(), window, cx);
+            }
             _ => {
                 if let Some(text) = clipboard.text() {
                     self.terminal
                         .update(cx, |terminal, _cx| terminal.paste(&text));
                 }
             }
+        }
+    }
+
+    ///Attempt to paste the clipboard text into the terminal
+    fn paste_text(&mut self, _: &PasteText, _: &mut Window, cx: &mut Context<Self>) {
+        let Some(clipboard) = cx.read_from_clipboard() else {
+            return;
+        };
+
+        if let Some(text) = clipboard.text() {
+            self.terminal
+                .update(cx, |terminal, _cx| terminal.paste(&text));
         }
     }
 
@@ -969,7 +985,7 @@ impl TerminalView {
                 .size(ButtonSize::Compact)
                 .icon_color(Color::Default)
                 .shape(ui::IconButtonShape::Square)
-                .tooltip(move |_window, cx| Tooltip::for_action("重新运行任务", &RerunTask, cx))
+                .tooltip(move |_window, cx| Tooltip::for_action("Rerun task", &RerunTask, cx))
                 .on_click(move |_, window, cx| {
                     window.dispatch_action(Box::new(terminal_rerun_override(&task_id)), cx);
                 }),
@@ -1226,6 +1242,7 @@ impl Render for TerminalView {
             .on_action(cx.listener(TerminalView::send_keystroke))
             .on_action(cx.listener(TerminalView::copy))
             .on_action(cx.listener(TerminalView::paste))
+            .on_action(cx.listener(TerminalView::paste_text))
             .on_action(cx.listener(TerminalView::clear))
             .on_action(cx.listener(TerminalView::scroll_line_up))
             .on_action(cx.listener(TerminalView::scroll_line_down))
@@ -1320,7 +1337,7 @@ impl Item for TerminalView {
                     .child(Label::new(title.clone()))
                     .child(h_flex().flex_grow().child(Divider::horizontal()))
                     .child(
-                        Label::new(format!("进程 ID (PID)：{}", pid))
+                        Label::new(format!("Process ID (PID): {}", pid))
                             .color(Color::Muted)
                             .size(LabelSize::Small),
                     )

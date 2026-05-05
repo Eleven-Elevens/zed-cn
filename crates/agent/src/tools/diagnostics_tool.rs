@@ -79,9 +79,9 @@ impl AgentTool for DiagnosticsTool {
             Some(path) if !path.is_empty() => Some(path),
             _ => None,
         }) {
-            format!("检查 {} 的诊断", MarkdownInlineCode(&path)).into()
+            format!("Check diagnostics for {}", MarkdownInlineCode(&path)).into()
         } else {
-            "检查项目诊断".into()
+            "Check project diagnostics".into()
         }
     }
 
@@ -93,16 +93,13 @@ impl AgentTool for DiagnosticsTool {
     ) -> Task<Result<Self::Output, Self::Output>> {
         let project = self.project.clone();
         cx.spawn(async move |cx| {
-            let input = input
-                .recv()
-                .await
-                .map_err(|e| format!("接收工具输入失败：{e}"))?;
+            let input = input.recv().await.map_err(|e| e.to_string())?;
 
             match input.path {
                 Some(path) if !path.is_empty() => {
                     let (_project_path, open_buffer_task) = project.update(cx, |project, cx| {
                         let Some(project_path) = project.find_project_path(&path, cx) else {
-                            return Err(format!("在项目中找不到路径 {path}"));
+                            return Err(format!("Could not find path {path} in project"));
                         };
                         let task = project.open_buffer(project_path.clone(), cx);
                         Ok((project_path, task))
@@ -111,7 +108,7 @@ impl AgentTool for DiagnosticsTool {
                     let buffer = futures::select! {
                         result = open_buffer_task.fuse() => result.map_err(|e| e.to_string())?,
                         _ = event_stream.cancelled_by_user().fuse() => {
-                            return Err("诊断已被用户取消".to_string());
+                            return Err("Diagnostics cancelled by user".to_string());
                         }
                     };
                     let mut output = String::new();
@@ -121,14 +118,14 @@ impl AgentTool for DiagnosticsTool {
                         let entry = &group.entries[group.primary_ix];
                         let range = entry.range.to_point(&snapshot);
                         let severity = match entry.diagnostic.severity {
-                            DiagnosticSeverity::ERROR => "错误",
-                            DiagnosticSeverity::WARNING => "警告",
+                            DiagnosticSeverity::ERROR => "error",
+                            DiagnosticSeverity::WARNING => "warning",
                             _ => continue,
                         };
 
                         writeln!(
                             output,
-                            "{} 在第 {} 行：{}",
+                            "{} at line {}: {}",
                             severity,
                             range.start.row + 1,
                             entry.diagnostic.message
@@ -137,7 +134,7 @@ impl AgentTool for DiagnosticsTool {
                     }
 
                     if output.is_empty() {
-                        Ok("文件没有错误或警告！".to_string())
+                        Ok("File doesn't have errors or warnings!".to_string())
                     } else {
                         Ok(output)
                     }
@@ -157,7 +154,7 @@ impl AgentTool for DiagnosticsTool {
 
                                 has_diagnostics = true;
                                 output.push_str(&format!(
-                                    "{}：{} 个错误，{} 个警告\n",
+                                    "{}: {} error(s), {} warning(s)\n",
                                     worktree.read(cx).absolutize(&project_path.path).display(),
                                     summary.error_count,
                                     summary.warning_count
@@ -171,7 +168,7 @@ impl AgentTool for DiagnosticsTool {
                     if has_diagnostics {
                         Ok(output)
                     } else {
-                        Ok("项目中未发现错误或警告。".into())
+                        Ok("No errors or warnings found in the project.".into())
                     }
                 }
             }

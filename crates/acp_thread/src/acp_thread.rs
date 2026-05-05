@@ -299,10 +299,15 @@ impl ToolCall {
 
         let subagent_session_info = subagent_session_info_from_meta(&tool_call.meta);
 
+        let label = if tool_call.kind == acp::ToolKind::Execute {
+            cx.new(|cx| Markdown::new_text(title.into(), cx))
+        } else {
+            cx.new(|cx| Markdown::new(title.into(), Some(language_registry.clone()), None, cx))
+        };
+
         let result = Self {
             id: tool_call.tool_call_id,
-            label: cx
-                .new(|cx| Markdown::new(title.into(), Some(language_registry.clone()), None, cx)),
+            label,
             kind: tool_call.kind,
             content,
             locations: tool_call.locations,
@@ -444,7 +449,7 @@ impl ToolCall {
 
     pub fn to_markdown(&self, cx: &App) -> String {
         let mut markdown = format!(
-            "**工具调用：{}**\n状态：{}\n\n",
+            "**Tool Call: {}**\nStatus: {}\n\n",
             self.label.read(cx).source(),
             self.status
         );
@@ -605,13 +610,13 @@ impl Display for ToolCallStatus {
             f,
             "{}",
             match self {
-                ToolCallStatus::Pending => "待处理",
-                ToolCallStatus::WaitingForConfirmation { .. } => "等待确认",
-                ToolCallStatus::InProgress => "进行中",
-                ToolCallStatus::Completed => "已完成",
-                ToolCallStatus::Failed => "失败",
-                ToolCallStatus::Rejected => "已拒绝",
-                ToolCallStatus::Canceled => "已取消",
+                ToolCallStatus::Pending => "Pending",
+                ToolCallStatus::WaitingForConfirmation { .. } => "Waiting for confirmation",
+                ToolCallStatus::InProgress => "In Progress",
+                ToolCallStatus::Completed => "Completed",
+                ToolCallStatus::Failed => "Failed",
+                ToolCallStatus::Rejected => "Rejected",
+                ToolCallStatus::Canceled => "Canceled",
             }
         )
     }
@@ -742,7 +747,7 @@ impl ContentBlock {
     }
 
     fn image_md(_image: &acp::ImageContent) -> String {
-        "`图像`".into()
+        "`Image`".into()
     }
 
     pub fn to_markdown<'a>(&'a self, cx: &'a App) -> &'a str {
@@ -750,7 +755,7 @@ impl ContentBlock {
             ContentBlock::Empty => "",
             ContentBlock::Markdown { markdown } => markdown.read(cx).source(),
             ContentBlock::ResourceLink { resource_link } => &resource_link.uri,
-            ContentBlock::Image { .. } => "`图像`",
+            ContentBlock::Image { .. } => "`Image`",
         }
     }
 
@@ -1177,6 +1182,7 @@ pub enum LoadError {
     FailedToInstall(SharedString),
     Exited {
         status: ExitStatus,
+        stderr: Option<SharedString>,
     },
     Other(SharedString),
 }
@@ -1191,11 +1197,11 @@ impl Display for LoadError {
             } => {
                 write!(
                     f,
-                    "{path} 的版本 {current_version} 不受支持（至少需要 {minimum_version}）"
+                    "version {current_version} from {path} is not supported (need at least {minimum_version})"
                 )
             }
-            LoadError::FailedToInstall(msg) => write!(f, "安装失败：{msg}"),
-            LoadError::Exited { status } => write!(f, "服务器退出，状态为 {status}"),
+            LoadError::FailedToInstall(msg) => write!(f, "Failed to install: {msg}"),
+            LoadError::Exited { status, .. } => write!(f, "Server exited with status {status}"),
             LoadError::Other(msg) => write!(f, "{msg}"),
         }
     }
@@ -1820,10 +1826,10 @@ impl AcpThread {
                 // Tool call not found - create a failed tool call entry
                 let failed_tool_call = ToolCall {
                     id: update.id().clone(),
-                    label: cx.new(|cx| Markdown::new("未找到工具调用".into(), None, None, cx)),
+                    label: cx.new(|cx| Markdown::new("Tool call not found".into(), None, None, cx)),
                     kind: acp::ToolKind::Fetch,
                     content: vec![ToolCallContent::ContentBlock(ContentBlock::new(
-                        "未找到工具调用".into(),
+                        "Tool call not found".into(),
                         &languages,
                         path_style,
                         cx,
@@ -2439,7 +2445,7 @@ impl AcpThread {
         cx: &mut Context<Self>,
     ) -> Task<Result<()>> {
         let Some((_, message)) = self.user_message_mut(&id) else {
-            return Task::ready(Err(anyhow!("找不到消息")));
+            return Task::ready(Err(anyhow!("message not found")));
         };
 
         let checkpoint = message
@@ -4629,7 +4635,7 @@ mod tests {
                     match content_block {
                         ContentBlock::Markdown { markdown } => {
                             let markdown_text = markdown.read(cx).source();
-                            assert!(markdown_text.contains("未找到工具调用"));
+                            assert!(markdown_text.contains("Tool call not found"));
                         }
                         ContentBlock::Empty => panic!("Expected markdown content, got empty"),
                         ContentBlock::ResourceLink { .. } => {
@@ -5251,18 +5257,18 @@ mod tests {
         // When the real title arrives via set_title, it replaces the
         // provisional title and propagates to the connection.
         let task = thread.update(cx, |thread, cx| {
-            thread.set_title("帮助解决 Rust 问题".into(), cx)
+            thread.set_title("Helping with Rust question".into(), cx)
         });
         task.await.expect("set_title should succeed");
         thread.read_with(cx, |thread, _| {
             assert_eq!(
                 thread.title().as_ref().map(|s| s.as_str()),
-                Some("帮助解决 Rust 问题")
+                Some("Helping with Rust question")
             );
         });
         assert_eq!(
             set_title_calls.borrow().as_slice(),
-            &[SharedString::from("帮助解决 Rust 问题")],
+            &[SharedString::from("Helping with Rust question")],
             "real title should propagate to the connection"
         );
     }
@@ -5314,7 +5320,7 @@ mod tests {
         let result = thread.update(cx, |thread, cx| {
             thread.handle_session_update(
                 acp::SessionUpdate::SessionInfoUpdate(
-                    acp::SessionInfoUpdate::new().title("帮助解决 Rust 问题"),
+                    acp::SessionInfoUpdate::new().title("Helping with Rust question"),
                 ),
                 cx,
             )
@@ -5324,7 +5330,7 @@ mod tests {
         thread.read_with(cx, |thread, _| {
             assert_eq!(
                 thread.title().as_ref().map(|s| s.as_str()),
-                Some("帮助解决 Rust 问题")
+                Some("Helping with Rust question")
             );
             assert!(
                 !thread.has_provisional_title(),

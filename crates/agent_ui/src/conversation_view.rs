@@ -48,8 +48,7 @@ use crate::DEFAULT_THREAD_TITLE;
 use crate::message_editor::SessionCapabilities;
 use rope::Point;
 use settings::{
-    NewThreadLocation, NotifyWhenAgentWaiting, Settings as _, SettingsStore, SidebarSide,
-    ThinkingBlockDisplay,
+    NotifyWhenAgentWaiting, Settings as _, SettingsStore, SidebarSide, ThinkingBlockDisplay,
 };
 use std::path::Path;
 use std::sync::Arc;
@@ -82,7 +81,7 @@ use crate::agent_connection_store::{
 };
 use crate::agent_diff::AgentDiff;
 use crate::entry_view_state::{EntryViewEvent, ViewEvent};
-use crate::message_editor::{MessageEditor, MessageEditorEvent};
+use crate::message_editor::{InputAttempt, MessageEditor, MessageEditorEvent};
 use crate::profile_selector::{ProfileProvider, ProfileSelector};
 
 use crate::thread_metadata_store::{ThreadId, ThreadMetadataStore};
@@ -450,7 +449,7 @@ fn resolve_outcome_from_selection(
         }
     }
 
-    // Use the selected granularity choice ("始终适用于 terminal" or "仅本次").
+    // Use the selected granularity choice ("Always for terminal" or "Only this time").
     let selected_index = selection
         .and_then(|s| s.choice_index())
         .unwrap_or_else(|| choices.len().saturating_sub(1));
@@ -862,10 +861,7 @@ impl ConversationView {
             SidebarSide::Left => "left",
             SidebarSide::Right => "right",
         };
-        let thread_location = match AgentSettings::get_global(cx).new_thread_location {
-            NewThreadLocation::LocalProject => "current_worktree",
-            NewThreadLocation::NewWorktree => "new_worktree",
-        };
+        let thread_location = "current_worktree";
 
         let load_task = cx.spawn_in(window, async move |this, cx| {
             let connection = match connect_result.await {
@@ -1344,16 +1340,16 @@ impl ConversationView {
                 .active_view()
                 .and_then(|v| v.read(cx).thread.read(cx).title())
                 .unwrap_or_else(|| DEFAULT_THREAD_TITLE.into()),
-            ServerState::Loading { .. } => "正在加载…".into(),
+            ServerState::Loading { .. } => "Loading…".into(),
             ServerState::LoadError { error, .. } => match error {
                 LoadError::Unsupported { .. } => {
-                    format!("升级 {}", self.agent.agent_id()).into()
+                    format!("Upgrade {}", self.agent.agent_id()).into()
                 }
                 LoadError::FailedToInstall(_) => {
-                    format!("安装 {} 失败", self.agent.agent_id()).into()
+                    format!("Failed to Install {}", self.agent.agent_id()).into()
                 }
-                LoadError::Exited { .. } => format!("{} 已退出", self.agent.agent_id()).into(),
-                LoadError::Other(_) => format!("加载 {} 时出错", self.agent.agent_id()).into(),
+                LoadError::Exited { .. } => format!("{} Exited", self.agent.agent_id()).into(),
+                LoadError::Other(_) => format!("Error Loading {}", self.agent.agent_id()).into(),
             },
         }
     }
@@ -1391,7 +1387,7 @@ impl ConversationView {
     fn move_queued_message_to_main_editor(
         &mut self,
         index: usize,
-        inserted_text: Option<&str>,
+        attempt: Option<InputAttempt>,
         cursor_offset: Option<usize>,
         window: &mut Window,
         cx: &mut Context<Self>,
@@ -1400,7 +1396,7 @@ impl ConversationView {
             active.update(cx, |active, cx| {
                 active.move_queued_message_to_main_editor(
                     index,
-                    inserted_text,
+                    attempt,
                     cursor_offset,
                     window,
                     cx,
@@ -1476,7 +1472,7 @@ impl ConversationView {
                 self.load_subagent_session(subagent_session_id.clone(), session_id, window, cx)
             }
             AcpThreadEvent::ToolAuthorizationRequested(_) => {
-                self.notify_with_sound("正在等待工具确认", IconName::Info, window, cx);
+                self.notify_with_sound("Waiting for tool confirmation", IconName::Info, window, cx);
             }
             AcpThreadEvent::ToolAuthorizationReceived(_) => {}
             AcpThreadEvent::Retry(retry) => {
@@ -1513,9 +1509,9 @@ impl ConversationView {
                 let used_tools = thread.read(cx).used_tools_since_last_user_message();
                 self.notify_with_sound(
                     if used_tools {
-                        "工具运行完成"
+                        "Finished running tools"
                     } else {
-                        "新消息"
+                        "New message"
                     },
                     IconName::ZedAssistant,
                     window,
@@ -2078,7 +2074,7 @@ impl ConversationView {
         if pending_auth_method.is_some() {
             return Callout::new()
                 .icon(IconName::Info)
-                .title(format!("正在认证到 {}…", agent_display_name))
+                .title(format!("Authenticating to {}…", agent_display_name))
                 .actions_slot(
                     Icon::new(IconName::ArrowCircle)
                         .size(IconSize::Small)
@@ -2091,7 +2087,7 @@ impl ConversationView {
 
         Callout::new()
             .icon(IconName::Info)
-            .title(format!("认证到 {}", agent_display_name))
+            .title(format!("Authenticate to {}", agent_display_name))
             .when(auth_methods.len() == 1, |this| {
                 this.actions_slot(auth_buttons())
             })
@@ -2101,7 +2097,7 @@ impl ConversationView {
                     .map(|this| {
                         if show_fallback_description {
                             this.child(
-                                Label::new("选择以下认证方式之一：")
+                                Label::new("Choose one of the following authentication options:")
                                     .size(LabelSize::Small)
                                     .color(Color::Muted),
                             )
@@ -2159,17 +2155,23 @@ impl ConversationView {
                 return self.render_unsupported(path, current_version, minimum_version, window, cx);
             }
             LoadError::FailedToInstall(msg) => (
-                "安装失败",
+                "Failed to Install",
                 msg.into(),
                 Some(self.create_copy_button(msg.to_string()).into_any_element()),
             ),
-            LoadError::Exited { status } => (
-                "启动失败",
-                format!("服务器退出，状态为 {status}").into(),
-                None,
-            ),
+            LoadError::Exited { status, stderr } => {
+                let mut message = format!("Server exited with status {status}");
+                if let Some(stderr) = stderr {
+                    message.push_str("\n");
+                    message.push_str(stderr);
+                };
+                let action_slot = stderr
+                    .is_some()
+                    .then(|| self.create_copy_button(message.clone()).into_any_element());
+                ("Failed to Launch", message.into(), action_slot)
+            }
             LoadError::Other(msg) => (
-                "启动失败",
+                "Failed to Launch",
                 msg.into(),
                 Some(self.create_copy_button(msg.to_string()).into_any_element()),
             ),
@@ -2193,15 +2195,15 @@ impl ConversationView {
         cx: &mut Context<Self>,
     ) -> AnyElement {
         let (heading_label, description_label) = (
-            format!("升级 {} 以配合 Zed 使用", self.agent.agent_id()),
+            format!("Upgrade {} to work with Zed", self.agent.agent_id()),
             if version.is_empty() {
                 format!(
-                    "当前正在使用 {}，它没有报告有效的 --version",
+                    "Currently using {}, which does not report a valid --version",
                     path,
                 )
             } else {
                 format!(
-                    "当前正在使用 {}，版本只有 {}（至少需要 {minimum_version}）",
+                    "Currently using {}, which is only version {} (need at least {minimum_version})",
                     path, version
                 )
             },
@@ -2382,15 +2384,17 @@ impl ConversationView {
                 window,
                 move |this, _editor, event, window, cx| match event {
                     MessageEditorEvent::InputAttempted {
-                        text,
+                        attempt,
                         cursor_offset,
-                    } => this.move_queued_message_to_main_editor(
-                        index,
-                        Some(text.as_ref()),
-                        Some(*cursor_offset),
-                        window,
-                        cx,
-                    ),
+                    } => {
+                        this.move_queued_message_to_main_editor(
+                            index,
+                            Some(attempt.clone()),
+                            Some(*cursor_offset),
+                            window,
+                            cx,
+                        );
+                    }
                     MessageEditorEvent::LostFocus => {
                         this.save_queued_message_at_index(index, cx);
                     }
@@ -2775,7 +2779,7 @@ impl ConversationView {
                 .and_then(|active| active.read(cx).model_selector.clone())
                 .and_then(|selector| selector.read(cx).active_model(cx))
                 .map(|model| model.name.clone())
-                .unwrap_or_else(|| SharedString::from("模型"))
+                .unwrap_or_else(|| SharedString::from("The model"))
         } else {
             // ACP agent - use the agent name (e.g., "Claude Agent", "Gemini CLI")
             self.agent.agent_id().0
@@ -2785,7 +2789,7 @@ impl ConversationView {
     fn create_copy_button(&self, message: impl Into<String>) -> impl IntoElement {
         let message = message.into();
 
-        CopyButton::new("copy-error-message", message).tooltip_label("复制错误消息")
+        CopyButton::new("copy-error-message", message).tooltip_label("Copy Error Message")
     }
 
     pub(crate) fn reauthenticate(&mut self, window: &mut Window, cx: &mut Context<Self>) {
@@ -2814,14 +2818,14 @@ fn loading_contents_spinner(size: IconSize) -> AnyElement {
 
 fn placeholder_text(agent_name: &str, has_commands: bool) -> String {
     if agent_name == agent::ZED_AGENT_ID.as_ref() {
-        format!("给 {} 发送消息 — 输入 @ 添加上下文", agent_name)
+        format!("Message the {} — @ to include context", agent_name)
     } else if has_commands {
         format!(
-            "给 {} 发送消息 — 输入 @ 添加上下文，输入 / 使用命令",
+            "Message {} — @ to include context, / for commands",
             agent_name
         )
     } else {
-        format!("给 {} 发送消息 — 输入 @ 添加上下文", agent_name)
+        format!("Message {} — @ to include context", agent_name)
     }
 }
 
@@ -2874,7 +2878,7 @@ impl Render for ConversationView {
                     .items_center()
                     .justify_center()
                     .child(
-                        Label::new("正在加载…").color(Color::Muted).with_animation(
+                        Label::new("Loading…").color(Color::Muted).with_animation(
                             "loading-agent-label",
                             Animation::new(Duration::from_secs(2))
                                 .repeat()
@@ -2956,8 +2960,9 @@ pub(crate) mod tests {
     use agent::{AgentTool, EditFileTool, FetchTool, TerminalTool, ToolPermissionContext};
     use agent_servers::FakeAcpAgentServer;
     use editor::MultiBufferOffset;
+    use editor::actions::Paste;
     use fs::FakeFs;
-    use gpui::{EventEmitter, TestAppContext, VisualTestContext};
+    use gpui::{ClipboardItem, EventEmitter, TestAppContext, VisualTestContext};
     use parking_lot::Mutex;
     use project::Project;
     use serde_json::json;
@@ -3416,7 +3421,7 @@ pub(crate) mod tests {
             let title = view.title(cx);
             assert_eq!(
                 title.as_ref(),
-                "加载 Codex CLI 时出错",
+                "Error Loading Codex CLI",
                 "Tab title should show the agent name with an error prefix"
             );
             match &view.server_state {
@@ -6069,16 +6074,16 @@ pub(crate) mod tests {
                     .map(|choice| choice.allow.name.as_ref())
                     .collect();
                 assert!(
-                    labels.contains(&"始终适用于 terminal"),
-                    "Missing '始终适用于 terminal' option"
+                    labels.contains(&"Always for terminal"),
+                    "Missing 'Always for terminal' option"
                 );
                 assert!(
-                    labels.contains(&"始终适用于 `cargo build` 命令"),
+                    labels.contains(&"Always for `cargo build` commands"),
                     "Missing pattern option"
                 );
                 assert!(
-                    labels.contains(&"仅本次"),
-                    "Missing '仅本次' option"
+                    labels.contains(&"Only this time"),
+                    "Missing 'Only this time' option"
                 );
             }
         });
@@ -6161,11 +6166,11 @@ pub(crate) mod tests {
                     .map(|choice| choice.allow.name.as_ref())
                     .collect();
                 assert!(
-                    labels.contains(&"始终适用于 edit file"),
-                    "Missing '始终适用于 edit file' option"
+                    labels.contains(&"Always for edit file"),
+                    "Missing 'Always for edit file' option"
                 );
                 assert!(
-                    labels.contains(&"始终适用于 `src/`"),
+                    labels.contains(&"Always for `src/`"),
                     "Missing path pattern option"
                 );
             } else {
@@ -6251,11 +6256,11 @@ pub(crate) mod tests {
                     .map(|choice| choice.allow.name.as_ref())
                     .collect();
                 assert!(
-                    labels.contains(&"始终适用于 fetch"),
-                    "Missing '始终适用于 fetch' option"
+                    labels.contains(&"Always for fetch"),
+                    "Missing 'Always for fetch' option"
                 );
                 assert!(
-                    labels.contains(&"始终适用于 `docs.rs`"),
+                    labels.contains(&"Always for `docs.rs`"),
                     "Missing domain pattern option"
                 );
             } else {
@@ -6350,12 +6355,12 @@ pub(crate) mod tests {
                     .map(|choice| choice.allow.name.as_ref())
                     .collect();
                 assert!(
-                    labels.contains(&"始终适用于 terminal"),
-                    "Missing '始终适用于 terminal' option"
+                    labels.contains(&"Always for terminal"),
+                    "Missing 'Always for terminal' option"
                 );
                 assert!(
-                    labels.contains(&"仅本次"),
-                    "Missing '仅本次' option"
+                    labels.contains(&"Only this time"),
+                    "Missing 'Only this time' option"
                 );
                 // Should NOT contain a pattern option
                 assert!(
@@ -6567,7 +6572,7 @@ pub(crate) mod tests {
 
         cx.run_until_parked();
 
-        // Verify default granularity is the last option (index 2 = "仅本次")
+        // Verify default granularity is the last option (index 2 = "Only this time")
         thread_view.read_with(cx, |thread_view, cx| {
             let state = thread_view.active_thread().unwrap();
             let selected = state.read(cx).permission_selections.get(&tool_call_id);
@@ -6577,7 +6582,7 @@ pub(crate) mod tests {
             );
         });
 
-        // Select the first option (index 0 = "始终适用于 terminal")
+        // Select the first option (index 0 = "Always for terminal")
         thread_view.update_in(cx, |_, window, cx| {
             window.dispatch_action(
                 crate::SelectPermissionGranularity {
@@ -6668,7 +6673,7 @@ pub(crate) mod tests {
 
         cx.run_until_parked();
 
-        // Select the pattern option (index 1 = "始终适用于 `npm` 命令")
+        // Select the pattern option (index 1 = "Always for `npm` commands")
         thread_view.update_in(cx, |_, window, cx| {
             window.dispatch_action(
                 crate::SelectPermissionGranularity {
@@ -6744,7 +6749,7 @@ pub(crate) mod tests {
 
         cx.run_until_parked();
 
-        // Use default granularity (last option = "仅本次")
+        // Use default granularity (last option = "Only this time")
         // Simulate clicking the Deny button
         active_thread(&conversation_view, cx).update_in(cx, |view, window, cx| {
             view.reject_once(&RejectOnce, window, cx)
@@ -6822,12 +6827,12 @@ pub(crate) mod tests {
         PermissionOptions::Flat(vec![
             acp::PermissionOption::new(
                 acp::PermissionOptionId::new("allow"),
-                "是",
+                "Yes",
                 acp::PermissionOptionKind::AllowOnce,
             ),
             acp::PermissionOption::new(
                 acp::PermissionOptionId::new("deny"),
-                "否",
+                "No",
                 acp::PermissionOptionKind::RejectOnce,
             ),
         ])
@@ -6873,7 +6878,7 @@ pub(crate) mod tests {
 
         let outcome = super::resolve_outcome_from_selection(&options, None, true).unwrap();
 
-        // Last choice is "仅本次" → option_id "allow".
+        // Last choice is "Only this time" → option_id "allow".
         assert_eq!(outcome.option_id.0.as_ref(), "allow");
         assert_eq!(outcome.option_kind, acp::PermissionOptionKind::AllowOnce);
     }
@@ -6888,7 +6893,7 @@ pub(crate) mod tests {
         let outcome =
             super::resolve_outcome_from_selection(&options, Some(&selection), true).unwrap();
 
-        // Choice 0 = "始终适用于 terminal".
+        // Choice 0 = "Always for terminal".
         assert!(outcome.option_id.0.contains("always_allow:terminal"));
         assert_eq!(outcome.option_kind, acp::PermissionOptionKind::AllowAlways);
     }
@@ -6903,7 +6908,7 @@ pub(crate) mod tests {
         let outcome =
             super::resolve_outcome_from_selection(&options, Some(&selection), true).unwrap();
 
-        // choices.get(999) is None, falls back to choices.last() → "仅本次".
+        // choices.get(999) is None, falls back to choices.last() → "Only this time".
         assert_eq!(outcome.option_id.0.as_ref(), "allow");
     }
 
@@ -7401,6 +7406,107 @@ pub(crate) mod tests {
             text, "existing content\n\nqueued message",
             "Main editor should have existing content and queued message separated by two newlines"
         );
+    }
+
+    #[gpui::test]
+    async fn test_paste_text_into_queued_message_promotes_to_main_editor(cx: &mut TestAppContext) {
+        init_test(cx);
+
+        let (conversation_view, cx) =
+            paste_into_queued_message(cx, ClipboardItem::new_string("PASTED".to_string())).await;
+
+        let queue_len = active_thread(&conversation_view, cx)
+            .read_with(cx, |thread, _cx| thread.local_queued_messages.len());
+        assert_eq!(queue_len, 0);
+
+        let text = message_editor(&conversation_view, cx).update(cx, |editor, cx| editor.text(cx));
+        assert_eq!(text, "queued PASTEDmessage");
+    }
+
+    #[gpui::test]
+    async fn test_paste_image_into_queued_message_promotes_to_main_editor(cx: &mut TestAppContext) {
+        init_test(cx);
+
+        use base64::Engine as _;
+        use std::io::Write as _;
+        let png_bytes = base64::prelude::BASE64_STANDARD
+            .decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==")
+            .unwrap();
+        let mut image_file = tempfile::Builder::new().suffix(".png").tempfile().unwrap();
+        image_file.write_all(&png_bytes).unwrap();
+
+        let (conversation_view, cx) = paste_into_queued_message(
+            cx,
+            ClipboardItem {
+                entries: vec![gpui::ClipboardEntry::ExternalPaths(gpui::ExternalPaths(
+                    vec![image_file.path().to_path_buf()].into(),
+                ))],
+            },
+        )
+        .await;
+
+        let queue_len = active_thread(&conversation_view, cx)
+            .read_with(cx, |thread, _cx| thread.local_queued_messages.len());
+        assert_eq!(queue_len, 0);
+
+        let text = message_editor(&conversation_view, cx).update(cx, |editor, cx| editor.text(cx));
+        let image_name = image_file.path().file_name().unwrap().to_string_lossy();
+        let expected_uri = acp_thread::MentionUri::PastedImage {
+            name: image_name.to_string(),
+        }
+        .to_uri()
+        .to_string();
+        assert_eq!(
+            text,
+            format!("queued [@{image_name}]({expected_uri}) message"),
+        );
+    }
+
+    async fn paste_into_queued_message(
+        cx: &mut TestAppContext,
+        clipboard: ClipboardItem,
+    ) -> (Entity<ConversationView>, &mut VisualTestContext) {
+        let (conversation_view, cx) =
+            setup_conversation_view(StubAgentServer::default_response(), cx).await;
+        add_to_workspace(conversation_view.clone(), cx);
+
+        active_thread(&conversation_view, cx).update_in(cx, |thread, _window, cx| {
+            thread
+                .session_capabilities
+                .write()
+                .set_prompt_capabilities(acp::PromptCapabilities::new().image(true));
+            thread.add_to_queue(
+                vec![acp::ContentBlock::Text(acp::TextContent::new(
+                    "queued message".to_string(),
+                ))],
+                vec![],
+                cx,
+            );
+        });
+        conversation_view.update(cx, |_, cx| cx.notify());
+        cx.run_until_parked();
+
+        let queued_editor = active_thread(&conversation_view, cx).read_with(cx, |thread, _cx| {
+            thread
+                .queued_message_editors
+                .first()
+                .cloned()
+                .expect("queued message editor not synced")
+        });
+
+        cx.write_to_clipboard(clipboard);
+
+        queued_editor.update_in(cx, |message_editor, window, cx| {
+            message_editor.editor().update(cx, |editor, cx| {
+                editor.change_selections(SelectionEffects::no_scroll(), window, cx, |selections| {
+                    selections.select_ranges([MultiBufferOffset(7)..MultiBufferOffset(7)]);
+                });
+            });
+            message_editor.paste(&Paste, window, cx);
+        });
+        cx.run_until_parked();
+
+        (conversation_view, cx)
     }
 
     #[gpui::test]
