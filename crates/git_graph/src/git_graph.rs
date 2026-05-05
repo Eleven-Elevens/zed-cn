@@ -1907,7 +1907,7 @@ impl GitGraph {
                 .context(focus_handle)
                 .header(format!("Commit {short_sha}"))
                 .entry(
-                    "View Commit",
+                    "查看提交",
                     Some(OpenCommitView.boxed_clone()),
                     window.handler_for(&git_graph, move |this, window, cx| {
                         this.open_commit_view(index, window, cx);

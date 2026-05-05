@@ -1340,7 +1340,7 @@ impl ConversationView {
                 .active_view()
                 .and_then(|v| v.read(cx).thread.read(cx).title())
                 .unwrap_or_else(|| DEFAULT_THREAD_TITLE.into()),
-            ServerState::Loading { .. } => "Loading…".into(),
+            ServerState::Loading { .. } => "正在加载…".into(),
             ServerState::LoadError { error, .. } => match error {
                 LoadError::Unsupported { .. } => {
                     format!("Upgrade {}", self.agent.agent_id()).into()
@@ -2074,7 +2074,7 @@ impl ConversationView {
         if pending_auth_method.is_some() {
             return Callout::new()
                 .icon(IconName::Info)
-                .title(format!("Authenticating to {}…", agent_display_name))
+                .title(format!("正在认证到 {}…", agent_display_name))
                 .actions_slot(
                     Icon::new(IconName::ArrowCircle)
                         .size(IconSize::Small)
@@ -2087,7 +2087,7 @@ impl ConversationView {
 
         Callout::new()
             .icon(IconName::Info)
-            .title(format!("Authenticate to {}", agent_display_name))
+            .title(format!("认证到 {}", agent_display_name))
             .when(auth_methods.len() == 1, |this| {
                 this.actions_slot(auth_buttons())
             })
@@ -2097,7 +2097,7 @@ impl ConversationView {
                     .map(|this| {
                         if show_fallback_description {
                             this.child(
-                                Label::new("Choose one of the following authentication options:")
+                                Label::new("选择以下认证方式之一：")
                                     .size(LabelSize::Small)
                                     .color(Color::Muted),
                             )
@@ -2195,15 +2195,15 @@ impl ConversationView {
         cx: &mut Context<Self>,
     ) -> AnyElement {
         let (heading_label, description_label) = (
-            format!("Upgrade {} to work with Zed", self.agent.agent_id()),
+            format!("升级 {} 以配合 Zed 使用", self.agent.agent_id()),
             if version.is_empty() {
                 format!(
-                    "Currently using {}, which does not report a valid --version",
+                    "当前正在使用 {}，它没有报告有效的 --version",
                     path,
                 )
             } else {
                 format!(
-                    "Currently using {}, which is only version {} (need at least {minimum_version})",
+                    "当前正在使用 {}，版本只有 {}（至少需要 {minimum_version}）",
                     path, version
                 )
             },
@@ -2779,7 +2779,7 @@ impl ConversationView {
                 .and_then(|active| active.read(cx).model_selector.clone())
                 .and_then(|selector| selector.read(cx).active_model(cx))
                 .map(|model| model.name.clone())
-                .unwrap_or_else(|| SharedString::from("The model"))
+                .unwrap_or_else(|| SharedString::from("模型"))
         } else {
             // ACP agent - use the agent name (e.g., "Claude Agent", "Gemini CLI")
             self.agent.agent_id().0
@@ -2789,7 +2789,7 @@ impl ConversationView {
     fn create_copy_button(&self, message: impl Into<String>) -> impl IntoElement {
         let message = message.into();
 
-        CopyButton::new("copy-error-message", message).tooltip_label("Copy Error Message")
+        CopyButton::new("copy-error-message", message).tooltip_label("复制错误消息")
     }
 
     pub(crate) fn reauthenticate(&mut self, window: &mut Window, cx: &mut Context<Self>) {
@@ -2818,14 +2818,14 @@ fn loading_contents_spinner(size: IconSize) -> AnyElement {
 
 fn placeholder_text(agent_name: &str, has_commands: bool) -> String {
     if agent_name == agent::ZED_AGENT_ID.as_ref() {
-        format!("Message the {} — @ to include context", agent_name)
+        format!("给 {} 发送消息 — 输入 @ 添加上下文", agent_name)
     } else if has_commands {
         format!(
-            "Message {} — @ to include context, / for commands",
+            "给 {} 发送消息 — 输入 @ 添加上下文，输入 / 使用命令",
             agent_name
         )
     } else {
-        format!("Message {} — @ to include context", agent_name)
+        format!("给 {} 发送消息 — 输入 @ 添加上下文", agent_name)
     }
 }
 
@@ -2878,7 +2878,7 @@ impl Render for ConversationView {
                     .items_center()
                     .justify_center()
                     .child(
-                        Label::new("Loading…").color(Color::Muted).with_animation(
+                        Label::new("正在加载…").color(Color::Muted).with_animation(
                             "loading-agent-label",
                             Animation::new(Duration::from_secs(2))
                                 .repeat()

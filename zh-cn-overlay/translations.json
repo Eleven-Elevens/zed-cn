@@ -20168,20 +20168,6 @@
     "expected_count": 1
   },
   {
-    "id": "auto.mt.settings_ui.new_thread_location",
-    "file": "crates/settings_ui/src/page_data.rs",
-    "from": "New Thread Location",
-    "to": "新线程位置",
-    "expected_count": 1
-  },
-  {
-    "id": "auto.mt.settings_ui.whether_to_start_a_new_thread_in_the_current_local_project_or_in_a_new_git_workt",
-    "file": "crates/settings_ui/src/page_data.rs",
-    "from": "Whether to start a new thread in the current local project or in a new Git worktree.",
-    "to": "是否在当前本地项目或新的 Git 工作树中启动新线程。",
-    "expected_count": 1
-  },
-  {
     "id": "auto.mt.settings_ui.single_file_review",
     "file": "crates/settings_ui/src/page_data.rs",
     "from": "Single File Review",
@@ -29497,7 +29483,7 @@
   },
   {
     "id": "manual.agent.edit_cancelled_by_user",
-    "file": "crates/agent/src/tools/streaming_edit_file_tool.rs",
+    "file": "crates/agent/src/tools/edit_file_tool.rs",
     "from": "Edit cancelled by user",
     "to": "编辑已被用户取消",
     "expected_count": 1
@@ -29566,13 +29552,6 @@
     "expected_count": 1
   },
   {
-    "id": "manual.agent.failed_to_receive_tool_input_e",
-    "file": "crates/agent/src/tools/diagnostics_tool.rs",
-    "from": "Failed to receive tool input: {e}",
-    "to": "接收工具输入失败：{e}",
-    "expected_count": 1
-  },
-  {
     "id": "manual.agent.could_not_find_path_path_in_project",
     "file": "crates/agent/src/tools/diagnostics_tool.rs",
     "from": "Could not find path {path} in project",
@@ -29631,16 +29610,16 @@
   {
     "id": "manual.agent.local_settings",
     "file": "crates/agent/src/tools/tool_permissions.rs",
-    "from": "{} (local settings)",
-    "to": "{}（本地设置）",
-    "expected_count": 1
+    "from": "{title} (local settings)",
+    "to": "{title}（本地设置）",
+    "expected_count": 2
   },
   {
     "id": "manual.agent.settings",
     "file": "crates/agent/src/tools/tool_permissions.rs",
-    "from": "{} (settings)",
-    "to": "{}（设置）",
-    "expected_count": 1
+    "from": "{title} (settings)",
+    "to": "{title}（设置）",
+    "expected_count": 2
   },
   {
     "id": "manual.dap_adapters.destination_for_stdio_streams_null_send_to_debugger_console_or_a_terminal_path_a",
@@ -29803,6 +29782,48 @@
     "to": "通过共享开源仓库中的数据，帮助我们改进开放数据集模型。Zed 必须在你的仓库中检测到许可证文件，此设置才会生效。包含敏感数据和密钥的文件默认会被排除。",
     "from_source": "\"Help us improve our open dataset model by sharing data from open source repositories. \\\r\n                                            Zed must detect a license file in your repo for this setting to take effect. \\\r\n                                            Files with sensitive data and secrets are excluded by default.\"",
     "to_source": "\"通过共享开源仓库中的数据，帮助我们改进开放数据集模型。\\\r\n                                            Zed 必须在你的仓库中检测到许可证文件，此设置才会生效。\\\r\n                                            包含敏感数据和密钥的文件默认会被排除。\"",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.settings_ui.line_endings_button",
+    "file": "crates/settings_ui/src/page_data.rs",
+    "from": "Line Endings Button",
+    "to": "行尾符按钮",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.settings_ui.show_the_active_line_endings_button_in_the_status_bar",
+    "file": "crates/settings_ui/src/page_data.rs",
+    "from": "Show the active line endings button in the status bar.",
+    "to": "在状态栏中显示当前行尾符按钮。",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.terminal_view.paste_text",
+    "file": "crates/terminal_view/src/terminal_view.rs",
+    "from": "Paste Text",
+    "to": "粘贴文本",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.zed.installing_zed",
+    "file": "crates/zed/src/zed/move_to_applications.rs",
+    "from": "Installing Zed…",
+    "to": "正在安装 Zed…",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.zed.moving_zed_to_applications",
+    "file": "crates/zed/src/zed/move_to_applications.rs",
+    "from": "Moving Zed to Applications",
+    "to": "正在将 Zed 移动到 Applications",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.zed.zed_will_reopen_when_installation_is_complete",
+    "file": "crates/zed/src/zed/move_to_applications.rs",
+    "from": "Zed will reopen when installation is complete.",
+    "to": "安装完成后，Zed 将重新打开。",
     "expected_count": 1
   }
 ]
