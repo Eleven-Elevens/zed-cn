@@ -25,8 +25,9 @@
 
 当前汉化维护入口：
 
-- [ZED_ZH_CN_LOCALIZATION_PLAN.md](./ZED_ZH_CN_LOCALIZATION_PLAN.md)
-- [ZH_CN_LOCALIZATION_STEPS.md](./ZH_CN_LOCALIZATION_STEPS.md)
+- [ZED_ZH_CN_LOCALIZATION_PLAN.md](./docs/zh-cn/ZED_ZH_CN_LOCALIZATION_PLAN.md)
+- [ZH_CN_LOCALIZATION_STEPS.md](./docs/zh-cn/ZH_CN_LOCALIZATION_STEPS.md)
+- [FORK_MIGRATION_PLAN.md](./docs/zh-cn/FORK_MIGRATION_PLAN.md)
 
 ## 不包含内容
 
@@ -97,7 +98,7 @@ node -e "const fs=require('fs'); const t=JSON.parse(fs.readFileSync('zh-cn-overl
 详细步骤见：
 
 - [docs/src/development/windows.md](./docs/src/development/windows.md)
-- [ZH_CN_LOCALIZATION_STEPS.md](./ZH_CN_LOCALIZATION_STEPS.md)
+- [ZH_CN_LOCALIZATION_STEPS.md](./docs/zh-cn/ZH_CN_LOCALIZATION_STEPS.md)
 
 ## 当前产物
 
