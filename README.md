@@ -1,43 +1,59 @@
-# zedCn
+# zed-cn
 
-`zedCn` 是基于 [zed-industries/zed](https://github.com/zed-industries/zed) 的 Zed 简体中文汉化仓库。
+`zed-cn` 是一个基于 [zed-industries/zed](https://github.com/zed-industries/zed) 的 Zed 简体中文汉化维护仓库。
 
-这个仓库不是单独的补丁仓库，而是直接在官方源码基础上维护中文本地化改动，目标是：
+这个仓库直接在官方源码基础上维护中文本地化改动，不是单独的补丁仓库，也不是只存打包产物的发布仓库。目标很明确：
 
 - 跟随官方 `main` 持续同步最新功能
-- 将中文 UI 文案长期维护为可复用的汉化资产
+- 长期维护可复用的简体中文翻译资产
 - 让别人拉下仓库后可以继续构建、补翻、验收和发布
 
-## 仓库定位
+## 当前状态
 
-- `origin`：当前汉化仓库
-- `upstream`：官方 `zed-industries/zed`
 - 默认维护分支：`dev`
+- 官方同步源：`upstream -> zed-industries/zed`
+- 当前汉化翻译表：`4145` 条
+- 当前扫描状态：`candidates: 0`
+- 当前主仓库：`K:\Project\zed-cn`
 
-也就是说，这个仓库里已经包含官方源码，不需要再额外 clone 一份 Zed 才能继续开发汉化。
+如果你只是想直接使用成品，请优先看 Release 或本地构建产物。  
+如果你想参与维护，请直接基于 `dev` 分支工作。
 
-## 已包含内容
+## 下载与产物
 
-- Zed 源码及当前汉化改动
-- `zh-cn-overlay/` 汉化维护脚本与翻译表
-- 汉化方案与操作文档
-- Windows 汉化安装包与便携包的构建流程
+当前仓库常见的 Windows 产物约定如下：
 
-当前汉化维护入口：
+- 安装包：`target/Zed-x86_64.exe`
+- 远程服务包：`target/zed-remote-server-windows-x86_64.zip`
+- 便携包：`target/Zed-x86_64-portable-zh-cn.zip`
 
-- [ZED_ZH_CN_LOCALIZATION_PLAN.md](./docs/zh-cn/ZED_ZH_CN_LOCALIZATION_PLAN.md)
-- [ZH_CN_LOCALIZATION_STEPS.md](./docs/zh-cn/ZH_CN_LOCALIZATION_STEPS.md)
-- [FORK_MIGRATION_PLAN.md](./docs/zh-cn/FORK_MIGRATION_PLAN.md)
+这些产物默认**不提交到 Git**。对外发布时建议通过 GitHub Releases 分发。
 
-## 不包含内容
+## 仓库结构
 
-以下内容不会提交到仓库：
+最重要的目录和文件：
 
-- 本地 `target/` 构建缓存
-- 本地 `inno/` 打包目录
-- `AGS_SDK`、`ConPTY` 等 Windows 打包依赖下载产物
+- `crates/`
+  Zed 官方源码和汉化后的源码改动
+- `zh-cn-overlay/`
+  汉化翻译表、扫描脚本、精修脚本、自动补齐脚本
+- `docs/zh-cn/`
+  汉化方案、维护步骤、fork 迁移说明
 
-原因很简单：这些文件体积大、可再生成、可再下载，不适合进入源码仓库。
+文档入口：
+
+- [本地汉化方案](./docs/zh-cn/ZED_ZH_CN_LOCALIZATION_PLAN.md)
+- [本地化维护步骤](./docs/zh-cn/ZH_CN_LOCALIZATION_STEPS.md)
+- [Fork 迁移方案](./docs/zh-cn/FORK_MIGRATION_PLAN.md)
+
+## 分支说明
+
+- `main`
+  保留官方 fork 主线，用来跟踪官方仓库
+- `dev`
+  简体中文汉化维护主线，建议设置为 GitHub 默认分支
+
+对这个仓库来说，真正长期维护的是 `dev`，不是 `main`。
 
 ## 快速开始
 
@@ -47,6 +63,13 @@
 git remote -v
 ```
 
+理想状态：
+
+```text
+origin   你的 zed-cn 仓库
+upstream https://github.com/zed-industries/zed.git
+```
+
 如果缺少官方上游：
 
 ```powershell
@@ -54,9 +77,9 @@ git remote add upstream https://github.com/zed-industries/zed.git
 git remote set-url --push upstream DISABLED
 ```
 
-## 汉化维护流程
+## 日常同步流程
 
-同步官方更新：
+同步官方最新代码：
 
 ```powershell
 git switch dev
@@ -64,7 +87,7 @@ git fetch upstream
 git merge upstream/main
 ```
 
-运行汉化与检查：
+重新套用汉化并检查：
 
 ```powershell
 node .\zh-cn-overlay\auto-fill-from-report.mjs .
@@ -79,7 +102,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\zh-cn-overlay\scan-untrans
 node -e "const fs=require('fs'); const t=JSON.parse(fs.readFileSync('zh-cn-overlay/translations.json','utf8').replace(/^\uFEFF/,'')); const ids=new Set(); let dup=0; for (const e of t) { if (ids.has(e.id)) dup++; ids.add(e.id); } console.log({entries:t.length, duplicate_ids:dup});"
 ```
 
-## Windows 构建说明
+理想结果：
+
+- `apply-zh-cn.ps1` 二次运行 `replacements: 0`
+- `scan-untranslated.ps1` 输出 `candidates: 0`
+- `translations.json` 无重复 ID
+
+## 构建说明
 
 别人拉取本仓库后，可以直接获得：
 
@@ -87,28 +116,21 @@ node -e "const fs=require('fs'); const t=JSON.parse(fs.readFileSync('zh-cn-overl
 - 汉化源码
 - 汉化维护脚本
 
-但如果要完整构建 Windows 安装包，除了 Rust 和 Visual Studio Build Tools 之外，还需要本地准备：
+但如果要完整构建 Windows 安装包，还需要本地准备：
 
+- Rust toolchain
+- Visual Studio Build Tools
+- Windows SDK
 - `AGS_SDK`
 - `Microsoft.Windows.Console.ConPTY`
 - `Inno Setup`
 
-这些依赖不会跟随 Git 仓库分发，所以不是 `git clone` 后立刻就能打出安装包；需要按文档准备一次本地环境。
+这些依赖不会随 Git 仓库分发，所以不是 `git clone` 后立刻就能完整打包。
 
-详细步骤见：
+相关参考：
 
-- [docs/src/development/windows.md](./docs/src/development/windows.md)
-- [ZH_CN_LOCALIZATION_STEPS.md](./docs/zh-cn/ZH_CN_LOCALIZATION_STEPS.md)
-
-## 当前产物
-
-本地已验证通过的常用产物路径：
-
-- 安装包：`target/Zed-x86_64.exe`
-- 便携包：`target/Zed-x86_64-portable-zh-cn.zip`
-- 远程服务包：`target/zed-remote-server-windows-x86_64.zip`
-
-这些产物默认不提交到 Git。
+- [官方 Windows 构建文档](./docs/src/development/windows.md)
+- [本地化维护步骤](./docs/zh-cn/ZH_CN_LOCALIZATION_STEPS.md)
 
 ## 贡献建议
 
@@ -128,11 +150,15 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\zh-cn-overlay\apply-zh-cn.
 powershell -NoProfile -ExecutionPolicy Bypass -File .\zh-cn-overlay\scan-untranslated.ps1 .
 ```
 
-理想状态：
+## 不包含内容
 
-- `apply-zh-cn.ps1` 二次运行 `replacements: 0`
-- `scan-untranslated.ps1` 输出 `candidates: 0`
-- `translations.json` 无重复 ID
+以下内容默认不提交到仓库：
+
+- 本地 `target/` 构建缓存
+- 本地 `inno/` 打包目录
+- `AGS_SDK`、`ConPTY` 等 Windows 打包依赖下载产物
+
+原因很简单：这些文件体积大、可再生成、可再下载，不适合作为源码资产进入 Git。
 
 ## 与官方项目的关系
 
@@ -141,4 +167,4 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\zh-cn-overlay\scan-untrans
 - 官方项目主页：[zed.dev](https://zed.dev)
 - 官方源码仓库：[zed-industries/zed](https://github.com/zed-industries/zed)
 
-如果官方未来引入正式多语言/i18n 方案，这个仓库也可以继续作为中文翻译资产和迁移基础。
+如果官方未来引入正式多语言 / i18n 方案，这个仓库也可以继续作为中文翻译资产和迁移基础。
