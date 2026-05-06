@@ -1101,7 +1101,7 @@
     "default_profile": "write",
     "profiles": {
       "write": {
-        "name": "Write",
+        "name": "写作",
         "enable_all_context_servers": true,
         "tools": {
           "copy_path": true,
@@ -1133,7 +1133,7 @@
         },
       },
       "ask": {
-        "name": "Ask",
+        "name": "问答",
         // We don't know which of the context server tools are safe for the "Ask" profile, so we don't enable them by default.
         // "enable_all_context_servers": true,
         "tools": {
@@ -1156,7 +1156,7 @@
         },
       },
       "minimal": {
-        "name": "Minimal",
+        "name": "最简",
         "enable_all_context_servers": false,
         "tools": {},
       },

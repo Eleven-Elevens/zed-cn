@@ -12520,6 +12520,27 @@
     "expected_count": 1
   },
   {
+    "id": "manual.agent_settings.write_profile_name",
+    "file": "assets/settings/default.json",
+    "from": "Write",
+    "to": "写作",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.agent_settings.ask_profile_name",
+    "file": "assets/settings/default.json",
+    "from": "Ask",
+    "to": "问答",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.agent_settings.minimal_profile_name",
+    "file": "assets/settings/default.json",
+    "from": "Minimal",
+    "to": "最简",
+    "expected_count": 1
+  },
+  {
     "id": "manual.agent_ui.yesterday",
     "file": "crates/agent_ui/src/threads_archive_view.rs",
     "from": "Yesterday",
