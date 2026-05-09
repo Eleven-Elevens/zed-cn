@@ -408,7 +408,7 @@ impl PaneLeaderDecorator for PaneRenderContext<'_> {
                                 ))
                             })
                         } else {
-                            leader_join_data = Some((leader_project_id, leader.user.id));
+                            leader_join_data = Some((leader_project_id, leader.user.legacy_id));
                             Some(Label::new(format!(
                                 "跟随 {} 到其活动项目",
                                 leader.user.github_login,

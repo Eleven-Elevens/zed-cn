@@ -16,7 +16,7 @@ pub use young_account_banner::YoungAccountBanner;
 use std::sync::Arc;
 
 use client::{Client, UserStore, zed_urls};
-use gpui::{AnyElement, Entity, IntoElement, ParentElement};
+use gpui::{AnyElement, Entity, IntoElement, ParentElement, TaskExt};
 use ui::{Divider, RegisterComponent, Tooltip, Vector, VectorName, prelude::*};
 
 #[derive(PartialEq)]
@@ -156,11 +156,11 @@ impl ZedAiOnboarding {
             .gap_1()
             .child(Headline::new("欢迎使用 Zed AI"))
             .child(
-                Label::new("登录即可试用 Zed Pro 14 天，无需信用卡。")
+                Label::new("登录即可免费试用 Zed Pro 14 天。")
                     .color(Color::Muted)
                     .mb_2(),
             )
-            .child(PlanDefinitions.pro_plan())
+            .child(PlanDefinitions.sign_in_upsell())
             .child(
                 Button::new("sign_in", "免费试用 Zed Pro")
                     .disabled(signing_in)

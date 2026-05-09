@@ -22,63 +22,57 @@ const SETTINGS_DISCLAIMER: &str = "注意：自定义工具权限仅适用于 Ze
 const TOOLS: &[ToolInfo] = &[
     ToolInfo {
         id: "terminal",
-        name: "终端",
+        name: "Terminal",
         description: "在终端中执行的命令",
-        regex_explanation: "规则会匹配输入中的每条命令。使用 &&、||、; 或管道串联的命令会被拆分并逐一检查。",
+        regex_explanation: "Patterns are matched against each command in the input. Commands chained with &&, ||, ;, or pipes are split and checked individually.",
     },
     ToolInfo {
         id: "edit_file",
-        name: "编辑文件",
+        name: "Edit File",
         description: "文件编辑操作",
-        regex_explanation: "规则会匹配正在编辑的文件路径。",
+        regex_explanation: "Patterns are matched against the file path being edited.",
+    },
+    ToolInfo {
+        id: "write_file",
+        name: "Write File",
+        description: "文件创建和覆盖操作",
+        regex_explanation: "Patterns are matched against the file path being written.",
     },
     ToolInfo {
         id: "delete_path",
-        name: "删除路径",
+        name: "Delete Path",
         description: "文件和目录删除",
-        regex_explanation: "规则会匹配正在删除的路径。",
+        regex_explanation: "Patterns are matched against the path being deleted.",
     },
     ToolInfo {
         id: "copy_path",
-        name: "复制路径",
+        name: "Copy Path",
         description: "文件和目录复制",
-        regex_explanation: "规则会分别匹配源路径和目标路径。可在下方输入任一路径进行测试。",
+        regex_explanation: "Patterns are matched independently against the source path and the destination path. Enter either path below to test.",
     },
     ToolInfo {
         id: "move_path",
-        name: "移动路径",
+        name: "Move Path",
         description: "文件和目录移动/重命名",
-        regex_explanation: "规则会分别匹配源路径和目标路径。可在下方输入任一路径进行测试。",
+        regex_explanation: "Patterns are matched independently against the source path and the destination path. Enter either path below to test.",
     },
     ToolInfo {
         id: "create_directory",
-        name: "创建目录",
+        name: "Create Directory",
         description: "目录创建",
-        regex_explanation: "规则会匹配正在创建的目录路径。",
-    },
-    ToolInfo {
-        id: "save_file",
-        name: "保存文件",
-        description: "文件保存操作",
-        regex_explanation: "规则会匹配正在保存的文件路径。",
+        regex_explanation: "Patterns are matched against the directory path being created.",
     },
     ToolInfo {
         id: "fetch",
-        name: "获取",
+        name: "Fetch",
         description: "对 URL 的 HTTP 请求",
-        regex_explanation: "规则会匹配正在获取的 URL。",
+        regex_explanation: "Patterns are matched against the URL being fetched.",
     },
     ToolInfo {
         id: "search_web",
-        name: "网页搜索",
+        name: "Web Search",
         description: "网络搜索查询",
-        regex_explanation: "规则会匹配搜索查询。",
-    },
-    ToolInfo {
-        id: "restore_file_from_disk",
-        name: "从磁盘恢复文件",
-        description: "通过从磁盘重新加载来放弃未保存的更改",
-        regex_explanation: "规则会匹配正在恢复的文件路径。",
+        regex_explanation: "Patterns are matched against the search query.",
     },
 ];
 
@@ -303,14 +297,13 @@ fn get_tool_render_fn(
     match tool_id {
         "terminal" => render_terminal_tool_config,
         "edit_file" => render_edit_file_tool_config,
+        "write_file" => render_write_file_tool_config,
         "delete_path" => render_delete_path_tool_config,
         "copy_path" => render_copy_path_tool_config,
         "move_path" => render_move_path_tool_config,
         "create_directory" => render_create_directory_tool_config,
-        "save_file" => render_save_file_tool_config,
         "fetch" => render_fetch_tool_config,
         "search_web" => render_web_search_tool_config,
-        "restore_file_from_disk" => render_restore_file_from_disk_tool_config,
         _ => render_terminal_tool_config, // fallback
     }
 }
@@ -1383,17 +1376,13 @@ macro_rules! tool_config_page_fn {
 
 tool_config_page_fn!(render_terminal_tool_config, "terminal");
 tool_config_page_fn!(render_edit_file_tool_config, "edit_file");
+tool_config_page_fn!(render_write_file_tool_config, "write_file");
 tool_config_page_fn!(render_delete_path_tool_config, "delete_path");
 tool_config_page_fn!(render_copy_path_tool_config, "copy_path");
 tool_config_page_fn!(render_move_path_tool_config, "move_path");
 tool_config_page_fn!(render_create_directory_tool_config, "create_directory");
-tool_config_page_fn!(render_save_file_tool_config, "save_file");
 tool_config_page_fn!(render_fetch_tool_config, "fetch");
 tool_config_page_fn!(render_web_search_tool_config, "search_web");
-tool_config_page_fn!(
-    render_restore_file_from_disk_tool_config,
-    "restore_file_from_disk"
-);
 
 #[cfg(test)]
 mod tests {

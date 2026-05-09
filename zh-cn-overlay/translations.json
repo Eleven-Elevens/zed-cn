@@ -3470,12 +3470,13 @@
     "expected_count": 1
   },
   {
-    "id": "auto.ai_onboarding.sign_in_to_try_zed_pro_for_14_days_no_credit_card_required",
+    "id": "auto.ai_onboarding.sign_in_to_try_zed_pro_free_for_14_days",
     "file": "crates/ai_onboarding/src/ai_onboarding.rs",
-    "from": "Sign in to try Zed Pro for 14 days, no credit card required.",
-    "to": "登录即可试用 Zed Pro 14 天，无需信用卡。",
+    "from": "Sign in to try Zed Pro free for 14 days.",
+    "to": "登录即可免费试用 Zed Pro 14 天。",
     "expected_count": 1,
     "previous_to": [
+      "登录即可试用 Zed Pro 14 天，无需信用卡。",
       "登录intotryZedProfor14days,nocreditcardrequired."
     ]
   },
@@ -4274,25 +4275,15 @@
     ]
   },
   {
-    "id": "auto.editor.add_review_drag_to_select_multiple_lines",
-    "file": "crates/editor/src/editor.rs",
-    "from": "Add Review (drag to select multiple lines)",
-    "to": "添加审查（拖动可选择多行）",
-    "expected_count": 1,
-    "previous_to": [
-      "添加审查dragtoselectmultiplelines"
-    ]
-  },
-  {
     "id": "auto.editor.close",
-    "file": "crates/editor/src/editor.rs",
+    "file": "crates/editor/src/git.rs",
     "from": "Close",
     "to": "关闭",
     "expected_count": 1
   },
   {
     "id": "auto.editor.add_comment",
-    "file": "crates/editor/src/editor.rs",
+    "file": "crates/editor/src/git.rs",
     "from": "Add comment",
     "to": "添加评论",
     "expected_count": 1,
@@ -4305,14 +4296,38 @@
     "file": "crates/editor/src/editor.rs",
     "from": "Cancel",
     "to": "取消",
-    "expected_count": 2
+    "expected_count": 1
+  },
+  {
+    "id": "auto.editor_git.cancel",
+    "file": "crates/editor/src/git.rs",
+    "from": "Cancel",
+    "to": "取消",
+    "expected_count": 1
   },
   {
     "id": "auto.editor.confirm",
     "file": "crates/editor/src/editor.rs",
     "from": "Confirm",
     "to": "确认",
-    "expected_count": 2
+    "expected_count": 1
+  },
+  {
+    "id": "auto.editor_git.confirm",
+    "file": "crates/editor/src/git.rs",
+    "from": "Confirm",
+    "to": "确认",
+    "expected_count": 1
+  },
+  {
+    "id": "auto.editor_git.add_review_drag_to_select_multiple_lines",
+    "file": "crates/editor/src/git.rs",
+    "from": "Add Review (drag to select multiple lines)",
+    "to": "添加审查（拖动可选择多行）",
+    "expected_count": 1,
+    "previous_to": [
+      "添加审查dragtoselectmultiplelines"
+    ]
   },
   {
     "id": "auto.editor.conflict_with_accept_keybinding",
@@ -10243,7 +10258,7 @@
   },
   {
     "id": "auto.editor.add_a_review_comment",
-    "file": "crates/editor/src/editor.rs",
+    "file": "crates/editor/src/git.rs",
     "from": "Add a review comment...",
     "to": "添加审查评论...",
     "expected_count": 1,
@@ -10779,8 +10794,8 @@
   {
     "id": "auto.sidebar.search",
     "file": "crates/sidebar/src/sidebar.rs",
-    "from": "Search…",
-    "to": "搜索…",
+    "from": "Search threads…",
+    "to": "搜索线程…",
     "expected_count": 1
   },
   {
@@ -12541,6 +12556,13 @@
     "expected_count": 1
   },
   {
+    "id": "manual.agent_ui.terminal_surface",
+    "file": "crates/agent_ui/src/agent_panel.rs",
+    "from": "Terminal",
+    "to": "终端",
+    "expected_count": 3
+  },
+  {
     "id": "manual.agent_ui.yesterday",
     "file": "crates/agent_ui/src/threads_archive_view.rs",
     "from": "Yesterday",
@@ -14112,13 +14134,6 @@
     "expected_count": 1
   },
   {
-    "id": "manual.project.git_graph_is_not_supported_for_collab_yet",
-    "file": "crates/project/src/git_store.rs",
-    "from": "Git graph is not supported for collab yet",
-    "to": "协作模式暂不支持 Git 图",
-    "expected_count": 1
-  },
-  {
     "id": "manual.git_ui.project_diff",
     "file": "crates/git_ui/src/project_diff.rs",
     "from": "Project Diff",
@@ -14791,7 +14806,14 @@
     "file": "crates/ai_onboarding/src/plan_definitions.rs",
     "from": "Unlimited edit predictions",
     "to": "无限编辑预测",
-    "expected_count": 4
+    "expected_count": 1
+  },
+  {
+    "id": "manual.ai_onboarding.no_credit_card_required",
+    "file": "crates/ai_onboarding/src/plan_definitions.rs",
+    "from": "No credit card required",
+    "to": "无需信用卡",
+    "expected_count": 1
   },
   {
     "id": "manual.ai_onboarding.trial.no_credit_card",
@@ -15453,7 +15475,7 @@
   },
   {
     "id": "auto.mt.editor.stage",
-    "file": "crates/editor/src/editor.rs",
+    "file": "crates/editor/src/git.rs",
     "from": "Stage",
     "to": "暂存",
     "expected_count": 1,
@@ -15463,7 +15485,7 @@
   },
   {
     "id": "auto.mt.editor.unstage",
-    "file": "crates/editor/src/editor.rs",
+    "file": "crates/editor/src/git.rs",
     "from": "Unstage",
     "to": "取消暂存",
     "expected_count": 1,
@@ -15473,7 +15495,7 @@
   },
   {
     "id": "auto.mt.editor.restore",
-    "file": "crates/editor/src/editor.rs",
+    "file": "crates/editor/src/git.rs",
     "from": "Restore",
     "to": "恢复",
     "expected_count": 1
@@ -21660,8 +21682,8 @@
   {
     "id": "auto.mt.settings_ui.file_saving_operations",
     "file": "crates/settings_ui/src/pages/tool_permissions_setup.rs",
-    "from": "File saving operations",
-    "to": "文件保存操作",
+    "from": "File creation and overwrite operations",
+    "to": "文件创建和覆盖操作",
     "expected_count": 1
   },
   {
@@ -21676,13 +21698,6 @@
     "file": "crates/settings_ui/src/pages/tool_permissions_setup.rs",
     "from": "Web search queries",
     "to": "网络搜索查询",
-    "expected_count": 1
-  },
-  {
-    "id": "auto.mt.settings_ui.discards_unsaved_changes_by_reloading_from_disk",
-    "file": "crates/settings_ui/src/pages/tool_permissions_setup.rs",
-    "from": "Discards unsaved changes by reloading from disk",
-    "to": "通过从磁盘重新加载来放弃未保存的更改",
     "expected_count": 1
   },
   {
@@ -29612,6 +29627,34 @@
     "file": "crates/agent/src/tools/diagnostics_tool.rs",
     "from": "File doesn't have errors or warnings!",
     "to": "文件没有错误或警告！",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.git_ui.no_active_repository",
+    "file": "crates/git_ui/src/git_panel.rs",
+    "from": "No active repository",
+    "to": "没有活动仓库",
+    "expected_count": 4
+  },
+  {
+    "id": "manual.settings_ui.show_edit_predictions_in_normal_mode",
+    "file": "crates/settings_ui/src/page_data.rs",
+    "from": "Show Edit Predictions in Normal Mode",
+    "to": "在普通模式下显示编辑预测",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.settings_ui.whether_edit_predictions_are_shown_in_normal_mode",
+    "file": "crates/settings_ui/src/page_data.rs",
+    "from": "Whether edit predictions are shown in normal mode. By default, edit predictions are only shown in insert and replace modes.",
+    "to": "是否在普通模式下显示编辑预测。默认情况下，编辑预测只会在插入和替换模式下显示。",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.workspace.hide_button",
+    "file": "crates/workspace/src/status_bar.rs",
+    "from": "Hide Button",
+    "to": "隐藏按钮",
     "expected_count": 1
   },
   {

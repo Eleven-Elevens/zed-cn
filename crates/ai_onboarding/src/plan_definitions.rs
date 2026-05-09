@@ -14,6 +14,13 @@ impl PlanDefinitions {
             .child(ListBulletItem::new("无限使用外部 Agent"))
     }
 
+    pub fn sign_in_upsell(&self) -> impl IntoElement {
+        List::new()
+            .child(ListBulletItem::new("无限编辑预测"))
+            .child(ListBulletItem::new("Zed Agent 中 $20 的 token 额度"))
+            .child(ListBulletItem::new("无需信用卡"))
+    }
+
     pub fn pro_trial(&self, period: bool) -> impl IntoElement {
         List::new()
             .child(ListBulletItem::new("Zed Agent 中 $20 的 token 额度"))
