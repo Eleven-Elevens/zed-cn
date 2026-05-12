@@ -23213,6 +23213,13 @@
     "expected_count": 1
   },
   {
+    "id": "manual.activity_indicator.failed_to_run_click_to_show_error",
+    "file": "crates/activity_indicator/src/activity_indicator.rs",
+    "from": "Failed to run {}. Click to show error.",
+    "to": "运行 {} 失败。点击显示错误。",
+    "expected_count": 1
+  },
+  {
     "id": "manual.activity_indicator.formatting_failed_failure_click_to_see_logs",
     "file": "crates/activity_indicator/src/activity_indicator.rs",
     "from": "Formatting failed: {failure}. Click to see logs.",
@@ -23397,8 +23404,8 @@
   {
     "id": "manual.zed.error_opening_paths_with_position_error",
     "file": "crates/zed/src/zed/open_listener.rs",
-    "from": "error opening {paths_with_position:?}: {error}",
-    "to": "打开 {paths_with_position:?} 时出错：{error}",
+    "from": "error opening [{paths}]: {error:#}",
+    "to": "打开 [{paths}] 时出错：{error:#}",
     "expected_count": 1
   },
   {
