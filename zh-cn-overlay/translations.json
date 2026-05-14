@@ -1304,21 +1304,21 @@
   },
   {
     "id": "project_panel.empty.open_project",
-    "file": "crates/project_panel/src/project_panel.rs",
+    "file": "crates/ui/src/components/project_empty_state.rs",
     "from": "Open Project",
     "to": "打开项目",
     "expected_count": 1
   },
   {
     "id": "project_panel.empty.or",
-    "file": "crates/project_panel/src/project_panel.rs",
+    "file": "crates/ui/src/components/project_empty_state.rs",
     "from": "or",
     "to": "或",
     "expected_count": 1
   },
   {
     "id": "project_panel.empty.clone_repository",
-    "file": "crates/project_panel/src/project_panel.rs",
+    "file": "crates/ui/src/components/project_empty_state.rs",
     "from": "Clone Repository",
     "to": "克隆仓库",
     "expected_count": 1
@@ -1769,7 +1769,7 @@
     "file": "crates/git_ui/src/git_panel.rs",
     "from": "Open Diff",
     "to": "打开差异",
-    "expected_count": 3
+    "expected_count": 2
   },
   {
     "id": "git.panel.context.discard_tracked_changes",
@@ -1877,13 +1877,6 @@
     "expected_count": 1
   },
   {
-    "id": "git.panel.branch_diff",
-    "file": "crates/git_ui/src/git_panel.rs",
-    "from": "Branch Diff",
-    "to": "分支差异",
-    "expected_count": 1
-  },
-  {
     "id": "git.panel.failed_open_file",
     "file": "crates/git_ui/src/git_panel.rs",
     "from": "Failed to open file",
@@ -1923,13 +1916,6 @@
     "file": "crates/git_ui/src/git_panel.rs",
     "from": "View Branch Diff",
     "to": "查看分支差异",
-    "expected_count": 1
-  },
-  {
-    "id": "git.panel.branch_diff_description",
-    "file": "crates/git_ui/src/git_panel.rs",
-    "from": "Show diff between working directory and default branch",
-    "to": "显示工作目录与默认分支之间的差异",
     "expected_count": 1
   },
   {
@@ -1979,13 +1965,6 @@
     "file": "crates/git_ui/src/git_panel.rs",
     "from": "View File History",
     "to": "查看文件历史",
-    "expected_count": 1
-  },
-  {
-    "id": "git.panel.safe_directory_docs",
-    "file": "crates/git_ui/src/git_panel.rs",
-    "from": "Open https://git-scm.com/docs/git-config#Documentation/git-config.txt-safedirectory in your default browser",
-    "to": "在默认浏览器中打开 https://git-scm.com/docs/git-config#Documentation/git-config.txt-safedirectory",
     "expected_count": 1
   },
   {
@@ -3094,7 +3073,7 @@
     "file": "crates/agent_ui/src/conversation_view/thread_view.rs",
     "from": "Dismiss",
     "to": "关闭",
-    "expected_count": 2
+    "expected_count": 3
   },
   {
     "id": "agent.thread.resumed_session",
@@ -5375,8 +5354,8 @@
   {
     "id": "auto.markdown.rendering_mermaid_diagram",
     "file": "crates/markdown/src/mermaid.rs",
-    "from": "Rendering mermaid diagram...",
-    "to": "正在渲染 Mermaid 图表...",
+    "from": "Rendering...",
+    "to": "正在渲染...",
     "expected_count": 1
   },
   {
@@ -6057,20 +6036,6 @@
     "file": "crates/sidebar/src/sidebar.rs",
     "from": "Add Project",
     "to": "添加项目",
-    "expected_count": 1
-  },
-  {
-    "id": "auto.sidebar.open_project",
-    "file": "crates/sidebar/src/sidebar.rs",
-    "from": "Open Project",
-    "to": "打开项目",
-    "expected_count": 1
-  },
-  {
-    "id": "auto.sidebar.clone_repository",
-    "file": "crates/sidebar/src/sidebar.rs",
-    "from": "Clone Repository",
-    "to": "克隆仓库",
     "expected_count": 1
   },
   {
@@ -13330,20 +13295,6 @@
     "file": "crates/git_ui/src/git_panel.rs",
     "from": "Untracked",
     "to": "未跟踪",
-    "expected_count": 1
-  },
-  {
-    "id": "manual.git_ui.no_changes",
-    "file": "crates/git_ui/src/git_panel.rs",
-    "from": "No Changes",
-    "to": "没有更改",
-    "expected_count": 1
-  },
-  {
-    "id": "manual.git_ui.1_change",
-    "file": "crates/git_ui/src/git_panel.rs",
-    "from": "1 Change",
-    "to": "1 处更改",
     "expected_count": 1
   },
   {
@@ -24456,13 +24407,6 @@
     "expected_count": 1
   },
   {
-    "id": "manual.git_ui.changes",
-    "file": "crates/git_ui/src/git_panel.rs",
-    "from": "{} Changes",
-    "to": "{} 项更改",
-    "expected_count": 1
-  },
-  {
     "id": "manual.git_ui.rename_branch",
     "file": "crates/git_ui/src/git_ui.rs",
     "from": "Rename Branch ({})",
@@ -29895,6 +29839,258 @@
     "file": "crates/zed/src/zed/move_to_applications.rs",
     "from": "Zed will reopen when installation is complete.",
     "to": "安装完成后，Zed 将重新打开。",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.agent_skills.skill_md_file_exceeds_maximum_size",
+    "file": "crates/agent_skills/agent_skills.rs",
+    "from": "SKILL.md file exceeds maximum size of {}KB",
+    "to": "SKILL.md 文件超过最大大小 {}KB",
+    "expected_count": 2
+  },
+  {
+    "id": "manual.agent_skills.failed_to_open_file",
+    "file": "crates/agent_skills/agent_skills.rs",
+    "from": "Failed to open file: {}",
+    "to": "打开文件失败：{}",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.agent_skills.failed_to_read_file",
+    "file": "crates/agent_skills/agent_skills.rs",
+    "from": "Failed to read file: {}",
+    "to": "读取文件失败：{}",
+    "expected_count": 2
+  },
+  {
+    "id": "manual.agent_skills.skill_md_is_not_valid_utf8",
+    "file": "crates/agent_skills/agent_skills.rs",
+    "from": "SKILL.md is not valid UTF-8: {}",
+    "to": "SKILL.md 不是有效的 UTF-8：{}",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.agent_panel.open_project_to_load_thread",
+    "file": "crates/agent_ui/src/agent_panel.rs",
+    "from": "Open a project to load a thread",
+    "to": "打开项目以加载线程",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.agent_panel.edit_thread_title",
+    "file": "crates/agent_ui/src/agent_panel.rs",
+    "from": "Edit Thread Title",
+    "to": "编辑线程标题",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.agent_registry.retry",
+    "file": "crates/agent_ui/src/agent_registry_ui.rs",
+    "from": "Retry",
+    "to": "重试",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.agent_thread.skill_failed_to_load",
+    "file": "crates/agent_ui/src/conversation_view/thread_view.rs",
+    "from": "Skill failed to load",
+    "to": "Skill 加载失败",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.csv_preview.performance_metrics",
+    "file": "crates/csv_preview/src/renderer/performance_metrics_overlay.rs",
+    "from": "Performance metrics:",
+    "to": "性能指标：",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.csv_preview.settings_top",
+    "file": "crates/csv_preview/src/renderer/settings.rs",
+    "from": "Top",
+    "to": "顶部",
+    "expected_count": 2
+  },
+  {
+    "id": "manual.csv_preview.settings_center",
+    "file": "crates/csv_preview/src/renderer/settings.rs",
+    "from": "Center",
+    "to": "居中",
+    "expected_count": 2
+  },
+  {
+    "id": "manual.csv_preview.text_alignment",
+    "file": "crates/csv_preview/src/renderer/settings.rs",
+    "from": "Text Alignment:",
+    "to": "文本对齐：",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.csv_preview.choose_vertical_text_alignment",
+    "file": "crates/csv_preview/src/renderer/settings.rs",
+    "from": "Choose vertical text alignment within cells",
+    "to": "选择单元格内的垂直文本对齐方式",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.csv_preview.dev_only",
+    "file": "crates/csv_preview/src/renderer/settings.rs",
+    "from": "Dev-only:",
+    "to": "仅开发：",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.csv_preview.dev_only_description",
+    "file": "crates/csv_preview/src/renderer/settings.rs",
+    "from": "Dev-only section used for debugging purposes.\nWill be removed on public release of CSV feature",
+    "to": "仅开发用途部分。\n将在 CSV 功能公开发布时移除",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.csv_preview.rendering_mode",
+    "file": "crates/csv_preview/src/renderer/settings.rs",
+    "from": "Rendering Mode",
+    "to": "渲染模式",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.csv_preview.variable_height",
+    "file": "crates/csv_preview/src/renderer/settings.rs",
+    "from": "Variable Height",
+    "to": "可变高度",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.csv_preview.uniform_height",
+    "file": "crates/csv_preview/src/renderer/settings.rs",
+    "from": "Uniform Height",
+    "to": "统一高度",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.csv_preview.show_perf_metrics",
+    "file": "crates/csv_preview/src/renderer/settings.rs",
+    "from": "Show perf metrics",
+    "to": "显示性能指标",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.csv_preview.show_cell_positions",
+    "file": "crates/csv_preview/src/renderer/settings.rs",
+    "from": "Show cell positions",
+    "to": "显示单元格位置",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.edit_prediction.predicted_patch",
+    "file": "crates/edit_prediction_ui/src/rate_prediction_modal.rs",
+    "from": "Predicted Patch",
+    "to": "预测补丁",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.edit_prediction.expected_patch",
+    "file": "crates/edit_prediction_ui/src/rate_prediction_modal.rs",
+    "from": "Expected Patch",
+    "to": "预期补丁",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.git_ui.view_diff",
+    "file": "crates/git_ui/src/git_panel.rs",
+    "from": "View Diff",
+    "to": "查看差异",
+    "expected_count": 2
+  },
+  {
+    "id": "manual.git_ui.loading_commit_history",
+    "file": "crates/git_ui/src/git_panel.rs",
+    "from": "Loading Commit History…",
+    "to": "正在加载提交历史…",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.git_ui.view_commit",
+    "file": "crates/git_ui/src/git_panel.rs",
+    "from": "View Commit",
+    "to": "查看提交",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.git_ui.trust_directory",
+    "file": "crates/git_ui/src/git_panel.rs",
+    "from": "Trust Directory",
+    "to": "信任目录",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.git_ui.initialize_repository",
+    "file": "crates/git_ui/src/git_panel.rs",
+    "from": "Initialize Repository",
+    "to": "初始化仓库",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.git_ui.select_base_branch",
+    "file": "crates/git_ui/src/project_diff.rs",
+    "from": "Select base branch",
+    "to": "选择基准分支",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.git_ui.hold_alt_to_force_delete",
+    "file": "crates/git_ui/src/worktree_picker.rs",
+    "from": "Hold alt to force delete",
+    "to": "按住 Alt 可强制删除",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.markdown.image_failed_to_load_log",
+    "file": "crates/markdown/src/markdown.rs",
+    "from": "Image failed to load. Open `zed: log` for more details.",
+    "to": "图片加载失败。打开 `zed: log` 查看更多详情。",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.settings.show_stage_restore_buttons",
+    "file": "crates/settings_ui/src/page_data.rs",
+    "from": "Show Stage/Restore Buttons",
+    "to": "显示暂存/还原按钮",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.settings.show_stage_restore_buttons_description",
+    "file": "crates/settings_ui/src/page_data.rs",
+    "from": "Whether to show the stage and restore buttons on diff hunks.",
+    "to": "是否在差异块上显示暂存和还原按钮。",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.settings.completion_menu_item_kind",
+    "file": "crates/settings_ui/src/page_data.rs",
+    "from": "Completion Menu Item Kind",
+    "to": "补全菜单项类型",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.settings.completion_menu_item_kind_description",
+    "file": "crates/settings_ui/src/page_data.rs",
+    "from": "How to display the LSP item kind (function, method, variable, etc.) of each entry in the completions menu.",
+    "to": "如何在补全菜单中显示每个条目的 LSP 项类型（函数、方法、变量等）。",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.tool_permissions.loading_agent_skill_instructions",
+    "file": "crates/settings_ui/src/pages/tool_permissions_setup.rs",
+    "from": "Loading agent skill instructions",
+    "to": "正在加载 Agent Skill 指令",
+    "expected_count": 1
+  },
+  {
+    "id": "manual.zed.open_project_to_import_shared_threads",
+    "file": "crates/zed/src/main.rs",
+    "from": "Open a project to import shared threads",
+    "to": "打开项目以导入共享线程",
     "expected_count": 1
   }
 ]

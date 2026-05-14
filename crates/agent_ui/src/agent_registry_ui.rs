@@ -292,32 +292,34 @@ impl AgentRegistryPage {
     fn render_empty_state(&self, cx: &mut Context<Self>) -> impl IntoElement {
         let has_search = self.search_query(cx).is_some();
         let registry_store = self.registry_store.read(cx);
+        let is_fetching = registry_store.is_fetching();
+        let fetch_error = registry_store.fetch_error();
 
-        let message = if registry_store.is_fetching() {
-            "正在加载注册表..."
-        } else if registry_store.fetch_error().is_some() {
-            "无法加载 Agent 注册表。请检查网络连接后重试。"
+        let message = if is_fetching {
+            "Loading registry..."
+        } else if fetch_error.is_some() {
+            "Failed to load the agent registry. Please check your connection and try again."
         } else {
             match self.filter {
                 RegistryFilter::All => {
                     if has_search {
-                        "没有符合搜索条件的 Agent。"
+                        "No agents match your search."
                     } else {
-                        "暂无可用 Agent。"
+                        "No agents available."
                     }
                 }
                 RegistryFilter::Installed => {
                     if has_search {
-                        "没有符合搜索条件的已安装 Agent。"
+                        "No installed agents match your search."
                     } else {
-                        "暂无已安装 Agent。"
+                        "No installed agents."
                     }
                 }
                 RegistryFilter::NotInstalled => {
                     if has_search {
-                        "没有符合搜索条件的未安装 Agent。"
+                        "No uninstalled agents match your search."
                     } else {
-                        "暂无未安装 Agent。"
+                        "No uninstalled agents."
                     }
                 }
             }
@@ -325,15 +327,42 @@ impl AgentRegistryPage {
 
         h_flex()
             .py_4()
+            .min_w_0()
+            .w_full()
             .gap_1p5()
-            .when(registry_store.fetch_error().is_some(), |this| {
+            .items_start()
+            .when(fetch_error.is_some(), |this| {
                 this.child(
                     Icon::new(IconName::Warning)
                         .size(IconSize::Small)
                         .color(Color::Warning),
                 )
             })
-            .child(Label::new(message))
+            .child(
+                v_flex()
+                    .min_w_0()
+                    .flex_1()
+                    .gap_1()
+                    .child(Label::new(message))
+                    .when_some(fetch_error.clone(), |this, fetch_error| {
+                        this.child(
+                            Label::new(fetch_error)
+                                .size(LabelSize::Small)
+                                .color(Color::Muted),
+                        )
+                    }),
+            )
+            .when_some(fetch_error, |this, _| {
+                let registry_store = self.registry_store.clone();
+                this.child(
+                    Button::new("retry-agent-registry", "重试")
+                        .style(ButtonStyle::Outlined)
+                        .size(ButtonSize::Compact)
+                        .on_click(move |_, _, cx| {
+                            registry_store.update(cx, |store, cx| store.refresh(cx));
+                        }),
+                )
+            })
     }
 
     fn render_agents(
@@ -581,7 +610,7 @@ impl Render for AgentRegistryPage {
                                         "registry-filter-buttons",
                                         [
                                             ToggleButtonSimple::new(
-                                                "全部",
+                                                "All",
                                                 cx.listener(|this, _event, _, cx| {
                                                     this.filter = RegistryFilter::All;
                                                     this.filter_registry_agents(cx);
@@ -597,7 +626,7 @@ impl Render for AgentRegistryPage {
                                                 }),
                                             ),
                                             ToggleButtonSimple::new(
-                                                "未安装",
+                                                "Not Installed",
                                                 cx.listener(|this, _event, _, cx| {
                                                     this.filter = RegistryFilter::NotInstalled;
                                                     this.filter_registry_agents(cx);

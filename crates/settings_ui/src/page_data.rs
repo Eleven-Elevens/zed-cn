@@ -7280,7 +7280,7 @@ fn version_control_page() -> SettingsPage {
         ]
     }
 
-    fn git_hunks_section() -> [SettingsPageItem; 3] {
+    fn git_hunks_section() -> [SettingsPageItem; 4] {
         [
             SettingsPageItem::SectionHeader("Git 差异块"),
             SettingsPageItem::SettingItem(SettingItem {
@@ -7304,6 +7304,28 @@ fn version_control_page() -> SettingsPage {
                     pick: |settings_content| settings_content.git.as_ref()?.path_style.as_ref(),
                     write: |settings_content, value, _| {
                         settings_content.git.get_or_insert_default().path_style = value;
+                    },
+                }),
+                metadata: None,
+                files: USER,
+            }),
+            SettingsPageItem::SettingItem(SettingItem {
+                title: "显示暂存/还原按钮",
+                description: "是否在差异块上显示暂存和还原按钮。",
+                field: Box::new(SettingField {
+                    json_path: Some("git.show_stage_restore_buttons"),
+                    pick: |settings_content| {
+                        settings_content
+                            .git
+                            .as_ref()?
+                            .show_stage_restore_buttons
+                            .as_ref()
+                    },
+                    write: |settings_content, value, _| {
+                        settings_content
+                            .git
+                            .get_or_insert_default()
+                            .show_stage_restore_buttons = value;
                     },
                 }),
                 metadata: None,
@@ -8500,7 +8522,7 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
         ]
     }
 
-    fn completions_section() -> [SettingsPageItem; 7] {
+    fn completions_section() -> [SettingsPageItem; 8] {
         [
             SettingsPageItem::SectionHeader("竣工数量"),
             SettingsPageItem::SettingItem(SettingItem {
@@ -8607,6 +8629,21 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
                     },
                     write: |settings_content, value, _| {
                         settings_content.editor.completion_detail_alignment = value;
+                    },
+                }),
+                metadata: None,
+                files: USER,
+            }),
+            SettingsPageItem::SettingItem(SettingItem {
+                title: "补全菜单项类型",
+                description: "如何在补全菜单中显示每个条目的 LSP 项类型（函数、方法、变量等）。",
+                field: Box::new(SettingField {
+                    json_path: Some("editor.completion_menu_item_kind"),
+                    pick: |settings_content| {
+                        settings_content.editor.completion_menu_item_kind.as_ref()
+                    },
+                    write: |settings_content, value, _| {
+                        settings_content.editor.completion_menu_item_kind = value;
                     },
                 }),
                 metadata: None,
