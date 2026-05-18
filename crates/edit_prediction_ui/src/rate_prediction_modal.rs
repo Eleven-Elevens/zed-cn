@@ -1397,6 +1397,7 @@ impl editor::CompletionProvider for FeedbackCompletionProvider {
                 snippet_deduplication_key: None,
                 insert_text_mode: None,
                 confirm: None,
+                group: None,
             })
             .collect();
 

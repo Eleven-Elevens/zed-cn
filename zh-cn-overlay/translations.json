@@ -2807,7 +2807,7 @@
     "file": "crates/agent_ui/src/conversation_view/thread_view.rs",
     "from": "Rules",
     "to": "规则",
-    "expected_count": 2
+    "expected_count": 1
   },
   {
     "id": "agent.thread.restore_checkpoint",
@@ -4231,21 +4231,21 @@
   },
   {
     "id": "auto.editor.hold",
-    "file": "crates/editor/src/editor.rs",
+    "file": "crates/editor/src/edit_prediction.rs",
     "from": "Hold",
     "to": "按住",
     "expected_count": 1
   },
   {
     "id": "auto.editor.preview",
-    "file": "crates/editor/src/editor.rs",
+    "file": "crates/editor/src/edit_prediction.rs",
     "from": "Preview",
     "to": "预览",
     "expected_count": 1
   },
   {
     "id": "auto.editor.jump_to_edit",
-    "file": "crates/editor/src/editor.rs",
+    "file": "crates/editor/src/edit_prediction.rs",
     "from": "Jump to Edit",
     "to": "跳转到编辑",
     "expected_count": 4,
@@ -4310,14 +4310,14 @@
   },
   {
     "id": "auto.editor.conflict_with_accept_keybinding",
-    "file": "crates/editor/src/editor.rs",
+    "file": "crates/editor/src/edit_prediction.rs",
     "from": "Conflict with Accept Keybinding",
     "to": "与接受键位绑定冲突",
     "expected_count": 1
   },
   {
     "id": "auto.editor.assign_keybinding",
-    "file": "crates/editor/src/editor.rs",
+    "file": "crates/editor/src/edit_prediction.rs",
     "from": "Assign Keybinding",
     "to": "分配键位绑定",
     "expected_count": 1
@@ -7658,14 +7658,14 @@
   },
   {
     "id": "refine.editor.your_keymap_currently_overrides_the_default_accept_keybinding_to_continue_assign",
-    "file": "crates/editor/src/editor.rs",
+    "file": "crates/editor/src/edit_prediction.rs",
     "from": "Your keymap currently overrides the default accept keybinding. To continue, assign one keybinding for the `editor::AcceptEditPrediction` action.",
     "to": "你当前的键位映射覆盖了默认接受键位。要继续，请为 `editor::AcceptEditPrediction` 操作分配一个键位。",
     "expected_count": 1
   },
   {
     "id": "refine.editor.see_docs",
-    "file": "crates/editor/src/editor.rs",
+    "file": "crates/editor/src/edit_prediction.rs",
     "from": "See Docs",
     "to": "查看文档",
     "expected_count": 1
@@ -11301,7 +11301,7 @@
   },
   {
     "id": "refine.editor.jump_to_file_name",
-    "file": "crates/editor/src/editor.rs",
+    "file": "crates/editor/src/edit_prediction.rs",
     "from": "Jump to {file_name}",
     "to": "跳转到 {file_name}",
     "expected_count": 1
@@ -12206,11 +12206,11 @@
     "expected_count": 1
   },
   {
-    "id": "manual.agent_ui.rules",
+    "id": "manual.agent_ui.skills",
     "file": "crates/agent_ui/src/completion_provider.rs",
-    "from": "Rules",
-    "to": "规则",
-    "expected_count": 1
+    "from": "Skills",
+    "to": "技能",
+    "expected_count": 2
   },
   {
     "id": "manual.agent_ui.diagnostics",
@@ -23528,11 +23528,14 @@
     "expected_count": 1
   },
   {
-    "id": "manual.agent_ui.message_the_to_include_context",
+    "id": "manual.agent_ui.message_the_to_include_context_for_commands",
     "file": "crates/agent_ui/src/conversation_view.rs",
-    "from": "Message the {} — @ to include context",
-    "to": "给 {} 发送消息 — 输入 @ 添加上下文",
-    "expected_count": 1
+    "from": "Message the {}, @ to include context, / for commands",
+    "to": "给 {} 发送消息 — 输入 @ 添加上下文，输入 / 使用命令",
+    "expected_count": 1,
+    "previous_to": [
+      "给 {} 发送消息 — 输入 @ 添加上下文"
+    ]
   },
   {
     "id": "manual.agent_ui.message_to_include_context_for_commands",
@@ -23545,7 +23548,7 @@
     "id": "manual.agent_ui.message_to_include_context",
     "file": "crates/agent_ui/src/conversation_view.rs",
     "from": "Message {} — @ to include context",
-    "to": "给 {} 发送消息 — 输入 @ 添加上下文",
+    "to": "给 {} 发送消息 — 输入 @ 添加上下文，输入 / 使用命令",
     "expected_count": 1
   },
   {
@@ -30091,6 +30094,76 @@
     "file": "crates/zed/src/main.rs",
     "from": "Open a project to import shared threads",
     "to": "打开项目以导入共享线程",
+    "expected_count": 1
+  },
+  {
+    "id": "agent.thread.skills",
+    "file": "crates/agent_ui/src/conversation_view/thread_view.rs",
+    "from": "Skills",
+    "to": "技能",
+    "expected_count": 1
+  },
+  {
+    "id": "auto.agent_panel.log_out",
+    "file": "crates/agent_ui/src/agent_panel.rs",
+    "from": "Log Out",
+    "to": "退出登录",
+    "expected_count": 1
+  },
+  {
+    "id": "refine.agent_ui.to_include_a_skill_in_a_prompt_type_skill_name_or_mention_it",
+    "file": "crates/agent_ui/src/ui/rules_to_skills_modal.rs",
+    "from": "To include a Skill in a prompt, type /skill-name (or @-mention it).",
+    "to": "要在提示中包含一个技能，请输入 /skill-name（或用 @ 提及它）。",
+    "expected_count": 1
+  },
+  {
+    "id": "refine.agent_ui.got_it",
+    "file": "crates/agent_ui/src/ui/rules_to_skills_modal.rs",
+    "from": "Got it",
+    "to": "知道了",
+    "expected_count": 1
+  },
+  {
+    "id": "refine.agent_ui.introducing_skills",
+    "file": "crates/agent_ui/src/ui/rules_to_skills_modal.rs",
+    "from": "Introducing Skills",
+    "to": "技能简介",
+    "expected_count": 1
+  },
+  {
+    "id": "refine.agent_ui.skills_have_replaced_rules",
+    "file": "crates/agent_ui/src/ui/rules_to_skills_modal.rs",
+    "from": "Skills have replaced Rules",
+    "to": "技能已取代规则",
+    "expected_count": 1
+  },
+  {
+    "id": "refine.agent_ui.these_rules_have_been_migrated_to_skills_in_global_skills_dir_display",
+    "file": "crates/agent_ui/src/ui/rules_to_skills_modal.rs",
+    "from": "These Rules have been migrated to Skills in {GLOBAL_SKILLS_DIR_DISPLAY}:",
+    "to": "这些规则已迁移到 {GLOBAL_SKILLS_DIR_DISPLAY} 中的技能：",
+    "expected_count": 1
+  },
+  {
+    "id": "refine.agent_ui.these_default_rules_were_added_to_global_agents_file_display",
+    "file": "crates/agent_ui/src/ui/rules_to_skills_modal.rs",
+    "from": "These Default Rules were added to {GLOBAL_AGENTS_FILE_DISPLAY}:",
+    "to": "这些默认规则已添加到 {GLOBAL_AGENTS_FILE_DISPLAY}：",
+    "expected_count": 1
+  },
+  {
+    "id": "refine.language_models.sign_out",
+    "file": "crates/language_models/src/provider/openai_subscribed.rs",
+    "from": "Sign Out",
+    "to": "退出登录",
+    "expected_count": 1
+  },
+  {
+    "id": "refine.language_models.sign_in_with_your_chatgpt_plus_or_pro_subscription_to_use_openai_models_in_zed_s",
+    "file": "crates/language_models/src/provider/openai_subscribed.rs",
+    "from": "Sign in with your ChatGPT Plus or Pro subscription to use OpenAI models in Zed's agent.",
+    "to": "使用 ChatGPT Plus 或 Pro 订阅登录后，才能在 Zed 的智能体中使用 OpenAI 模型。",
     "expected_count": 1
   }
 ]
